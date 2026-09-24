@@ -139,6 +139,13 @@ function configurarGoogleAuth(cajaError) {
       cajaError.hidden = true;
       cajaError.textContent = '';
 
+      const clientId = CONFIG_APP.obtenerGoogleClientId();
+      if (!clientId || clientId.includes('galigames.apps.googleusercontent.com')) {
+        cajaError.textContent = 'Google requiere un Client ID real registrado en console.cloud.google.com. Pégalo en js/comun/configuracion.js o inicia sesión directamente con tu correo y contraseña arriba.';
+        cajaError.hidden = false;
+        return;
+      }
+
       if (window.google?.accounts?.id) {
         window.google.accounts.id.prompt();
       } else {
