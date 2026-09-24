@@ -1352,42 +1352,7 @@ function renderizarFilasArchivos(servidorId, elementos) {
   });
 }
 
-function renderizarMigas(servidorId, ruta) {
-  const migasNav = document.getElementById('archivos-migas');
-  if (!migasNav) return;
 
-  migasNav.innerHTML = '';
-
-  const btnRaiz = document.createElement('button');
-  btnRaiz.type = 'button';
-  btnRaiz.className = `archivos-miga-item ${!ruta ? 'activo' : ''}`;
-  btnRaiz.textContent = 'raíz';
-  btnRaiz.addEventListener('click', () => cargarArchivos(servidorId, ''));
-  migasNav.appendChild(btnRaiz);
-
-  if (!ruta) return;
-
-  const partes = ruta.split('/').filter(Boolean);
-  let acumulador = '';
-
-  partes.forEach((parte, index) => {
-    acumulador = acumulador ? `${acumulador}/${parte}` : parte;
-    const esUltima = index === partes.length - 1;
-
-    const separador = document.createElement('span');
-    separador.className = 'archivos-miga-separador';
-    separador.textContent = '/';
-    migasNav.appendChild(separador);
-
-    const btnMiga = document.createElement('button');
-    btnMiga.type = 'button';
-    btnMiga.className = `archivos-miga-item ${esUltima ? 'activo' : ''}`;
-    btnMiga.textContent = parte;
-    const rutaDestino = acumulador;
-    btnMiga.addEventListener('click', () => cargarArchivos(servidorId, rutaDestino));
-    migasNav.appendChild(btnMiga);
-  });
-}
 
 async function abrirEditorArchivo(servidorId, ruta) {
   const modalEditor = document.getElementById('modal-editor-archivo');
