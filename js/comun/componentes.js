@@ -65,10 +65,16 @@ export function inicializarCabecera(paginaActiva = '', prefijoRuta = '../..') {
       </a>
 
       <nav class="cabecera-nav" aria-label="Navegación principal">
-        <a href="${prefijoRuta}/html/inicio/home.html" class="cabecera-enlace ${paginaActiva === 'home' ? 'activo' : ''}">Inicio</a>
-        <a href="${prefijoRuta}/html/servidores/panel.html" class="cabecera-enlace ${paginaActiva === 'servidores' ? 'activo' : ''}">Mis Servidores</a>
-        <a href="${prefijoRuta}/html/servidores/crear.html" class="cabecera-enlace ${paginaActiva === 'crear' ? 'activo' : ''}">Crear Servidor</a>
-        <a href="${prefijoRuta}/html/billetera/saldo.html" class="cabecera-enlace ${paginaActiva === 'billetera' ? 'activo' : ''}">Billetera</a>
+        ${estaAutenticado ? `
+          <a href="${prefijoRuta}/html/servidores/panel.html" class="cabecera-enlace ${paginaActiva === 'servidores' ? 'activo' : ''}">Mis Servidores</a>
+          <a href="${prefijoRuta}/html/servidores/crear.html" class="cabecera-enlace ${paginaActiva === 'crear' ? 'activo' : ''}">Crear Servidor</a>
+          <a href="${prefijoRuta}/html/billetera/saldo.html" class="cabecera-enlace ${paginaActiva === 'billetera' ? 'activo' : ''}">Billetera</a>
+        ` : `
+          <a href="${prefijoRuta}/html/inicio/home.html#inicio" class="cabecera-enlace">Inicio</a>
+          <a href="${prefijoRuta}/html/inicio/home.html#juegos" class="cabecera-enlace">Juegos</a>
+          <a href="${prefijoRuta}/html/inicio/home.html#precios" class="cabecera-enlace">Tarifas y Precios</a>
+          <a href="${prefijoRuta}/html/inicio/home.html#ventajas" class="cabecera-enlace">Ventajas</a>
+        `}
       </nav>
 
       <div class="cabecera-acciones">
@@ -81,7 +87,7 @@ export function inicializarCabecera(paginaActiva = '', prefijoRuta = '../..') {
           <button type="button" id="btn-cerrar-sesion" class="boton boton-fantasma" aria-label="Cerrar sesión">Salir</button>
         ` : `
           <a href="${prefijoRuta}/html/autenticacion/iniciar-sesion.html" class="boton boton-fantasma">Iniciar sesión</a>
-          <a href="${prefijoRuta}/html/autenticacion/registro.html" class="boton boton-primario">Registrarse</a>
+          <a href="${prefijoRuta}/html/autenticacion/registro.html" class="boton boton-primario">Crear cuenta</a>
         `}
       </div>
     </div>

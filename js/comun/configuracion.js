@@ -16,7 +16,8 @@ export const CONFIG_APP = {
     return this.URL_API_PROD;
   },
 
-  PRECIO_MENSUAL_SERVIDOR: 6.00,
+  PRECIO_PLAN_4GB: 7.00,
+  PRECIO_PLAN_6GB: 9.00,
   MONEDA: 'EUR',
   SIMBOLO_MONEDA: '€',
   NOMBRE_PLATAFORMA: 'GaliGames'

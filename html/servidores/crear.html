@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Crear Servidor - GaliGames</title>
-  <meta name="description" content="Asistente visual para configurar y desplegar servidores de juegos en Linux con Docker.">
+  <meta name="description" content="Asistente visual para configurar y activar tu servidor de Minecraft en 30 segundos.">
 
   <!-- Hojas de estilo estructuradas -->
   <link rel="stylesheet" href="../../css/comun/variables.css">
@@ -26,10 +26,10 @@
       <div class="contenedor crear-contenedor-flujo">
         <div class="crear-cabecera">
           <h1 class="crear-titulo">Crear un Nuevo Servidor</h1>
-          <p class="crear-subtitulo">Sigue los sencillos pasos para configurar y desplegar tu mundo en Docker</p>
+          <p class="crear-subtitulo">Sigue los sencillos pasos para tener tu partida lista para jugar con amigos</p>
         </div>
 
-        <!-- Indicador de pasos visual -->
+        <!-- Indicador de pasos visual (6 pasos) -->
         <nav class="pasos-indicador" aria-label="Progreso del asistente">
           <div class="paso-nodo activo" data-paso="1">
             <span class="paso-numero">1</span>
@@ -41,7 +41,7 @@
           </div>
           <div class="paso-nodo" data-paso="3">
             <span class="paso-numero">3</span>
-            <span class="paso-nombre">Software / Mods</span>
+            <span class="paso-nombre">Mods</span>
           </div>
           <div class="paso-nodo" data-paso="4">
             <span class="paso-numero">4</span>
@@ -49,7 +49,11 @@
           </div>
           <div class="paso-nodo" data-paso="5">
             <span class="paso-numero">5</span>
-            <span class="paso-nombre">Confirmación</span>
+            <span class="paso-nombre">Plan / RAM</span>
+          </div>
+          <div class="paso-nodo" data-paso="6">
+            <span class="paso-numero">6</span>
+            <span class="paso-nombre">Activar</span>
           </div>
         </nav>
 
@@ -57,7 +61,7 @@
         <section id="paso-1" class="paso-contenido activo">
           <div class="paso-caja">
             <h2 class="paso-caja-titulo">Paso 1: Elige el juego para tu servidor</h2>
-            <p class="paso-caja-descripcion">Haz clic en el juego que quieres desplegar en tu nodo.</p>
+            <p class="paso-caja-descripcion">Haz clic en el juego que quieres activar.</p>
 
             <div class="rejilla-opciones-grandes">
               <!-- Minecraft (Seleccionado) -->
@@ -66,7 +70,7 @@
                   <div class="tarjeta-opcion-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                   </div>
-                  <span class="insignia insignia-exito">Recomendado</span>
+                  <span class="insignia insignia-exito">Disponible</span>
                 </div>
                 <div>
                   <h3 class="tarjeta-opcion-titulo">Minecraft</h3>
@@ -80,11 +84,11 @@
                   <div class="tarjeta-opcion-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
                   </div>
-                  <span class="insignia insignia-atenuada">Próximamente</span>
+                  <span class="insignia insignia-atenuada">Muy Pronto</span>
                 </div>
                 <div>
                   <h3 class="tarjeta-opcion-titulo">Rust</h3>
-                  <p class="tarjeta-opcion-texto">En desarrollo para la próxima versión de GaliGames.</p>
+                  <p class="tarjeta-opcion-texto">En preparación para la próxima actualización de GaliGames.</p>
                 </div>
               </div>
 
@@ -94,11 +98,11 @@
                   <div class="tarjeta-opcion-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg>
                   </div>
-                  <span class="insignia insignia-atenuada">Próximamente</span>
+                  <span class="insignia insignia-atenuada">Muy Pronto</span>
                 </div>
                 <div>
                   <h3 class="tarjeta-opcion-titulo">Palworld</h3>
-                  <p class="tarjeta-opcion-texto">En desarrollo para la próxima versión de GaliGames.</p>
+                  <p class="tarjeta-opcion-texto">En preparación para la próxima actualización de GaliGames.</p>
                 </div>
               </div>
             </div>
@@ -117,7 +121,7 @@
         <section id="paso-2" class="paso-contenido">
           <div class="paso-caja">
             <h2 class="paso-caja-titulo">Paso 2: ¿Qué edición de Minecraft vas a jugar?</h2>
-            <p class="paso-caja-descripcion">Selecciona si tus jugadores usan la versión clásica para PC o la versión para móviles y consolas.</p>
+            <p class="paso-caja-descripcion">Elige si tus jugadores usan la versión de PC o la de móviles y consolas.</p>
 
             <div class="rejilla-opciones-grandes">
               <button type="button" class="tarjeta-opcion-grande seleccionada" data-edicion="java">
@@ -125,11 +129,11 @@
                   <div class="tarjeta-opcion-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
                   </div>
-                  <span class="insignia insignia-primaria">Estándar PC</span>
+                  <span class="insignia insignia-primaria">PC / Mac</span>
                 </div>
                 <div>
                   <h3 class="tarjeta-opcion-titulo">Java Edition (PC)</h3>
-                  <p class="tarjeta-opcion-texto">Para Windows, Mac y Linux. Compatible con Paper, Fabric, Forge y la mayor biblioteca de mods.</p>
+                  <p class="tarjeta-opcion-texto">Para ordenadores. Compatible con Paper, Fabric, Forge y la mayor variedad de mods.</p>
                 </div>
               </button>
 
@@ -142,7 +146,7 @@
                 </div>
                 <div>
                   <h3 class="tarjeta-opcion-titulo">Bedrock Edition</h3>
-                  <p class="tarjeta-opcion-texto">Para teléfonos móviles Android/iOS, Nintendo Switch, PlayStation, Xbox y Minecraft Windows App.</p>
+                  <p class="tarjeta-opcion-texto">Para teléfonos móviles, consolas (PlayStation, Xbox, Switch) y la app de Windows.</p>
                 </div>
               </button>
             </div>
@@ -157,82 +161,14 @@
           </div>
         </section>
 
-        <!-- PASO 3: Software / Modloader -->
+        <!-- PASO 3: Software / Mods -->
         <section id="paso-3" class="paso-contenido">
           <div class="paso-caja">
             <h2 class="paso-caja-titulo">Paso 3: ¿Qué tipo de software o mods vas a usar?</h2>
-            <p class="paso-caja-descripcion">Elige la plataforma según quieras plugins, mods o el juego tradicional.</p>
+            <p class="paso-caja-descripcion">Elige cómo quieres que funcione tu servidor.</p>
 
             <div class="rejilla-opciones-grandes" id="opciones-plataformas">
-              <!-- PaperMC -->
-              <button type="button" class="tarjeta-opcion-grande seleccionada" data-plataforma="paper">
-                <div class="tarjeta-opcion-cabecera">
-                  <div class="tarjeta-opcion-icono">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                  </div>
-                  <span class="insignia insignia-exito">Recomendado</span>
-                </div>
-                <div>
-                  <h3 class="tarjeta-opcion-titulo">PaperMC</h3>
-                  <p class="tarjeta-opcion-texto">Rendimiento ultraoptimizado y compatibilidad completa con plugins (Spigot/Bukkit/Paper).</p>
-                </div>
-              </button>
-
-              <!-- Fabric -->
-              <button type="button" class="tarjeta-opcion-grande" data-plataforma="fabric">
-                <div class="tarjeta-opcion-cabecera">
-                  <div class="tarjeta-opcion-icono">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                  </div>
-                  <span class="insignia insignia-primaria">Mods Modernos</span>
-                </div>
-                <div>
-                  <h3 class="tarjeta-opcion-titulo">Fabric</h3>
-                  <p class="tarjeta-opcion-texto">Modloader rápido y ligero, ideal para mods modernos de optimización y jugabilidad.</p>
-                </div>
-              </button>
-
-              <!-- Forge -->
-              <button type="button" class="tarjeta-opcion-grande" data-plataforma="forge">
-                <div class="tarjeta-opcion-cabecera">
-                  <div class="tarjeta-opcion-icono">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 3.26-6.36 6.36"/></svg>
-                  </div>
-                  <span class="insignia">Modpacks</span>
-                </div>
-                <div>
-                  <h3 class="tarjeta-opcion-titulo">Forge</h3>
-                  <p class="tarjeta-opcion-texto">El sistema clásico para grandes paquetes de mods tecnológicos y mundos complejos.</p>
-                </div>
-              </button>
-
-              <!-- Purpur -->
-              <button type="button" class="tarjeta-opcion-grande" data-plataforma="purpur">
-                <div class="tarjeta-opcion-cabecera">
-                  <div class="tarjeta-opcion-icono">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                  </div>
-                  <span class="insignia">Personalizado</span>
-                </div>
-                <div>
-                  <h3 class="tarjeta-opcion-titulo">Purpur</h3>
-                  <p class="tarjeta-opcion-texto">Bifurcación de Paper con ajustes avanzados de mecánicas de juego y redstone.</p>
-                </div>
-              </button>
-
-              <!-- Vanilla -->
-              <button type="button" class="tarjeta-opcion-grande" data-plataforma="vanilla">
-                <div class="tarjeta-opcion-cabecera">
-                  <div class="tarjeta-opcion-icono">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
-                  </div>
-                  <span class="insignia">Oficial</span>
-                </div>
-                <div>
-                  <h3 class="tarjeta-opcion-titulo">Vanilla Oficial</h3>
-                  <p class="tarjeta-opcion-texto">Servidor original de Mojang sin alteraciones de terceros.</p>
-                </div>
-              </button>
+              <!-- Se actualiza dinámicamente con JS -->
             </div>
           </div>
 
@@ -249,7 +185,7 @@
         <section id="paso-4" class="paso-contenido">
           <div class="paso-caja">
             <h2 class="paso-caja-titulo">Paso 4: Selecciona la versión de Minecraft</h2>
-            <p class="paso-caja-descripcion">Elige la versión exacta que utilizarás con tus amigos.</p>
+            <p class="paso-caja-descripcion">Elige la versión exacta a la que jugarán tus amigos.</p>
 
             <div class="versiones-rejilla" id="rejilla-versiones">
               <button type="button" class="boton-version" data-version="1.21.1">1.21.1</button>
@@ -267,26 +203,74 @@
           <div class="crear-acciones-flujo">
             <button type="button" class="boton boton-secundario btn-anterior" data-anterior="3">Volver</button>
             <button type="button" class="boton boton-primario btn-siguiente" data-siguiente="5">
-              <span>Continuar: Configuración Final y Pago</span>
+              <span>Continuar: Elegir Plan y RAM</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </div>
         </section>
 
-        <!-- PASO 5: Nombres, Resumen de Facturación y Pago Simulado -->
+        <!-- PASO 5: Plan de Potencia (4GB a 7€ o 6GB a 9€) -->
         <section id="paso-5" class="paso-contenido">
           <div class="paso-caja">
-            <h2 class="paso-caja-titulo">Paso 5: Detalles del servidor y confirmación de pago</h2>
-            <p class="paso-caja-descripcion">Revisa la configuración y despliega tu contenedor en el Mini PC Linux.</p>
+            <h2 class="paso-caja-titulo">Paso 5: Selecciona la tarifa de tu servidor</h2>
+            <p class="paso-caja-descripcion">Elige la memoria RAM necesaria según vayas a jugar con plugins o mods pesados.</p>
+
+            <div class="rejilla-opciones-grandes">
+              <!-- Plan 4GB (7€) -->
+              <button type="button" class="tarjeta-opcion-grande tarjeta-plan-wizard seleccionada" data-plan="4gb" data-precio="7.00" data-ram="4096">
+                <div class="tarjeta-opcion-cabecera">
+                  <div class="tarjeta-opcion-icono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+                  </div>
+                  <span class="insignia insignia-exito">Recomendado</span>
+                </div>
+                <div>
+                  <h3 class="tarjeta-opcion-titulo">Plan Amigos (4 GB RAM)</h3>
+                  <p class="tarjeta-opcion-texto">Ideal para jugar con hasta 20 amigos, PaperMC, Spigot y mods ligeros.</p>
+                  <div class="plan-precio-destacado">7,00 € / mes</div>
+                </div>
+              </button>
+
+              <!-- Plan 6GB (9€) -->
+              <button type="button" class="tarjeta-opcion-grande tarjeta-plan-wizard" data-plan="6gb" data-precio="9.00" data-ram="6144">
+                <div class="tarjeta-opcion-cabecera">
+                  <div class="tarjeta-opcion-icono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  </div>
+                  <span class="insignia insignia-primaria">Modpacks</span>
+                </div>
+                <div>
+                  <h3 class="tarjeta-opcion-titulo">Plan Pro Modpacks (6 GB RAM)</h3>
+                  <p class="tarjeta-opcion-texto">Máxima potencia para modpacks gigantes de Forge, Fabric y más de 40 jugadores.</p>
+                  <div class="plan-precio-destacado">9,00 € / mes</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <div class="crear-acciones-flujo">
+            <button type="button" class="boton boton-secundario btn-anterior" data-anterior="4">Volver</button>
+            <button type="button" class="boton boton-primario btn-siguiente" data-siguiente="6">
+              <span>Continuar: Confirmación Final</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- PASO 6: Nombre, Resumen y Activación -->
+        <section id="paso-6" class="paso-contenido">
+          <div class="paso-caja">
+            <h2 class="paso-caja-titulo">Paso 6: Nombre del servidor y confirmación</h2>
+            <p class="paso-caja-descripcion">Revisa los datos de tu partida y actívala para recibir tu dirección de conexión.</p>
 
             <div class="grupo-campo">
-              <label for="campo-nombre-servidor" class="etiqueta">Nombre identificativo del servidor</label>
-              <input type="text" id="campo-nombre-servidor" class="campo-texto" placeholder="Ej. Mi Servidor Survival" value="Servidor Minecraft de Prueba" required>
+              <label for="campo-nombre-servidor" class="etiqueta">Nombre de tu servidor</label>
+              <input type="text" id="campo-nombre-servidor" class="campo-texto" placeholder="Ej. Mi Servidor Survival con Amigos" value="Mi Servidor Minecraft" required>
             </div>
 
             <div class="grupo-campo">
               <label for="campo-motd" class="etiqueta">Mensaje de bienvenida (MOTD)</label>
-              <input type="text" id="campo-motd" class="campo-texto" placeholder="¡Bienvenidos a mi servidor!" value="Bienvenido al servidor GaliGames">
+              <input type="text" id="campo-motd" class="campo-texto" placeholder="¡Bienvenidos a nuestra partida!" value="¡Bienvenidos al servidor!">
             </div>
 
             <!-- Resumen de Configuración y Costo -->
@@ -296,30 +280,30 @@
                 <strong id="resumen-juego-edicion">Minecraft (Java Edition)</strong>
               </div>
               <div class="resumen-fila">
-                <span>Software / Modloader:</span>
+                <span>Software / Mods:</span>
                 <strong id="resumen-plataforma-version">PaperMC - v1.20.4</strong>
               </div>
               <div class="resumen-fila">
-                <span>Recursos asignados:</span>
-                <span>4 GB RAM Dedicada / 2 vCPU / Docker Linux</span>
+                <span>Plan Seleccionado:</span>
+                <strong id="resumen-plan-nombre">Plan Amigos (4 GB RAM)</strong>
               </div>
               <div class="resumen-fila">
-                <span>Tu saldo actual disponible:</span>
+                <span>Tu saldo disponible:</span>
                 <strong id="resumen-saldo-actual">0,00 €</strong>
               </div>
               <div class="resumen-fila">
                 <span class="resumen-total">Total a pagar:</span>
-                <span class="resumen-total">6,00 € / mes</span>
+                <span class="resumen-total" id="resumen-total-pagar">7,00 € / mes</span>
               </div>
             </div>
 
             <!-- Caja de Estado de Saldo -->
             <div id="caja-aviso-saldo" class="alerta-mensaje alerta-aviso" hidden>
               <div>
-                <strong>Saldo insuficiente para contratar el servidor.</strong>
-                <p>Tu saldo actual no cubre los 6,00 € mensuales requeridos. Como estamos en fase de pruebas, puedes recargar 6,00 € de forma gratuita e instantánea haciendo clic abajo.</p>
+                <strong>Saldo insuficiente para activar el servidor.</strong>
+                <p id="texto-aviso-saldo">Tu saldo no cubre la cuota mensual. Puedes pulsar el botón de abajo para recargar saldo de prueba de forma inmediata y sin coste real.</p>
                 <button type="button" id="btn-recarga-rapida-prueba" class="boton boton-primario boton-espacio-superior">
-                  Recargar 6,00 € de Prueba Ahora
+                  Recargar Saldo de Prueba Ahora
                 </button>
               </div>
             </div>
@@ -328,9 +312,9 @@
           </div>
 
           <div class="crear-acciones-flujo">
-            <button type="button" class="boton boton-secundario btn-anterior" data-anterior="4">Volver</button>
+            <button type="button" class="boton boton-secundario btn-anterior" data-anterior="5">Volver</button>
             <button type="button" id="btn-pagar-crear" class="boton boton-primario boton-grande">
-              <span>Pagar 6,00 € y Desplegar Servidor</span>
+              <span id="texto-btn-pagar">Pagar 7,00 € y Activar Servidor</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
             </button>
           </div>

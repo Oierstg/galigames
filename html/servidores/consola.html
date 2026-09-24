@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consola en Vivo - GaliGames</title>
-  <meta name="description" content="Visor de consola y registros en tiempo real para servidores de Minecraft en Docker.">
+  <title>Administrar Servidor - GaliGames</title>
+  <meta name="description" content="Panel de administración y consola en tiempo real para tu servidor de Minecraft.">
 
   <!-- Hojas de estilo estructuradas -->
   <link rel="stylesheet" href="../../css/comun/variables.css">
@@ -24,15 +24,21 @@
   <main>
     <section class="consola-seccion">
       <div class="contenedor">
+        <!-- Cabecera del Servidor -->
         <div class="consola-cabecera-bloque">
           <div class="consola-titulo-grupo">
             <a href="../../html/servidores/panel.html" class="boton boton-secundario" title="Volver al panel">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-              <span>Volver</span>
+              <span>Volver a Mis Servidores</span>
             </a>
             <div>
               <h1 id="consola-nombre-servidor" class="consola-titulo">Cargando servidor...</h1>
-              <span id="consola-ip-servidor" class="consola-direccion">...</span>
+              <div class="consola-direccion-box">
+                <span id="consola-ip-servidor">...</span>
+                <button type="button" id="btn-copiar-ip-consola" class="boton-fantasma" title="Copiar dirección IP">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
             </div>
             <span id="consola-estado-insignia" class="insignia insignia-atenuada">
               <span class="insignia-punto"></span>
@@ -43,29 +49,72 @@
           <div class="consola-acciones">
             <button type="button" id="btn-iniciar-servidor" class="boton boton-primario">Iniciar</button>
             <button type="button" id="btn-detener-servidor" class="boton boton-secundario">Detener</button>
-            <button type="button" id="btn-reiniciar-servidor" class="boton boton-fantasma" title="Reiniciar">Reiniciar</button>
+            <button type="button" id="btn-reiniciar-servidor" class="boton boton-fantasma" title="Reiniciar servidor">Reiniciar</button>
           </div>
         </div>
 
-        <!-- Terminal Box -->
-        <div class="terminal-caja">
-          <div class="terminal-barra-superior">
-            <div class="terminal-puntos">
-              <span class="terminal-punto"></span>
-              <span class="terminal-punto"></span>
-              <span class="terminal-punto"></span>
+        <!-- Pestañas de Navegación de Gestión -->
+        <nav class="panel-pestanas-nav" aria-label="Secciones de administración">
+          <button type="button" class="pestana-boton activa" data-pestana="consola">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+            <span>Consola en Vivo</span>
+          </button>
+          <button type="button" class="pestana-boton" data-pestana="detalles">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+            <span>Información y Recursos</span>
+          </button>
+        </nav>
+
+        <!-- Pestaña 1: Consola -->
+        <div id="pestana-consola" class="contenido-pestana activa">
+          <div class="terminal-caja">
+            <div class="terminal-barra-superior">
+              <div class="terminal-puntos">
+                <span class="terminal-punto"></span>
+                <span class="terminal-punto"></span>
+                <span class="terminal-punto"></span>
+              </div>
+              <span>Terminal de Servidor</span>
+              <button type="button" id="btn-limpiar-terminal" class="boton boton-fantasma">Limpiar pantalla</button>
             </div>
-            <span id="terminal-info-nodo">Docker Container Log Stream</span>
-            <button type="button" id="btn-limpiar-terminal" class="boton boton-fantasma">Limpiar pantalla</button>
+
+            <div id="terminal-visor" class="terminal-visor-logs" role="log" aria-live="polite">Conectando al registro del servidor...</div>
+
+            <form id="formulario-comando" class="terminal-entrada-formulario" novalidate>
+              <span class="terminal-prompt-simbolo">&gt;</span>
+              <input type="text" id="campo-comando" class="terminal-campo-comando" placeholder="Escribe un comando (ej. op tu_nombre, help, say hola)..." autocomplete="off">
+              <button type="submit" id="btn-enviar-comando" class="boton boton-secundario">Enviar</button>
+            </form>
           </div>
+        </div>
 
-          <div id="terminal-visor" class="terminal-visor-logs" role="log" aria-live="polite">Conectando al flujo de registros del contenedor Docker...</div>
+        <!-- Pestaña 2: Detalles y Recursos -->
+        <div id="pestana-detalles" class="contenido-pestana">
+          <div class="detalles-rejilla">
+            <div class="tarjeta-detalle-recurso">
+              <div class="detalle-recurso-titulo">Memoria RAM Asignada</div>
+              <div class="detalle-recurso-valor" id="detalle-ram-valor">4 GB RAM</div>
+              <div class="detalle-recurso-subtexto">Memoria dedicada exclusiva para tu servidor</div>
+            </div>
 
-          <form id="formulario-comando" class="terminal-entrada-formulario" novalidate>
-            <span class="terminal-prompt-simbolo">&gt;</span>
-            <input type="text" id="campo-comando" class="terminal-campo-comando" placeholder="Escribe un comando (ej. op mi_usuario, help, say hola)..." autocomplete="off">
-            <button type="submit" id="btn-enviar-comando" class="boton boton-secundario">Enviar</button>
-          </form>
+            <div class="tarjeta-detalle-recurso">
+              <div class="detalle-recurso-titulo">Software y Versión</div>
+              <div class="detalle-recurso-valor" id="detalle-software-valor">PaperMC 1.20.4</div>
+              <div class="detalle-recurso-subtexto">Java Edition con soporte para plugins</div>
+            </div>
+
+            <div class="tarjeta-detalle-recurso">
+              <div class="detalle-recurso-titulo">Dirección de Conexión</div>
+              <div class="detalle-recurso-valor" id="detalle-puerto-valor">Puerto Asignado</div>
+              <div class="detalle-recurso-subtexto">Comparte esta IP con tus amigos para jugar</div>
+            </div>
+
+            <div class="tarjeta-detalle-recurso">
+              <div class="detalle-recurso-titulo">Tarifa Mensual</div>
+              <div class="detalle-recurso-valor" id="detalle-tarifa-valor">7,00 € / mes</div>
+              <div class="detalle-recurso-subtexto">Facturación mensual renovable mediante saldo</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

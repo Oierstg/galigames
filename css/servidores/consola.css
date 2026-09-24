@@ -1,4 +1,4 @@
-/* Consola Terminal de Servidor */
+/* Consola y Panel de Servidor (Estilo Hostinger Game Panel) */
 .consola-seccion {
   padding-top: var(--espacio-32);
   padding-bottom: var(--espacio-48);
@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   gap: var(--espacio-16);
+  flex-wrap: wrap;
 }
 
 .consola-titulo {
@@ -26,16 +27,64 @@
   color: var(--color-texto-principal);
 }
 
-.consola-direccion {
+.consola-direccion-box {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  padding: 4px var(--espacio-12);
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-md);
   font-family: var(--fuente-codigo);
-  font-size: 0.875rem;
-  color: var(--color-texto-secundario);
+  font-size: 0.8125rem;
+  color: var(--color-texto-principal);
 }
 
 .consola-acciones {
   display: flex;
   align-items: center;
   gap: var(--espacio-8);
+}
+
+/* Pestañas de Navegación de Gestión */
+.panel-pestanas-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  margin-bottom: var(--espacio-24);
+  border-bottom: 1px solid var(--color-borde-tenue);
+  padding-bottom: var(--espacio-12);
+}
+
+.pestana-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  padding: 8px var(--espacio-16);
+  border-radius: var(--radio-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+  transition: all var(--transicion-rapida);
+}
+
+.pestana-boton:hover {
+  color: var(--color-texto-principal);
+  background-color: var(--color-fondo-tarjeta);
+}
+
+.pestana-boton.activa {
+  background-color: var(--color-acento-superficie);
+  color: var(--color-acento-primario);
+  font-weight: 600;
+}
+
+.contenido-pestana {
+  display: none;
+}
+
+.contenido-pestana.activa {
+  display: block;
 }
 
 /* Caja de Terminal */
@@ -47,7 +96,7 @@
   box-shadow: var(--sombra-lg);
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: 560px;
 }
 
 .terminal-barra-superior {
@@ -112,4 +161,36 @@
 
 .terminal-campo-comando:focus {
   outline: none;
+}
+
+/* Pestaña de Detalles y Recursos (Hostinger Style) */
+.detalles-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--espacio-20);
+}
+
+.tarjeta-detalle-recurso {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-24);
+}
+
+.detalle-recurso-titulo {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-8);
+}
+
+.detalle-recurso-valor {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+}
+
+.detalle-recurso-subtexto {
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+  margin-top: var(--espacio-4);
 }

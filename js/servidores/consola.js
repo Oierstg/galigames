@@ -23,16 +23,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  configurarPestanas();
   await cargarDatosServidor(servidorId);
   await actualizarLogs(servidorId);
 
-  // Intervalo de sondeo periódico de logs (cada 4 segundos)
   intervaloLogs = setInterval(() => {
     actualizarLogs(servidorId);
   }, 4000);
 
   configurarControles(servidorId);
 });
+
+function configurarPestanas() {
+  const botonesPestana = document.querySelectorAll('.pestana-boton');
+  botonesPestana.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesPestana.forEach(b => b.classList.remove('activa'));
+      btn.classList.add('activa');
+
+      const pestana = btn.dataset.pestana;
+      document.querySelectorAll('.contenido-pestana').forEach(c => c.classList.remove('activa'));
+      const contenido = document.getElementById(`pestana-${pestana}`);
+      if (contenido) contenido.classList.add('activa');
+    });
+  });
+}
 
 async function cargarDatosServidor(id) {
   try {
@@ -42,7 +57,23 @@ async function cargarDatosServidor(id) {
     document.getElementById('consola-nombre-servidor').textContent = servidorActual.nombre;
     document.getElementById('consola-ip-servidor').textContent = servidorActual.direccionConexion;
 
+    // Rellenar pestaña de recursos
+    const ramGb = (servidorActual.ramMb || 4096) / 1024;
+    document.getElementById('detalle-ram-valor').textContent = `${ramGb} GB RAM`;
+    document.getElementById('detalle-software-valor').textContent = `${servidorActual.plataforma.toUpperCase()} ${servidorActual.version}`;
+    document.getElementById('detalle-puerto-valor').textContent = servidorActual.direccionConexion;
+    const tarifa = servidorActual.costoMensual ? `${Number(servidorActual.costoMensual).toFixed(2)} € / mes` : (ramGb >= 6 ? '9,00 € / mes' : '7,00 € / mes');
+    document.getElementById('detalle-tarifa-valor').textContent = tarifa;
+
     actualizarInsigniaEstado(servidorActual.estado);
+
+    const btnCopiar = document.getElementById('btn-copiar-ip-consola');
+    if (btnCopiar) {
+      btnCopiar.addEventListener('click', () => {
+        navigator.clipboard.writeText(servidorActual.direccionConexion);
+        mostrarNotificacion('¡Dirección IP copiada!', 'exito');
+      });
+    }
   } catch (error) {
     mostrarNotificacion(error.message, 'error');
   }
@@ -55,7 +86,7 @@ function actualizarInsigniaEstado(estado) {
   elem.className = `insignia ${esEnLinea ? 'insignia-exito' : 'insignia-atenuada'}`;
   elem.innerHTML = `
     <span class="insignia-punto"></span>
-    ${esEnLinea ? 'En línea' : 'Detenido'}
+    ${esEnLinea ? 'En línea' : 'Apagado'}
   `;
 }
 
@@ -73,7 +104,7 @@ async function actualizarLogs(id) {
       }
     }
   } catch {
-    // Si falla temporalmente no saturar la pantalla
+    // Silencio en fallos transitorios
   }
 }
 
@@ -89,7 +120,7 @@ function configurarControles(id) {
     btnIniciar.disabled = true;
     try {
       await api.servidores.iniciar(id);
-      mostrarNotificacion('Iniciando servidor Minecraft...', 'exito');
+      mostrarNotificacion('Iniciando tu servidor Minecraft...', 'exito');
       actualizarInsigniaEstado('en_linea');
       await actualizarLogs(id);
     } catch (e) {

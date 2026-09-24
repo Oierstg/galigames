@@ -1,4 +1,4 @@
-/* Vista Panel de Servidores (Dashboard) */
+/* Panel de Servidores (Estilo Hostinger Game Panel) */
 .panel-seccion {
   padding-top: var(--espacio-32);
   padding-bottom: var(--espacio-64);
@@ -10,8 +10,6 @@
   justify-content: space-between;
   gap: var(--espacio-24);
   margin-bottom: var(--espacio-32);
-  padding-bottom: var(--espacio-24);
-  border-bottom: 1px solid var(--color-borde-tenue);
 }
 
 @media (max-width: 640px) {
@@ -39,116 +37,103 @@
   color: var(--color-texto-secundario);
 }
 
-.panel-acciones-superiores {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-12);
+/* Tarjetas de Estadísticas Globales (Estilo Hostinger Overview) */
+.resumen-estadisticas-rejilla {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espacio-16);
+  margin-bottom: var(--espacio-32);
 }
 
-/* Tarjeta informativa de Saldo y Facturación */
-.banner-facturacion {
+@media (max-width: 768px) {
+  .resumen-estadisticas-rejilla {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tarjeta-estadistica {
   background-color: var(--color-fondo-tarjeta);
   border: 1px solid var(--color-borde-medio);
   border-radius: var(--radio-lg);
   padding: var(--espacio-20);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--espacio-24);
-  margin-bottom: var(--espacio-32);
-}
-
-@media (max-width: 768px) {
-  .banner-facturacion {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-.banner-facturacion-info {
-  display: flex;
-  align-items: center;
   gap: var(--espacio-16);
 }
 
-.banner-facturacion-icono {
+.tarjeta-estadistica-icono {
   width: 44px;
   height: 44px;
   border-radius: var(--radio-md);
-  background-color: var(--color-acento-superficie);
+  background-color: var(--color-fondo-superficie);
   color: var(--color-acento-primario);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  border: 1px solid var(--color-borde-tenue);
 }
 
-.banner-facturacion-texto strong {
-  color: var(--color-texto-principal);
-  font-size: 1rem;
-  display: block;
-  margin-bottom: var(--espacio-4);
-}
-
-.banner-facturacion-texto p {
-  color: var(--color-texto-secundario);
+.tarjeta-estadistica-etiqueta {
   font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
 }
 
-.banner-facturacion-saldo {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-16);
-}
-
-.banner-saldo-cifra {
-  font-size: 1.5rem;
+.tarjeta-estadistica-valor {
+  font-size: 1.375rem;
   font-weight: 700;
   color: var(--color-texto-principal);
+  letter-spacing: -0.02em;
 }
 
 /* Rejilla de Servidores Activos */
 .servidores-rejilla {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-16);
+  gap: var(--espacio-20);
 }
 
-.tarjeta-servidor {
+.tarjeta-servidor-hostinger {
   background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-tenue);
-  border-radius: var(--radio-lg);
-  padding: var(--espacio-20) var(--espacio-24);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-xl);
+  overflow: hidden;
+  box-shadow: var(--sombra-sm);
+  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+}
+
+.tarjeta-servidor-hostinger:hover {
+  border-color: var(--color-borde-foco);
+  box-shadow: var(--sombra-md);
+}
+
+.servidor-cuerpo {
+  padding: var(--espacio-24);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--espacio-24);
-  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
-}
-
-.tarjeta-servidor:hover {
-  border-color: var(--color-borde-medio);
 }
 
 @media (max-width: 900px) {
-  .tarjeta-servidor {
+  .servidor-cuerpo {
     flex-direction: column;
     align-items: flex-start;
   }
 }
 
-.servidor-info-principal {
+.servidor-info-izq {
   display: flex;
   align-items: center;
-  gap: var(--espacio-16);
+  gap: var(--espacio-20);
 }
 
-.servidor-icono-juego {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radio-md);
-  background-color: var(--color-fondo-elevado);
-  border: 1px solid var(--color-borde-tenue);
+.servidor-avatar-juego {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radio-lg);
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-medio);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,58 +141,75 @@
   flex-shrink: 0;
 }
 
-.servidor-detalles {
+.servidor-nombre-bloque {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-4);
+  gap: var(--espacio-6);
 }
 
-.servidor-nombre-linea {
+.servidor-titulo-fila {
   display: flex;
   align-items: center;
   gap: var(--espacio-12);
+  flex-wrap: wrap;
 }
 
-.servidor-nombre {
-  font-size: 1.0625rem;
-  font-weight: 600;
+.servidor-nombre-texto {
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--color-texto-principal);
 }
 
-.servidor-conexion-bloque {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-8);
-  font-family: var(--fuente-codigo);
-  font-size: 0.8125rem;
-  color: var(--color-texto-secundario);
-}
-
-.boton-copiar-ip {
-  color: var(--color-texto-atenuado);
-  padding: 2px var(--espacio-4);
-  border-radius: var(--radio-sm);
+/* Dirección IP para compartir con amigos */
+.servidor-ip-caja {
   display: inline-flex;
   align-items: center;
-}
-
-.boton-copiar-ip:hover {
+  gap: var(--espacio-8);
+  padding: 6px var(--espacio-12);
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-md);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
   color: var(--color-texto-principal);
-  background-color: var(--color-fondo-elevado);
+  margin-top: var(--espacio-4);
 }
 
-.servidor-meta-etiquetas {
+.servidor-ip-copiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-acento-primario);
+  font-family: var(--fuente-principal);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radio-sm);
+  background-color: var(--color-acento-superficie);
+  border: 1px solid var(--color-acento-borde);
+  cursor: pointer;
+  transition: background-color var(--transicion-rapida);
+}
+
+.servidor-ip-copiar:hover {
+  background-color: var(--color-acento-primario);
+  color: #ffffff;
+}
+
+.servidor-etiquetas-tecnicas {
   display: flex;
   align-items: center;
   gap: var(--espacio-8);
   margin-top: var(--espacio-4);
+  flex-wrap: wrap;
 }
 
-.servidor-acciones {
+/* Barra de Acciones Hostinger */
+.servidor-barra-acciones {
   display: flex;
   align-items: center;
   gap: var(--espacio-8);
-  flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 /* Estado Vacío */

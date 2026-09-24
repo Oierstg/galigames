@@ -203,6 +203,17 @@
   line-height: 1.4;
 }
 
+.tarjeta-plan-wizard {
+  position: relative;
+}
+
+.tarjeta-plan-wizard .plan-precio-destacado {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+  margin-top: var(--espacio-8);
+}
+
 /* Selector de versiones */
 .versiones-rejilla {
   display: grid;

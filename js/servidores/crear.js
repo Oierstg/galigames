@@ -8,9 +8,11 @@ const estadoAsistente = {
   edicion: 'java',
   plataforma: 'paper',
   version: '1.20.4',
-  nombre: 'Mi Servidor de Minecraft',
-  motd: 'Bienvenido al servidor GaliGames',
-  ramMb: 4096
+  plan: '4gb',
+  precioPlan: 7.00,
+  ramMb: 4096,
+  nombre: 'Mi Servidor Minecraft',
+  motd: '¡Bienvenidos al servidor!'
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -48,18 +50,15 @@ function configurarNavegacionPasos() {
 }
 
 function irAPaso(numeroPaso) {
-  // Ocultar todos los pasos
   document.querySelectorAll('.paso-contenido').forEach(el => {
     el.classList.remove('activo');
   });
 
-  // Mostrar el paso actual
   const pasoElemento = document.getElementById(`paso-${numeroPaso}`);
   if (pasoElemento) {
     pasoElemento.classList.add('activo');
   }
 
-  // Actualizar indicadores superiores
   document.querySelectorAll('.paso-nodo').forEach(nodo => {
     const p = parseInt(nodo.dataset.paso, 10);
     nodo.classList.remove('activo', 'completado');
@@ -72,7 +71,7 @@ function irAPaso(numeroPaso) {
 
   estadoAsistente.paso = numeroPaso;
 
-  if (numeroPaso === 5) {
+  if (numeroPaso === 6) {
     actualizarResumenFinal();
   }
 }
@@ -86,7 +85,6 @@ function configurarSeleccionadores() {
       btn.classList.add('seleccionada');
       estadoAsistente.edicion = btn.dataset.edicion;
 
-      // Si selecciona bedrock, por defecto asignamos la plataforma bedrock
       if (estadoAsistente.edicion === 'bedrock') {
         estadoAsistente.plataforma = 'bedrock';
       } else if (estadoAsistente.plataforma === 'bedrock') {
@@ -96,7 +94,6 @@ function configurarSeleccionadores() {
     });
   });
 
-  // Selección de Plataforma / Software
   actualizarOpcionesPlataformas();
 
   // Selección de Versión
@@ -106,6 +103,18 @@ function configurarSeleccionadores() {
       botonesVersion.forEach(b => b.classList.remove('seleccionada'));
       btn.classList.add('seleccionada');
       estadoAsistente.version = btn.dataset.version;
+    });
+  });
+
+  // Selección de Plan (4GB = 7€, 6GB = 9€)
+  const botonesPlan = document.querySelectorAll('[data-plan]');
+  botonesPlan.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesPlan.forEach(b => b.classList.remove('seleccionada'));
+      btn.classList.add('seleccionada');
+      estadoAsistente.plan = btn.dataset.plan;
+      estadoAsistente.precioPlan = parseFloat(btn.dataset.precio);
+      estadoAsistente.ramMb = parseInt(btn.dataset.ram, 10);
     });
   });
 }
@@ -153,7 +162,7 @@ function actualizarOpcionesPlataformas() {
         </div>
         <div>
           <h3 class="tarjeta-opcion-titulo">PaperMC</h3>
-          <p class="tarjeta-opcion-texto">Rendimiento ultraoptimizado y compatibilidad completa con plugins (Spigot/Bukkit/Paper).</p>
+          <p class="tarjeta-opcion-texto">Rendimiento óptimo para jugar sin lag. Soporte total para plugins Spigot y Paper.</p>
         </div>
       </button>
 
@@ -211,7 +220,6 @@ function actualizarOpcionesPlataformas() {
     `;
   }
 
-  // Volver a asociar eventos en las nuevas opciones
   const botonesPlataforma = contenedor.querySelectorAll('[data-plataforma]');
   botonesPlataforma.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -225,20 +233,34 @@ function actualizarOpcionesPlataformas() {
 function actualizarResumenFinal() {
   const elemJuegoEdicion = document.getElementById('resumen-juego-edicion');
   const elemPlataformaVersion = document.getElementById('resumen-plataforma-version');
+  const elemPlanNombre = document.getElementById('resumen-plan-nombre');
   const elemSaldoActual = document.getElementById('resumen-saldo-actual');
+  const elemTotalPagar = document.getElementById('resumen-total-pagar');
+  const textoBtnPagar = document.getElementById('texto-btn-pagar');
   const cajaAvisoSaldo = document.getElementById('caja-aviso-saldo');
   const btnPagarCrear = document.getElementById('btn-pagar-crear');
+  const btnRecargaRapida = document.getElementById('btn-recarga-rapida-prueba');
+  const textoAvisoSaldo = document.getElementById('texto-aviso-saldo');
 
   const edicionTexto = estadoAsistente.edicion === 'java' ? 'Java Edition' : 'Bedrock Edition';
   elemJuegoEdicion.textContent = `Minecraft (${edicionTexto})`;
   elemPlataformaVersion.textContent = `${estadoAsistente.plataforma.toUpperCase()} - v${estadoAsistente.version}`;
 
+  const planTexto = estadoAsistente.plan === '6gb' ? 'Plan Pro Modpacks (6 GB RAM)' : 'Plan Amigos (4 GB RAM)';
+  elemPlanNombre.textContent = planTexto;
+
+  const precio = estadoAsistente.precioPlan;
+  elemTotalPagar.textContent = `${precio.toFixed(2)} € / mes`;
+  textoBtnPagar.textContent = `Pagar ${precio.toFixed(2)} € y Activar Servidor`;
+
   const saldo = estadoSesion.obtenerSaldo();
   elemSaldoActual.textContent = `${saldo.toFixed(2)} €`;
 
-  if (saldo < 6.00) {
+  if (saldo < precio) {
     cajaAvisoSaldo.hidden = false;
     btnPagarCrear.disabled = true;
+    textoAvisoSaldo.textContent = `Tu saldo actual (${saldo.toFixed(2)} €) no cubre los ${precio.toFixed(2)} € del plan seleccionado. Pulsa el botón de abajo para recargar los ${precio.toFixed(2)} € de prueba de forma instantánea.`;
+    btnRecargaRapida.textContent = `Recargar ${precio.toFixed(2)} € de Prueba Ahora`;
   } else {
     cajaAvisoSaldo.hidden = true;
     btnPagarCrear.disabled = false;
@@ -252,27 +274,25 @@ function configurarPasoFinal() {
   const campoMotd = document.getElementById('campo-motd');
   const cajaError = document.getElementById('caja-error-crear');
 
-  // Botón de recarga rápida de prueba
   btnRecargaRapida.addEventListener('click', async () => {
     try {
+      const montoARecargar = estadoAsistente.precioPlan;
       btnRecargaRapida.disabled = true;
       btnRecargaRapida.textContent = 'Procesando recarga de prueba...';
 
-      const respuesta = await api.billetera.recargar(6.00);
+      const respuesta = await api.billetera.recargar(montoARecargar);
       if (respuesta.exito) {
         estadoSesion.actualizarSaldo(respuesta.saldo);
-        mostrarNotificacion('¡Recarga simulada de 6,00 € completada con éxito!', 'exito');
+        mostrarNotificacion(`¡Recarga de prueba de ${montoARecargar.toFixed(2)} € completada!`, 'exito');
         actualizarResumenFinal();
       }
     } catch (error) {
       mostrarNotificacion(error.message, 'error');
     } finally {
       btnRecargaRapida.disabled = false;
-      btnRecargaRapida.textContent = 'Recargar 6,00 € de Prueba Ahora';
     }
   });
 
-  // Botón de creación final y pago simulado
   btnPagarCrear.addEventListener('click', async () => {
     cajaError.hidden = true;
     cajaError.textContent = '';
@@ -288,12 +308,12 @@ function configurarPasoFinal() {
 
     try {
       btnPagarCrear.disabled = true;
-      btnPagarCrear.innerHTML = `<span>Desplegando en Docker...</span>`;
+      btnPagarCrear.innerHTML = `<span>Activando tu servidor...</span>`;
 
       const datosServidor = {
         juego: 'minecraft',
         nombre,
-        motd: motd || 'Servidor GaliGames en Docker',
+        motd: motd || '¡Bienvenidos al servidor!',
         edicion: estadoAsistente.edicion,
         plataforma: estadoAsistente.plataforma,
         version: estadoAsistente.version,
@@ -306,18 +326,18 @@ function configurarPasoFinal() {
         if (typeof respuesta.saldoActualizado === 'number') {
           estadoSesion.actualizarSaldo(respuesta.saldoActualizado);
         }
-        mostrarNotificacion('¡Servidor creado e instanciado en Docker con éxito!', 'exito');
+        mostrarNotificacion('¡Servidor activado con éxito! Listo para jugar.', 'exito');
         window.location.href = '../../html/servidores/panel.html';
       } else {
-        cajaError.textContent = respuesta.mensaje || 'Error al desplegar el servidor.';
+        cajaError.textContent = respuesta.mensaje || 'Error al crear el servidor.';
         cajaError.hidden = false;
       }
     } catch (error) {
-      cajaError.textContent = error.message || 'Error en la solicitud al backend.';
+      cajaError.textContent = error.message || 'Error en la solicitud.';
       cajaError.hidden = false;
     } finally {
       btnPagarCrear.disabled = false;
-      btnPagarCrear.innerHTML = `<span>Pagar 6,00 € y Desplegar Servidor</span>`;
+      btnPagarCrear.innerHTML = `<span id="texto-btn-pagar">Pagar ${estadoAsistente.precioPlan.toFixed(2)} € y Activar Servidor</span>`;
     }
   });
 }
