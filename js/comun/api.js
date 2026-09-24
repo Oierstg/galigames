@@ -14,9 +14,12 @@ class ClienteApi {
   async peticion(ruta, opciones = {}) {
     const url = `${this.urlBase}${ruta}`;
     const cabeceras = {
-      'Content-Type': 'application/json',
       ...(opciones.headers || {})
     };
+
+    if (!(opciones.body instanceof FormData) && !cabeceras['Content-Type']) {
+      cabeceras['Content-Type'] = 'application/json';
+    }
 
     const token = estadoSesion.obtenerToken();
     if (token) {
@@ -47,7 +50,7 @@ class ClienteApi {
       return datos;
     } catch (error) {
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        const errorRed = new Error(`No se pudo conectar con el servidor backend (${this.urlBase}). Verifique si el Mini PC Linux está encendido y accesible.`);
+        const errorRed = new Error(`No se pudo conectar con el servidor backend (${this.urlBase}). Verifique si el servidor está encendido y accesible.`);
         errorRed.esErrorConexion = true;
         throw errorRed;
       }
@@ -66,6 +69,11 @@ class ClienteApi {
       this.peticion('/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password })
+      }),
+    google: (credencial) =>
+      this.peticion('/auth/google', {
+        method: 'POST',
+        body: JSON.stringify(typeof credencial === 'string' ? { credencial } : credencial)
       }),
     perfil: () => this.peticion('/auth/perfil')
   };
@@ -106,6 +114,56 @@ class ClienteApi {
       }),
     eliminar: (id) =>
       this.peticion(`/servidores/${id}`, { method: 'DELETE' })
+  };
+
+  archivos = {
+    listar: (servidorId, ruta = '') =>
+      this.peticion(`/servidores/${servidorId}/archivos?ruta=${encodeURIComponent(ruta)}`),
+    leer: (servidorId, ruta) =>
+      this.peticion(`/servidores/${servidorId}/archivos/leer?ruta=${encodeURIComponent(ruta)}`),
+    guardar: (servidorId, ruta, contenido) =>
+      this.peticion(`/servidores/${servidorId}/archivos/guardar`, {
+        method: 'PUT',
+        body: JSON.stringify({ ruta, contenido })
+      }),
+    crearCarpeta: (servidorId, ruta, nombreCarpeta) =>
+      this.peticion(`/servidores/${servidorId}/archivos/carpeta`, {
+        method: 'POST',
+        body: JSON.stringify({ ruta, nombreCarpeta })
+      }),
+    subir: (servidorId, ruta, archivo) => {
+      const formData = new FormData();
+      formData.append('archivo', archivo);
+      formData.append('ruta', ruta);
+      return this.peticion(`/servidores/${servidorId}/archivos/subir`, {
+        method: 'POST',
+        body: formData
+      });
+    },
+    eliminar: (servidorId, ruta) =>
+      this.peticion(`/servidores/${servidorId}/archivos`, {
+        method: 'DELETE',
+        body: JSON.stringify({ ruta })
+      }),
+    descargar: async (servidorId, ruta, nombreDescarga) => {
+      const token = estadoSesion.obtenerToken();
+      const url = `${this.urlBase}/servidores/${servidorId}/archivos/descargar?ruta=${encodeURIComponent(ruta)}&token=${encodeURIComponent(token || '')}`;
+      
+      const respuesta = await fetch(url, {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      });
+      if (!respuesta.ok) {
+        throw new Error('Error al descargar el archivo.');
+      }
+      const blob = await respuesta.blob();
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = nombreDescarga || 'descarga';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => window.URL.revokeObjectURL(link.href), 1000);
+    }
   };
 }
 

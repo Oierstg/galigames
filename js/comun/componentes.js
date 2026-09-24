@@ -24,13 +24,7 @@ export function mostrarNotificacion(mensaje, tipo = 'info') {
   }
 
   const toast = document.createElement('div');
-  toast.className = 'notificacion-item';
-
-  let colorBorde = 'var(--color-borde-medio)';
-  if (tipo === 'exito') colorBorde = 'var(--color-exito)';
-  if (tipo === 'error') colorBorde = 'var(--color-peligro)';
-  if (tipo === 'alerta') colorBorde = 'var(--color-alerta)';
-  toast.style.borderColor = colorBorde;
+  toast.className = `notificacion-item notificacion-${tipo}`;
 
   const texto = document.createElement('span');
   texto.textContent = mensaje;
@@ -39,9 +33,7 @@ export function mostrarNotificacion(mensaje, tipo = 'info') {
   contenedor.appendChild(toast);
 
   setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(8px)';
-    toast.style.transition = 'all 200ms ease';
+    toast.classList.add('notificacion-saliendo');
     setTimeout(() => {
       if (toast.parentNode) toast.parentNode.removeChild(toast);
     }, 200);
