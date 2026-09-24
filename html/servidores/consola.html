@@ -364,12 +364,16 @@
             <!-- Barra Superior y Navegación de Migas -->
             <div class="archivos-barra-superior">
               <nav id="archivos-migas" class="archivos-migas-grupo" aria-label="Ruta de carpetas">
-                <button type="button" class="archivos-miga-item activo" data-ruta="">raíz</button>
+                <button type="button" class="archivos-miga-item activo" data-ruta="">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  <span>raíz</span>
+                </button>
               </nav>
 
               <div class="archivos-acciones-barra">
                 <div class="archivos-buscador-bloque">
-                  <input type="text" id="input-buscar-archivos" class="campo-texto archivos-buscador-campo" placeholder="Filtrar archivos o mods..." aria-label="Filtrar archivos">
+                  <svg class="archivos-buscador-icono" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <input type="text" id="input-buscar-archivos" class="campo-texto archivos-buscador-campo" placeholder="Buscar archivos o mods..." aria-label="Filtrar archivos">
                 </div>
                 <input type="file" id="input-subir-archivo" class="archivos-input-oculto" multiple aria-label="Subir archivos">
                 <button type="button" id="btn-trigger-subir" class="boton boton-primario">
@@ -397,9 +401,13 @@
             <!-- Barra de Acciones en Lote (Multi-selección) -->
             <div id="archivos-lote-barra" class="archivos-lote-barra" hidden>
               <div class="lote-info-grupo">
+                <span class="lote-icono-seleccion">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
                 <span id="archivos-seleccionados-conteo">0 elementos seleccionados</span>
               </div>
               <div class="lote-botones-grupo">
+                <button type="button" id="btn-deseleccionar-lote" class="boton boton-fantasma">Deseleccionar</button>
                 <button type="button" id="btn-eliminar-lote" class="boton boton-peligro">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                   <span>Eliminar Seleccionados</span>
@@ -409,21 +417,24 @@
 
             <!-- Accesos Directos a Carpetas Frecuentes -->
             <div class="archivos-accesos-directos">
-              <span class="archivos-chip-etiqueta">Acceso Rápido:</span>
+              <span class="archivos-chip-etiqueta">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>Acceso Rápido:</span>
+              </span>
               <button type="button" class="archivos-chip" data-ruta-rapida="mods">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                 <span>mods/</span>
               </button>
               <button type="button" class="archivos-chip" data-ruta-rapida="plugins">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 <span>plugins/</span>
               </button>
               <button type="button" class="archivos-chip" data-ruta-rapida="world">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                 <span>world/ (Mundo)</span>
               </button>
               <button type="button" class="archivos-chip" data-archivo-rapido="server.properties">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>server.properties</span>
               </button>
             </div>
@@ -450,9 +461,10 @@
 
               <div id="archivos-estado-vacio" class="archivos-vacio" hidden>
                 <div class="archivos-vacio-icono">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
                 </div>
-                <p>No se encontraron archivos en este directorio o con el filtro especificado.</p>
+                <h3 class="archivos-vacio-titulo">Esta carpeta está vacía</h3>
+                <p class="archivos-vacio-subtexto">No se encontraron archivos en este directorio o con el filtro especificado. Arrastra archivos aquí o usa el botón 'Subir Archivo'.</p>
               </div>
             </div>
 

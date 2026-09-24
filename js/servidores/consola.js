@@ -739,6 +739,18 @@ function configurarGestorArchivos(servidorId) {
     });
   }
 
+  // Botón Deseleccionar en Lote
+  const btnDeseleccionar = document.getElementById('btn-deseleccionar-lote');
+  if (btnDeseleccionar) {
+    btnDeseleccionar.addEventListener('click', () => {
+      elementosSeleccionados.clear();
+      const checkboxesFilas = document.querySelectorAll('.check-archivo-fila');
+      checkboxesFilas.forEach(cb => { cb.checked = false; });
+      if (checkTodos) checkTodos.checked = false;
+      actualizarBarraLote(servidorId);
+    });
+  }
+
   // Botón Eliminar en Lote
   const btnEliminarLote = document.getElementById('btn-eliminar-lote');
   if (btnEliminarLote) {
@@ -1095,6 +1107,54 @@ async function cargarArchivos(servidorId, ruta = '') {
   }
 }
 
+function renderizarMigas(servidorId, ruta) {
+  const contenedor = document.getElementById('archivos-migas');
+  if (!contenedor) return;
+
+  contenedor.innerHTML = '';
+
+  const btnRaiz = document.createElement('button');
+  btnRaiz.type = 'button';
+  btnRaiz.className = `archivos-miga-item ${!ruta ? 'activo' : ''}`;
+  btnRaiz.dataset.ruta = '';
+  btnRaiz.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>raíz</span>
+  `;
+  if (ruta) {
+    btnRaiz.addEventListener('click', () => cargarArchivos(servidorId, ''));
+  }
+  contenedor.appendChild(btnRaiz);
+
+  if (!ruta) return;
+
+  const partes = ruta.split('/').filter(Boolean);
+  let rutaAcumulada = '';
+
+  partes.forEach((parte, index) => {
+    rutaAcumulada = rutaAcumulada ? `${rutaAcumulada}/${parte}` : parte;
+    const esUltima = index === partes.length - 1;
+
+    const separador = document.createElement('span');
+    separador.className = 'archivos-miga-separador';
+    separador.textContent = '/';
+    contenedor.appendChild(separador);
+
+    const btnParte = document.createElement('button');
+    btnParte.type = 'button';
+    btnParte.className = `archivos-miga-item ${esUltima ? 'activo' : ''}`;
+    btnParte.dataset.ruta = rutaAcumulada;
+    btnParte.textContent = parte;
+
+    if (!esUltima) {
+      const rutaDestino = rutaAcumulada;
+      btnParte.addEventListener('click', () => cargarArchivos(servidorId, rutaDestino));
+    }
+
+    contenedor.appendChild(btnParte);
+  });
+}
+
 function renderizarFilasArchivos(servidorId, elementos) {
   const tablaCuerpo = document.getElementById('archivos-cuerpo-tabla');
   const estadoVacio = document.getElementById('archivos-estado-vacio');
@@ -1114,14 +1174,14 @@ function renderizarFilasArchivos(servidorId, elementos) {
     const trSubir = document.createElement('tr');
     trSubir.className = 'archivos-fila-item';
     trSubir.innerHTML = `
-      <td></td>
+      <td class="celda-checkbox"></td>
       <td class="archivos-nombre-celda">
         <span class="archivos-icono-tipo es-carpeta">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         </span>
-        <button type="button" class="archivos-enlace-nombre" data-accion="subir-nivel">..</button>
+        <button type="button" class="archivos-enlace-nombre" data-accion="subir-nivel">.. (Subir un nivel)</button>
       </td>
-      <td>—</td>
+      <td><span class="insignia-tipo-archivo insignia-tipo-general">CARPETA</span></td>
       <td>—</td>
       <td>—</td>
       <td></td>
@@ -1143,25 +1203,37 @@ function renderizarFilasArchivos(servidorId, elementos) {
     const tr = document.createElement('tr');
     tr.className = 'archivos-fila-item';
 
-    const icono = item.esDirectorio
-      ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`
-      : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-
+    let claseIcono = 'archivos-icono-tipo';
+    let icono = '';
     let insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">ARCHIVO</span>';
+
     if (item.esDirectorio) {
       if (item.nombre.toLowerCase() === 'world') {
+        claseIcono += ' es-mundo';
+        icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`;
         insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mundo">MUNDO</span>';
       } else if (item.nombre.toLowerCase() === 'mods') {
+        claseIcono += ' es-mod';
+        icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>`;
         insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MODS</span>';
       } else {
+        claseIcono += ' es-carpeta';
+        icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`;
         insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">CARPETA</span>';
       }
     } else if (item.extension === '.jar') {
+      claseIcono += ' es-mod';
+      icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="12" y2="22"/></svg>`;
       insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MOD JAR</span>';
     } else if (['.yml', '.yaml', '.properties', '.toml', '.json'].includes(item.extension)) {
+      claseIcono += ' es-config';
+      icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="8" x2="16" y1="13" y2="13"/><line x1="8" x2="12" y1="17" y2="17"/></svg>`;
       insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-config">CONFIG</span>';
     } else if (item.extension === '.log') {
+      icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="9" x2="15" y1="13" y2="13"/><line x1="9" x2="15" y1="17" y2="17"/></svg>`;
       insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-log">LOG</span>';
+    } else {
+      icono = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`;
     }
 
     const tamanoTexto = item.esDirectorio ? '—' : formatearTamano(item.tamano);
@@ -1172,7 +1244,7 @@ function renderizarFilasArchivos(servidorId, elementos) {
         <input type="checkbox" class="check-archivo-fila" data-ruta="${rutaItem}" aria-label="Seleccionar ${item.nombre}">
       </td>
       <td class="archivos-nombre-celda">
-        <span class="archivos-icono-tipo ${item.esDirectorio ? 'es-carpeta' : ''}">
+        <span class="${claseIcono}">
           ${icono}
         </span>
         <button type="button" class="archivos-enlace-nombre" data-tipo="${item.esDirectorio ? 'carpeta' : 'archivo'}" data-ruta="${rutaItem}">
@@ -1186,17 +1258,17 @@ function renderizarFilasArchivos(servidorId, elementos) {
         <div class="archivos-acciones-fila">
           ${esEditable ? `
             <button type="button" class="boton boton-fantasma" data-accion="editar" data-ruta="${rutaItem}" title="Editar archivo de configuración" aria-label="Editar archivo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </button>
           ` : ''}
           <button type="button" class="boton boton-fantasma" data-accion="renombrar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="Renombrar" aria-label="Renombrar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
           </button>
           <button type="button" class="boton boton-fantasma" data-accion="descargar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="${item.esDirectorio ? 'Descargar carpeta comprimida (.zip)' : 'Descargar archivo'}" aria-label="Descargar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
           </button>
           <button type="button" class="boton boton-fantasma" data-accion="eliminar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="Eliminar" aria-label="Eliminar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
           </button>
         </div>
       </td>

@@ -40,6 +40,14 @@
   color: var(--color-texto-principal);
 }
 
+.consola-metas-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  margin-top: var(--espacio-6);
+  flex-wrap: wrap;
+}
+
 .consola-acciones {
   display: flex;
   align-items: center;
@@ -196,77 +204,160 @@
 }
 
 /* ==========================================================================
-   Pestaña de Archivos, Mods y Gestor de Mundos
+   Pestaña de Archivos, Mods y Gestor de Mundos (Estilo Hostinger Cloud Panel)
    ========================================================================== */
 .archivos-contenedor {
+  position: relative;
   background-color: var(--color-fondo-tarjeta);
   border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-lg);
+  border-radius: var(--radio-xl);
   overflow: hidden;
   box-shadow: var(--sombra-md);
 }
 
+/* Barra Superior y Acciones Principales */
 .archivos-barra-superior {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--espacio-16) var(--espacio-20);
+  padding: var(--espacio-16) var(--espacio-24);
   background-color: var(--color-fondo-superficie);
-  border-bottom: 1px solid var(--color-borde-tenue);
+  border-bottom: 1px solid var(--color-borde-medio);
   flex-wrap: wrap;
-  gap: var(--espacio-12);
+  gap: var(--espacio-16);
 }
 
 .archivos-migas-grupo {
   display: flex;
   align-items: center;
-  gap: var(--espacio-8);
+  gap: 6px;
   font-size: 0.875rem;
   color: var(--color-texto-secundario);
   flex-wrap: wrap;
 }
 
 .archivos-miga-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--color-texto-secundario);
-  text-decoration: none;
-  padding: 2px 6px;
-  border-radius: var(--radio-sm);
+  padding: 5px 10px;
+  border-radius: var(--radio-md);
+  border: 1px solid transparent;
   transition: all var(--transicion-rapida);
   cursor: pointer;
   background: transparent;
-  border: none;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
 }
 
 .archivos-miga-item:hover {
   color: var(--color-texto-principal);
   background-color: var(--color-fondo-elevado);
+  border-color: var(--color-borde-tenue);
 }
 
 .archivos-miga-item.activo {
   color: var(--color-texto-principal);
+  background-color: var(--color-fondo-elevado);
+  border-color: var(--color-borde-medio);
   font-weight: 600;
   pointer-events: none;
 }
 
 .archivos-miga-separador {
   color: var(--color-texto-atenuado);
+  font-size: 0.8125rem;
+  user-select: none;
 }
 
 .archivos-acciones-barra {
   display: flex;
   align-items: center;
-  gap: var(--espacio-8);
+  gap: var(--espacio-12);
   flex-wrap: wrap;
 }
 
+/* Buscador de Archivos con Icono SVG */
+.archivos-buscador-bloque {
+  position: relative;
+  min-width: 220px;
+  flex: 1;
+  max-width: 280px;
+}
+
+.archivos-buscador-icono {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-texto-atenuado);
+  pointer-events: none;
+}
+
+.archivos-buscador-campo {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  font-size: 0.8125rem;
+  border-radius: var(--radio-md);
+  background-color: var(--color-fondo-base);
+  border: 1px solid var(--color-borde-medio);
+  color: var(--color-texto-principal);
+  transition: all var(--transicion-rapida);
+}
+
+.archivos-buscador-campo:focus {
+  border-color: var(--color-acento-primario);
+  box-shadow: 0 0 0 3px var(--color-acento-superficie);
+  outline: none;
+}
+
+/* Barra de Acciones en Lote (Multi-selección) */
+.archivos-lote-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espacio-12) var(--espacio-24);
+  background-color: rgba(220, 38, 38, 0.08);
+  border-bottom: 1px solid rgba(220, 38, 38, 0.25);
+  font-size: 0.875rem;
+  color: #fca5a5;
+  gap: var(--espacio-16);
+  flex-wrap: wrap;
+}
+
+.lote-info-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  font-weight: 500;
+}
+
+.lote-icono-seleccion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #ef4444;
+}
+
+.lote-botones-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+}
+
+/* Barra de Accesos Directos (Carpetas Frecuentes) */
 .archivos-accesos-directos {
   display: flex;
   align-items: center;
   gap: var(--espacio-8);
-  padding: var(--espacio-12) var(--espacio-20);
-  background-color: var(--color-fondo-tarjeta);
+  padding: var(--espacio-12) var(--espacio-24);
+  background-color: var(--color-fondo-superficie);
   border-bottom: 1px solid var(--color-borde-tenue);
   overflow-x: auto;
 }
@@ -278,29 +369,36 @@
   letter-spacing: 0.05em;
   font-weight: 600;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .archivos-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radio-sm);
-  background-color: var(--color-fondo-elevado);
+  padding: 5px 12px;
+  border-radius: var(--radio-completo);
+  background-color: var(--color-fondo-tarjeta);
   border: 1px solid var(--color-borde-tenue);
-  font-size: 0.8125rem;
-  color: var(--color-texto-principal);
+  font-family: var(--fuente-codigo);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
   cursor: pointer;
   white-space: nowrap;
   transition: all var(--transicion-rapida);
 }
 
 .archivos-chip:hover {
-  background-color: var(--color-fondo-superficie);
+  background-color: var(--color-fondo-elevado);
   border-color: var(--color-borde-foco);
   color: var(--color-acento-primario);
+  transform: translateY(-1px);
 }
 
+/* Tabla de Archivos */
 .archivos-tabla-envoltorio {
   overflow-x: auto;
 }
@@ -315,53 +413,106 @@
 .archivos-tabla th {
   padding: var(--espacio-12) var(--espacio-20);
   background-color: var(--color-fondo-superficie);
-  color: var(--color-texto-secundario);
+  color: var(--color-texto-atenuado);
   font-weight: 600;
-  border-bottom: 1px solid var(--color-borde-tenue);
+  border-bottom: 1px solid var(--color-borde-medio);
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .archivos-tabla td {
-  padding: var(--espacio-12) var(--espacio-20);
+  padding: 13px var(--espacio-20);
   border-bottom: 1px solid var(--color-borde-tenue);
   color: var(--color-texto-principal);
   vertical-align: middle;
+}
+
+.archivos-fila-item {
+  transition: background-color var(--transicion-rapida);
 }
 
 .archivos-fila-item:hover {
   background-color: var(--color-fondo-elevado);
 }
 
+.celda-checkbox {
+  width: 44px;
+  text-align: center;
+  padding: 13px 8px;
+}
+
+.celda-checkbox input[type="checkbox"],
+.check-archivo-fila {
+  accent-color: var(--color-acento-primario);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
 .archivos-nombre-celda {
   display: flex;
   align-items: center;
   gap: var(--espacio-12);
+  min-width: 220px;
 }
 
 .archivos-icono-tipo {
-  color: var(--color-texto-secundario);
-  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radio-md);
   display: flex;
   align-items: center;
+  justify-content: center;
+  background-color: var(--color-fondo-elevado);
+  border: 1px solid var(--color-borde-tenue);
+  flex-shrink: 0;
+  color: var(--color-texto-secundario);
+  transition: transform var(--transicion-rapida);
+}
+
+.archivos-fila-item:hover .archivos-icono-tipo {
+  transform: scale(1.05);
 }
 
 .archivos-icono-tipo.es-carpeta {
-  color: var(--color-acento-primario);
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.22);
+}
+
+.archivos-icono-tipo.es-mod {
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
+.archivos-icono-tipo.es-config {
+  color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.22);
+}
+
+.archivos-icono-tipo.es-mundo {
+  color: #eab308;
+  background-color: rgba(234, 179, 8, 0.08);
+  border-color: rgba(234, 179, 8, 0.22);
 }
 
 .archivos-enlace-nombre {
   color: var(--color-texto-principal);
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.875rem;
   cursor: pointer;
   border: none;
   background: transparent;
   padding: 0;
   text-align: left;
   font-family: inherit;
-  font-size: inherit;
+  transition: color var(--transicion-rapida);
 }
 
 .archivos-enlace-nombre:hover {
@@ -369,24 +520,118 @@
   text-decoration: underline;
 }
 
+/* Insignias de Tipo de Archivo */
+.insignia-tipo-archivo {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radio-completo);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-family: var(--fuente-codigo);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.insignia-tipo-mod {
+  background-color: rgba(5, 150, 105, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.insignia-tipo-config {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.insignia-tipo-mundo {
+  background-color: rgba(217, 119, 6, 0.1);
+  color: #fcd34d;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+}
+
+.insignia-tipo-log {
+  background-color: rgba(107, 114, 128, 0.12);
+  color: #9ca3af;
+  border: 1px solid rgba(107, 114, 128, 0.25);
+}
+
+.insignia-tipo-general {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--color-texto-secundario);
+  border: 1px solid var(--color-borde-tenue);
+}
+
+/* Botones de Acción de Fila */
 .archivos-acciones-fila {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--espacio-4);
+  gap: var(--espacio-6);
 }
 
-.archivos-vacio {
-  padding: var(--espacio-48) var(--espacio-24);
-  text-align: center;
+.archivos-acciones-fila .boton-fantasma {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radio-md);
   color: var(--color-texto-secundario);
+  border: 1px solid transparent;
+  transition: all var(--transicion-rapida);
+}
+
+.archivos-acciones-fila .boton-fantasma:hover {
+  background-color: var(--color-fondo-superficie);
+  border-color: var(--color-borde-medio);
+  color: var(--color-texto-principal);
+}
+
+.archivos-acciones-fila .boton-fantasma[data-accion="eliminar"]:hover {
+  background-color: var(--color-peligro-fondo);
+  border-color: var(--color-peligro-borde);
+  color: var(--color-peligro);
+}
+
+/* Estado Vacío de Archivos */
+.archivos-vacio {
+  padding: var(--espacio-64) var(--espacio-24);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .archivos-vacio-icono {
-  margin: 0 auto var(--espacio-12);
-  color: var(--color-texto-atenuado);
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radio-completo);
+  background-color: var(--color-fondo-elevado);
+  border: 1px solid var(--color-borde-medio);
   display: flex;
+  align-items: center;
   justify-content: center;
+  color: var(--color-texto-atenuado);
+  margin-bottom: var(--espacio-16);
+}
+
+.archivos-vacio-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-8);
+}
+
+.archivos-vacio-subtexto {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  max-width: 440px;
+  line-height: 1.5;
 }
 
 .archivos-input-oculto {
@@ -400,30 +645,84 @@
   border: 0;
 }
 
-/* Modales para Editor y Creación de Carpetas */
+/* Drag & Drop Overlay con Animación */
+.archivos-dropzone-indicador {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(9, 14, 11, 0.94);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.dropzone-caja {
+  border: 2px dashed var(--color-acento-primario);
+  background-color: rgba(5, 150, 105, 0.06);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-48) var(--espacio-64);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-16);
+  color: var(--color-acento-primario);
+  font-weight: 600;
+  font-size: 1.125rem;
+  box-shadow: 0 0 30px rgba(5, 150, 105, 0.2);
+}
+
+/* Editor de Archivos con Líneas de Código Numeradas */
 .modal-editor-ancho {
-  max-width: 820px;
+  max-width: 920px;
+  width: 95%;
+}
+
+.editor-cuerpo-contenedor {
+  padding: 0;
+  overflow: hidden;
+  border-top: 1px solid var(--color-borde-tenue);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.editor-area-envoltorio {
+  display: flex;
+  height: 500px;
+  background-color: #060912;
+}
+
+.editor-lineas-numeros {
+  width: 52px;
+  background-color: var(--color-fondo-superficie);
+  border-right: 1px solid var(--color-borde-tenue);
+  color: var(--color-texto-atenuado);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  text-align: right;
+  padding: var(--espacio-16) var(--espacio-12) var(--espacio-16) 0;
+  user-select: none;
+  overflow: hidden;
+  white-space: pre;
 }
 
 .modal-editor-area {
-  width: 100%;
-  height: 400px;
-  background-color: #060913;
-  color: #e2e8f0;
+  flex: 1;
+  background-color: transparent;
+  color: #f1f5f9;
   font-family: var(--fuente-codigo);
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 0.8125rem;
+  line-height: 1.6;
   padding: var(--espacio-16);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-md);
-  resize: vertical;
+  border: none;
+  outline: none;
+  resize: none;
   white-space: pre;
   overflow-x: auto;
-}
-
-.modal-editor-area:focus {
-  outline: none;
-  border-color: var(--color-borde-foco);
+  overflow-y: auto;
+  tab-size: 2;
 }
 
 .modal-editor-subtitulo {
@@ -431,6 +730,18 @@
   font-size: 0.75rem;
   color: var(--color-texto-atenuado);
   margin-top: 2px;
+}
+
+.editor-atajo-texto {
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+  font-family: var(--fuente-codigo);
+}
+
+.modal-pie-botones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
 }
 
 /* ==========================================================================
@@ -1063,112 +1374,5 @@
   padding-top: var(--espacio-8);
 }
 
-/* ==========================================================================
-   Mejoras de Gestor de Archivos Enterprise (Checkboxes, Drag&Drop, Editor)
-   ========================================================================== */
-.celda-checkbox {
-  width: 40px;
-  text-align: center;
-}
 
-.celda-checkbox input[type="checkbox"] {
-  accent-color: var(--color-acento-primario);
-  width: 15px;
-  height: 15px;
-  cursor: pointer;
-}
-
-.archivos-lote-barra {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--espacio-12) var(--espacio-20);
-  background-color: rgba(220, 38, 38, 0.08);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.25);
-  font-size: 0.875rem;
-  color: #fca5a5;
-}
-
-.lote-info-grupo {
-  font-weight: 500;
-}
-
-.archivos-dropzone-indicador {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(9, 14, 11, 0.92);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
-  pointer-events: none;
-}
-
-.dropzone-caja {
-  border: 2px dashed var(--color-acento-primario);
-  border-radius: var(--radio-xl);
-  padding: var(--espacio-48);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--espacio-12);
-  color: var(--color-acento-primario);
-  font-weight: 600;
-  font-size: 1.125rem;
-}
-
-/* Editor de Archivos con Números de Línea */
-.editor-cuerpo-contenedor {
-  padding: 0;
-  overflow: hidden;
-}
-
-.editor-area-envoltorio {
-  display: flex;
-  height: 480px;
-  background-color: #050811;
-}
-
-.editor-lineas-numeros {
-  width: 48px;
-  background-color: var(--color-fondo-superficie);
-  border-right: 1px solid var(--color-borde-tenue);
-  color: var(--color-texto-atenuado);
-  font-family: var(--fuente-codigo);
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  text-align: right;
-  padding: var(--espacio-16) var(--espacio-8) var(--espacio-16) 0;
-  user-select: none;
-  overflow: hidden;
-  white-space: pre-wrap;
-}
-
-.modal-editor-area {
-  flex: 1;
-  background-color: transparent;
-  border: none;
-  padding: var(--espacio-16);
-  font-family: var(--fuente-codigo);
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: #e2e8f0;
-  resize: none;
-  outline: none;
-  white-space: pre;
-  overflow-x: auto;
-  overflow-y: auto;
-}
-
-.editor-atajo-texto {
-  font-size: 0.75rem;
-  color: var(--color-texto-atenuado);
-  font-family: var(--fuente-codigo);
-}
-
-.modal-pie-botones {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-8);
-}
 
