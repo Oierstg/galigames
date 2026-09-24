@@ -56,15 +56,19 @@
         <!-- Pestañas de Navegación de Gestión -->
         <nav class="panel-pestanas-nav" aria-label="Secciones de administración">
           <button type="button" class="pestana-boton activa" data-pestana="consola">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
             <span>Consola en Vivo</span>
           </button>
+          <button type="button" class="pestana-boton" data-pestana="rendimiento">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Jugadores y Rendimiento</span>
+          </button>
           <button type="button" class="pestana-boton" data-pestana="archivos">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
             <span>Archivos y Mods</span>
           </button>
           <button type="button" class="pestana-boton" data-pestana="detalles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
             <span>Información y Recursos</span>
           </button>
         </nav>
@@ -86,13 +90,146 @@
 
             <form id="formulario-comando" class="terminal-entrada-formulario" novalidate>
               <span class="terminal-prompt-simbolo">&gt;</span>
-              <input type="text" id="campo-comando" class="terminal-campo-comando" placeholder="Escribe un comando (ej. op tu_nombre, help, say hola)..." autocomplete="off">
+              <input type="text" id="campo-comando" class="terminal-campo-comando" placeholder="Escribe un comando (ej. op tu_nombre, help, say hola)..." autocomplete="off" aria-label="Comando de consola">
               <button type="submit" id="btn-enviar-comando" class="boton boton-secundario">Enviar</button>
             </form>
           </div>
         </div>
 
-        <!-- Pestaña 2: Detalles y Recursos -->
+        <!-- Pestaña 2: Jugadores y Rendimiento (Estilo Pterodactyl / Crafty Controller) -->
+        <div id="pestana-rendimiento" class="contenido-pestana">
+          <!-- Alerta de saturación de RAM (>80%) para cambio de tarifa -->
+          <div id="alerta-ram-servidor" class="alerta-ram-caja" hidden>
+            <div class="alerta-ram-contenido">
+              <span class="alerta-ram-icono-envoltorio">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </span>
+              <div>
+                <h2 class="alerta-ram-titulo">Aviso de Rendimiento: Memoria RAM al límite (&gt;80%)</h2>
+                <p id="alerta-ram-texto" class="alerta-ram-descripcion">El servidor está consumiendo casi toda la memoria disponible. Con mods activos y más jugadores, te sugerimos pasar al Plan Avanzado de 6 GB por solo 9 €/mes para evitar cierres inesperados.</p>
+              </div>
+            </div>
+            <a href="../../html/servidores/crear.html" class="boton boton-primario alerta-ram-boton">Mejorar a 6 GB (9 €/mes)</a>
+          </div>
+
+          <!-- Tarjetas de Métricas de Recursos en Vivo -->
+          <div class="metricas-rejilla">
+            <div class="tarjeta-metrica">
+              <div class="metrica-cabecera">
+                <span class="metrica-etiqueta">Uso de CPU</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+              </div>
+              <div class="metrica-valor" id="metrica-cpu-valor">0.0%</div>
+              <div class="barra-progreso-fondo">
+                <div id="barra-progreso-cpu" class="barra-progreso-relleno"></div>
+              </div>
+              <div class="metrica-subtexto">2 vCPU dedicados en contenedor</div>
+            </div>
+
+            <div class="tarjeta-metrica">
+              <div class="metrica-cabecera">
+                <span class="metrica-etiqueta">Memoria RAM</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><rect width="20" height="12" x="2" y="4" rx="2"/></svg>
+              </div>
+              <div class="metrica-valor" id="metrica-ram-valor">0 MB / 4096 MB</div>
+              <div class="barra-progreso-fondo">
+                <div id="barra-progreso-ram" class="barra-progreso-relleno"></div>
+              </div>
+              <div class="metrica-subtexto" id="metrica-ram-subtexto">Uso en tiempo real</div>
+            </div>
+
+            <div class="tarjeta-metrica">
+              <div class="metrica-cabecera">
+                <span class="metrica-etiqueta">Almacenamiento NVMe</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
+              </div>
+              <div class="metrica-valor" id="metrica-disco-valor">0 MB / 25000 MB</div>
+              <div class="barra-progreso-fondo">
+                <div id="barra-progreso-disco" class="barra-progreso-relleno"></div>
+              </div>
+              <div class="metrica-subtexto">Disco SSD ultrarrápido</div>
+            </div>
+
+            <div class="tarjeta-metrica">
+              <div class="metrica-cabecera">
+                <span class="metrica-etiqueta">Jugadores Online</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="metrica-valor" id="metrica-jugadores-valor">0 / 20</div>
+              <div class="barra-progreso-fondo">
+                <div id="barra-progreso-jugadores" class="barra-progreso-relleno"></div>
+              </div>
+              <div class="metrica-subtexto" id="metrica-jugadores-subtexto">Capacidad del servidor</div>
+            </div>
+          </div>
+
+          <!-- Gráfica SVG de Histórico 24h -->
+          <div class="grafica-bloque">
+            <div class="grafica-cabecera">
+              <div>
+                <h3 class="grafica-titulo">Histórico de Concurrencia y Recursos (Últimas 24 Horas)</h3>
+                <p class="grafica-subtitulo">Supervisión continua para planificar recursos y cambios de plan</p>
+              </div>
+              <div class="grafica-leyenda">
+                <span class="leyenda-item">
+                  <span class="leyenda-muestra leyenda-muestra-jugadores"></span>
+                  <span>Jugadores</span>
+                </span>
+                <span class="leyenda-item">
+                  <span class="leyenda-muestra leyenda-muestra-ram"></span>
+                  <span>Memoria RAM (%)</span>
+                </span>
+                <span class="leyenda-item">
+                  <span class="leyenda-muestra leyenda-muestra-cpu"></span>
+                  <span>CPU (%)</span>
+                </span>
+              </div>
+            </div>
+            <div id="contenedor-grafica-svg" class="grafica-envoltorio">
+              <!-- SVG dinámico renderizado por consola.js -->
+            </div>
+          </div>
+
+          <!-- Dos Columnas: Jugadores Activos + Histórico de Conexiones -->
+          <div class="rendimiento-dos-columnas">
+            <!-- Tabla de Jugadores Conectados y Contador de Horas -->
+            <div class="rendimiento-columna-panel">
+              <div class="rendimiento-panel-cabecera">
+                <h3 class="rendimiento-panel-titulo">Jugadores Conectados</h3>
+                <span id="insignia-conteo-jugadores" class="insignia insignia-exito">0 activos</span>
+              </div>
+              <div class="tabla-envoltorio">
+                <table class="archivos-tabla" id="tabla-jugadores">
+                  <thead>
+                    <tr>
+                      <th>Jugador</th>
+                      <th>Sesión</th>
+                      <th>Horas Totales</th>
+                      <th>Ping</th>
+                      <th class="texto-derecha">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cuerpo-tabla-jugadores">
+                    <!-- Dinámico -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Registro de Entradas y Salidas de Jugadores -->
+            <div class="rendimiento-columna-panel">
+              <div class="rendimiento-panel-cabecera">
+                <h3 class="rendimiento-panel-titulo">Registro de Conexiones</h3>
+                <span class="metrica-subtexto">Eventos recientes</span>
+              </div>
+              <ul id="lista-eventos-conexiones" class="eventos-lista">
+                <!-- Dinámico -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestaña 3: Detalles y Recursos -->
         <div id="pestana-detalles" class="contenido-pestana">
           <div class="detalles-rejilla">
             <div class="tarjeta-detalle-recurso">
@@ -104,7 +241,7 @@
             <div class="tarjeta-detalle-recurso">
               <div class="detalle-recurso-titulo">Software y Versión</div>
               <div class="detalle-recurso-valor" id="detalle-software-valor">PaperMC 1.20.4</div>
-              <div class="detalle-recurso-subtexto">Java Edition con soporte para plugins</div>
+              <div class="detalle-recurso-subtexto">Soporta Forge, NeoForge, Fabric, Paper y Vanilla</div>
             </div>
 
             <div class="tarjeta-detalle-recurso">
@@ -116,12 +253,12 @@
             <div class="tarjeta-detalle-recurso">
               <div class="detalle-recurso-titulo">Tarifa Mensual</div>
               <div class="detalle-recurso-valor" id="detalle-tarifa-valor">7,00 € / mes</div>
-              <div class="detalle-recurso-subtexto">Facturación mensual renovable mediante saldo</div>
+              <div class="detalle-recurso-subtexto">Soporte total de mods y plugins incluido</div>
             </div>
           </div>
         </div>
 
-        <!-- Pestaña 3: Archivos, Mods y Gestor de Mundos -->
+        <!-- Pestaña 4: Archivos, Mods y Gestor de Mundos (Mini Explorador) -->
         <div id="pestana-archivos" class="contenido-pestana">
           <div class="archivos-contenedor">
             <!-- Barra Superior y Navegación de Migas -->
@@ -131,21 +268,28 @@
               </nav>
 
               <div class="archivos-acciones-barra">
+                <div class="archivos-buscador-bloque">
+                  <input type="text" id="input-buscar-archivos" class="campo-texto archivos-buscador-campo" placeholder="Buscar archivos o mods..." aria-label="Filtrar archivos">
+                </div>
                 <input type="file" id="input-subir-archivo" class="archivos-input-oculto" multiple aria-label="Subir archivos">
                 <button type="button" id="btn-trigger-subir" class="boton boton-primario">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                  <span>Subir Mod / Archivo</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                  <span>Subir Archivo / Mod</span>
+                </button>
+                <button type="button" id="btn-abrir-modal-nuevo-archivo" class="boton boton-secundario">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" x2="12" y1="12" y2="18"/><line x1="9" x2="15" y1="15" y2="15"/></svg>
+                  <span>Nuevo Archivo</span>
                 </button>
                 <button type="button" id="btn-abrir-modal-carpeta" class="boton boton-secundario">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><line x1="12" x2="12" y1="10" y2="16"/><line x1="9" x2="15" y1="13" y2="13"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/><line x1="12" x2="12" y1="10" y2="16"/><line x1="9" x2="15" y1="13" y2="13"/></svg>
                   <span>Nueva Carpeta</span>
                 </button>
                 <button type="button" id="btn-descargar-mundo" class="boton boton-secundario" title="Descarga una copia completa de la carpeta world en formato ZIP">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                   <span>Descargar Mundo (.zip)</span>
                 </button>
-                <button type="button" id="btn-refrescar-archivos" class="boton boton-fantasma" title="Actualizar lista de archivos">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+                <button type="button" id="btn-refrescar-archivos" class="boton boton-fantasma" title="Actualizar lista de archivos" aria-label="Actualizar archivos">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
                 </button>
               </div>
             </div>
@@ -154,19 +298,19 @@
             <div class="archivos-accesos-directos">
               <span class="archivos-chip-etiqueta">Acceso Rápido:</span>
               <button type="button" class="archivos-chip" data-ruta-rapida="mods">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
                 <span>mods/</span>
               </button>
               <button type="button" class="archivos-chip" data-ruta-rapida="plugins">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 <span>plugins/</span>
               </button>
               <button type="button" class="archivos-chip" data-ruta-rapida="world">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                 <span>world/ (Mundo)</span>
               </button>
               <button type="button" class="archivos-chip" data-archivo-rapido="server.properties">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span>server.properties</span>
               </button>
             </div>
@@ -177,6 +321,7 @@
                 <thead>
                   <tr>
                     <th>Nombre</th>
+                    <th>Tipo</th>
                     <th>Tamaño</th>
                     <th>Modificado</th>
                     <th class="texto-derecha">Acciones</th>
@@ -189,9 +334,9 @@
 
               <div id="archivos-estado-vacio" class="archivos-vacio" hidden>
                 <div class="archivos-vacio-icono">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
                 </div>
-                <p>Esta carpeta está vacía. Puedes subir archivos o mods con el botón superior.</p>
+                <p>No se encontraron archivos en este directorio o con el filtro especificado.</p>
               </div>
             </div>
           </div>
@@ -208,11 +353,11 @@
             <div id="editor-modal-ruta" class="modal-editor-subtitulo">/server.properties</div>
           </div>
           <button type="button" id="btn-cerrar-editor" class="boton boton-fantasma" aria-label="Cerrar modal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
           </button>
         </div>
         <div class="modal-cuerpo">
-          <textarea id="editor-modal-textarea" class="modal-editor-area" spellcheck="false" autocomplete="off"></textarea>
+          <textarea id="editor-modal-textarea" class="modal-editor-area" spellcheck="false" autocomplete="off" aria-label="Contenido del archivo"></textarea>
         </div>
         <div class="modal-pie">
           <button type="button" id="btn-cancelar-editor" class="boton boton-secundario">Cancelar</button>
@@ -227,7 +372,7 @@
         <div class="modal-cabecera">
           <h2 class="modal-titulo">Crear Nueva Carpeta</h2>
           <button type="button" id="btn-cerrar-modal-carpeta" class="boton boton-fantasma" aria-label="Cerrar modal">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
           </button>
         </div>
         <div class="modal-cuerpo">
@@ -239,6 +384,50 @@
         <div class="modal-pie">
           <button type="button" id="btn-cancelar-crear-carpeta" class="boton boton-secundario">Cancelar</button>
           <button type="button" id="btn-confirmar-crear-carpeta" class="boton boton-primario">Crear Carpeta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Crear Nuevo Archivo -->
+    <div id="modal-nuevo-archivo" class="modal-fondo">
+      <div class="modal-caja">
+        <div class="modal-cabecera">
+          <h2 class="modal-titulo">Crear Nuevo Archivo</h2>
+          <button type="button" id="btn-cerrar-modal-nuevo-archivo" class="boton boton-fantasma" aria-label="Cerrar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-cuerpo">
+          <div class="grupo-campo">
+            <label for="campo-nombre-nuevo-archivo" class="etiqueta">Nombre del archivo (con extensión)</label>
+            <input type="text" id="campo-nombre-nuevo-archivo" class="campo-texto" placeholder="Ej. whitelist.json, ops.json, motd.txt" required>
+          </div>
+        </div>
+        <div class="modal-pie">
+          <button type="button" id="btn-cancelar-crear-archivo" class="boton boton-secundario">Cancelar</button>
+          <button type="button" id="btn-confirmar-crear-archivo" class="boton boton-primario">Crear Archivo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Renombrar Elemento -->
+    <div id="modal-renombrar" class="modal-fondo">
+      <div class="modal-caja">
+        <div class="modal-cabecera">
+          <h2 class="modal-titulo">Renombrar Elemento</h2>
+          <button type="button" id="btn-cerrar-modal-renombrar" class="boton boton-fantasma" aria-label="Cerrar modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-cuerpo">
+          <div class="grupo-campo">
+            <label for="campo-nuevo-nombre" class="etiqueta">Nuevo nombre</label>
+            <input type="text" id="campo-nuevo-nombre" class="campo-texto" required>
+          </div>
+        </div>
+        <div class="modal-pie">
+          <button type="button" id="btn-cancelar-renombrar" class="boton boton-secundario">Cancelar</button>
+          <button type="button" id="btn-confirmar-renombrar" class="boton boton-primario">Renombrar</button>
         </div>
       </div>
     </div>

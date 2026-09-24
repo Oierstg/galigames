@@ -432,3 +432,390 @@
   color: var(--color-texto-atenuado);
   margin-top: 2px;
 }
+
+/* ==========================================================================
+   Pestaña de Rendimiento y Jugadores (Pterodactyl / Crafty Controller)
+   ========================================================================== */
+.alerta-ram-caja {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-16);
+  padding: var(--espacio-16) var(--espacio-20);
+  background-color: #1a1608;
+  border: 1px solid #d97706;
+  border-radius: var(--radio-lg);
+  margin-bottom: var(--espacio-24);
+  flex-wrap: wrap;
+}
+
+.alerta-ram-contenido {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-12);
+  flex: 1;
+  min-width: 260px;
+}
+
+.alerta-ram-icono-envoltorio {
+  color: #f59e0b;
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.alerta-ram-titulo {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #fef3c7;
+  margin-bottom: var(--espacio-4);
+}
+
+.alerta-ram-descripcion {
+  font-size: 0.8125rem;
+  color: #fde68a;
+  line-height: 1.5;
+}
+
+.alerta-ram-boton {
+  white-space: nowrap;
+  background-color: #d97706;
+  border-color: #d97706;
+  color: #0b0f0d;
+  font-weight: 600;
+}
+
+.alerta-ram-boton:hover {
+  background-color: #b45309;
+}
+
+/* Rejilla de Métricas en Vivo */
+.metricas-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--espacio-16);
+  margin-bottom: var(--espacio-24);
+}
+
+.tarjeta-metrica {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-20);
+  display: flex;
+  flex-direction: column;
+}
+
+.metrica-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espacio-8);
+}
+
+.metrica-etiqueta {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metrica-icono {
+  color: var(--color-acento-primario);
+}
+
+.metrica-valor {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-12);
+  letter-spacing: -0.02em;
+}
+
+.barra-progreso-fondo {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-fondo-elevado);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: var(--espacio-8);
+}
+
+.barra-progreso-relleno {
+  height: 100%;
+  background-color: var(--color-acento-primario);
+  border-radius: 9999px;
+  transition: width 0.4s ease, background-color 0.3s ease;
+  width: 0%;
+}
+
+.barra-progreso-relleno.alerta-alta {
+  background-color: #f59e0b;
+}
+
+.metrica-subtexto {
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+}
+
+/* Gráfica SVG de Histórico 24h */
+.grafica-bloque {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-24);
+  margin-bottom: var(--espacio-24);
+}
+
+.grafica-cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-16);
+  margin-bottom: var(--espacio-20);
+  flex-wrap: wrap;
+}
+
+.grafica-titulo {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-4);
+}
+
+.grafica-subtitulo {
+  font-size: 0.8125rem;
+  color: var(--color-texto-atenuado);
+}
+
+.grafica-leyenda {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-16);
+  flex-wrap: wrap;
+}
+
+.leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+}
+
+.leyenda-muestra {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radio-sm);
+}
+
+.leyenda-muestra-jugadores {
+  background-color: #10b981;
+}
+
+.leyenda-muestra-ram {
+  background-color: #3b82f6;
+}
+
+.leyenda-muestra-cpu {
+  background-color: #8b5cf6;
+}
+
+.grafica-envoltorio {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+}
+
+.grafica-svg-elemento {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Panel de Dos Columnas para Jugadores y Registro */
+.rendimiento-dos-columnas {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--espacio-20);
+}
+
+@media (max-width: 900px) {
+  .rendimiento-dos-columnas {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rendimiento-columna-panel {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-20);
+  display: flex;
+  flex-direction: column;
+}
+
+.rendimiento-panel-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espacio-16);
+  padding-bottom: var(--espacio-12);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.rendimiento-panel-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.tabla-envoltorio {
+  overflow-x: auto;
+}
+
+.jugador-celda {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-12);
+}
+
+.jugador-avatar-img {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radio-sm);
+  background-color: var(--color-fondo-elevado);
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.jugador-nombre-texto {
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.ping-indicador {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  color: #10b981;
+}
+
+.insignia-op {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: var(--radio-sm);
+  background-color: var(--color-acento-superficie);
+  color: var(--color-acento-primario);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-left: 6px;
+}
+
+/* Registro de Eventos */
+.eventos-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-12);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.evento-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-12);
+  padding: var(--espacio-8) var(--espacio-12);
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-md);
+  font-size: 0.8125rem;
+}
+
+.evento-icono-conectar {
+  color: #10b981;
+  flex-shrink: 0;
+}
+
+.evento-icono-desconectar {
+  color: var(--color-texto-atenuado);
+  flex-shrink: 0;
+}
+
+.evento-cuerpo {
+  flex: 1;
+}
+
+.evento-jugador {
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.evento-detalle {
+  color: var(--color-texto-secundario);
+}
+
+.evento-hora {
+  font-family: var(--fuente-codigo);
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+  white-space: nowrap;
+}
+
+/* Buscador de Archivos */
+.archivos-buscador-bloque {
+  min-width: 220px;
+}
+
+.archivos-buscador-campo {
+  width: 100%;
+  padding: 6px var(--espacio-12);
+  font-size: 0.8125rem;
+  border-radius: var(--radio-md);
+}
+
+/* Insignias de Tipo de Archivo */
+.insignia-tipo-archivo {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: var(--radio-sm);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  font-family: var(--fuente-codigo);
+  text-transform: uppercase;
+}
+
+.insignia-tipo-mod {
+  background-color: #1e3a2f;
+  color: #6ee7b7;
+  border: 1px solid #059669;
+}
+
+.insignia-tipo-config {
+  background-color: #1e293b;
+  color: #93c5fd;
+  border: 1px solid #3b82f6;
+}
+
+.insignia-tipo-mundo {
+  background-color: #2e2617;
+  color: #fcd34d;
+  border: 1px solid #d97706;
+}
+
+.insignia-tipo-general {
+  background-color: var(--color-fondo-elevado);
+  color: var(--color-texto-secundario);
+  border: 1px solid var(--color-borde-tenue);
+}

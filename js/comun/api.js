@@ -113,7 +113,14 @@ class ClienteApi {
         body: JSON.stringify({ comando })
       }),
     eliminar: (id) =>
-      this.peticion(`/servidores/${id}`, { method: 'DELETE' })
+      this.peticion(`/servidores/${id}`, { method: 'DELETE' }),
+    metricas: (id) =>
+      this.peticion(`/servidores/${id}/metricas`),
+    accionJugador: (id, jugador, accion, motivo = '') =>
+      this.peticion(`/servidores/${id}/jugadores/${encodeURIComponent(jugador)}/accion`, {
+        method: 'POST',
+        body: JSON.stringify({ accion, motivo })
+      })
   };
 
   archivos = {
@@ -130,6 +137,16 @@ class ClienteApi {
       this.peticion(`/servidores/${servidorId}/archivos/carpeta`, {
         method: 'POST',
         body: JSON.stringify({ ruta, nombreCarpeta })
+      }),
+    crearArchivo: (servidorId, ruta, nombreArchivo, contenido = '') =>
+      this.peticion(`/servidores/${servidorId}/archivos/archivo`, {
+        method: 'POST',
+        body: JSON.stringify({ ruta, nombreArchivo, contenido })
+      }),
+    renombrar: (servidorId, rutaOriginal, nuevoNombre) =>
+      this.peticion(`/servidores/${servidorId}/archivos/renombrar`, {
+        method: 'POST',
+        body: JSON.stringify({ rutaOriginal, nuevoNombre })
       }),
     subir: (servidorId, ruta, archivo) => {
       const formData = new FormData();

@@ -1,28 +1,28 @@
 :root {
-  /* Escala Cromática Neutra (Dark Slate Enterprise) */
-  --color-fondo-base: #090d16;
-  --color-fondo-superficie: #0f172a;
-  --color-fondo-tarjeta: #131c31;
-  --color-fondo-elevado: #1e293b;
-  --color-fondo-sutil: #162035;
+  /* Escala Cromática Neutra (Deep Forest Dark) */
+  --color-fondo-base: #0b0f0d;
+  --color-fondo-superficie: #111814;
+  --color-fondo-tarjeta: #15201b;
+  --color-fondo-elevado: #1c2b24;
+  --color-fondo-sutil: #18251f;
 
   /* Bordes y Líneas Divisoras */
   --color-borde-tenue: rgba(255, 255, 255, 0.08);
   --color-borde-medio: rgba(255, 255, 255, 0.14);
-  --color-borde-foco: #3b82f6;
+  --color-borde-foco: #10b981;
 
   /* Escala Tipográfica y Contrastes */
-  --color-texto-principal: #f8fafc;
-  --color-texto-secundario: #94a3b8;
-  --color-texto-atenuado: #64748b;
-  --color-texto-inverso: #090d16;
+  --color-texto-principal: #f3fdf7;
+  --color-texto-secundario: #9ab4a6;
+  --color-texto-atenuado: #668274;
+  --color-texto-inverso: #0b0f0d;
 
-  /* Acento Institucional Corporativo */
-  --color-acento-primario: #2563eb;
-  --color-acento-hover: #1d4ed8;
-  --color-acento-activo: #1e40af;
-  --color-acento-superficie: rgba(37, 99, 235, 0.12);
-  --color-acento-borde: rgba(37, 99, 235, 0.35);
+  /* Acento Institucional Verde Esmeralda (Mate y Sobrio) */
+  --color-acento-primario: #059669;
+  --color-acento-hover: #10b981;
+  --color-acento-activo: #047857;
+  --color-acento-superficie: rgba(16, 185, 129, 0.12);
+  --color-acento-borde: rgba(16, 185, 129, 0.35);
 
   /* Estados Funcionales Sobrios */
   --color-exito: #10b981;

@@ -3,9 +3,12 @@ import { api } from '../comun/api.js';
 import { estadoSesion } from '../comun/estado-sesion.js';
 
 let intervaloLogs = null;
+let intervaloMetricas = null;
 let servidorActual = null;
 let rutaActualArchivos = '';
 let archivoEnEdicion = null;
+let archivosEnMemoria = [];
+let elementoARenombrar = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   inicializarCabecera('servidores', '../..');
@@ -28,10 +31,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   configurarPestanas(servidorId);
   await cargarDatosServidor(servidorId);
   await actualizarLogs(servidorId);
+  await cargarMetricasServidor(servidorId);
 
   intervaloLogs = setInterval(() => {
     actualizarLogs(servidorId);
   }, 4000);
+
+  intervaloMetricas = setInterval(() => {
+    cargarMetricasServidor(servidorId);
+  }, 5000);
 
   configurarControles(servidorId);
   configurarGestorArchivos(servidorId);
@@ -51,6 +59,8 @@ function configurarPestanas(servidorId) {
 
       if (pestana === 'archivos') {
         cargarArchivos(servidorId, rutaActualArchivos);
+      } else if (pestana === 'rendimiento') {
+        cargarMetricasServidor(servidorId);
       }
     });
   });
@@ -130,6 +140,7 @@ function configurarControles(id) {
       mostrarNotificacion('Iniciando tu servidor Minecraft...', 'exito');
       actualizarInsigniaEstado('en_linea');
       await actualizarLogs(id);
+      await cargarMetricasServidor(id);
     } catch (e) {
       mostrarNotificacion(e.message, 'error');
     } finally {
@@ -144,6 +155,7 @@ function configurarControles(id) {
       mostrarNotificacion('Servidor detenido.', 'info');
       actualizarInsigniaEstado('detenido');
       await actualizarLogs(id);
+      await cargarMetricasServidor(id);
     } catch (e) {
       mostrarNotificacion(e.message, 'error');
     } finally {
@@ -158,6 +170,7 @@ function configurarControles(id) {
       mostrarNotificacion('Reiniciando servidor...', 'info');
       actualizarInsigniaEstado('en_linea');
       await actualizarLogs(id);
+      await cargarMetricasServidor(id);
     } catch (e) {
       mostrarNotificacion(e.message, 'error');
     } finally {
@@ -193,7 +206,296 @@ function configurarControles(id) {
 }
 
 /* ==========================================================================
-   Gestor de Archivos, Mods y Descarga de Mundos
+   Pestaña de Rendimiento y Jugadores (Métricas estilo Pterodactyl / Crafty)
+   ========================================================================== */
+async function cargarMetricasServidor(servidorId) {
+  try {
+    const res = await api.servidores.metricas(servidorId);
+    if (!res.exito) return;
+
+    // CPU
+    const elemCpu = document.getElementById('metrica-cpu-valor');
+    const barraCpu = document.getElementById('barra-progreso-cpu');
+    if (elemCpu) elemCpu.textContent = `${res.cpu.porcentaje.toFixed(1)}%`;
+    if (barraCpu) barraCpu.style.width = `${Math.min(100, Math.max(0, res.cpu.porcentaje))}%`;
+
+    // RAM
+    const elemRam = document.getElementById('metrica-ram-valor');
+    const barraRam = document.getElementById('barra-progreso-ram');
+    const subtextoRam = document.getElementById('metrica-ram-subtexto');
+    if (elemRam) elemRam.textContent = `${res.ram.usoMb} MB / ${res.ram.limiteMb} MB`;
+    if (barraRam) {
+      barraRam.style.width = `${Math.min(100, Math.max(0, res.ram.porcentaje))}%`;
+      if (res.alertaRamAlta || res.ram.porcentaje >= 80) {
+        barraRam.classList.add('alerta-alta');
+      } else {
+        barraRam.classList.remove('alerta-alta');
+      }
+    }
+    if (subtextoRam) subtextoRam.textContent = `${res.ram.porcentaje}% consumido`;
+
+    // Alerta de cambio de tarifa si RAM > 80%
+    const cajaAlerta = document.getElementById('alerta-ram-servidor');
+    if (cajaAlerta) {
+      cajaAlerta.hidden = !res.alertaRamAlta && res.ram.porcentaje < 80;
+    }
+
+    // Almacenamiento NVMe
+    const elemDisco = document.getElementById('metrica-disco-valor');
+    const barraDisco = document.getElementById('barra-progreso-disco');
+    if (elemDisco) elemDisco.textContent = `${res.disco.usoMb} MB / ${res.disco.totalMb} MB`;
+    if (barraDisco) barraDisco.style.width = `${Math.min(100, Math.max(0, res.disco.porcentaje))}%`;
+
+    // Jugadores
+    const elemJugadores = document.getElementById('metrica-jugadores-valor');
+    const barraJugadores = document.getElementById('barra-progreso-jugadores');
+    const subtextoJugadores = document.getElementById('metrica-jugadores-subtexto');
+    const insigniaConteo = document.getElementById('insignia-conteo-jugadores');
+    if (elemJugadores) elemJugadores.textContent = `${res.jugadores.online} / ${res.jugadores.max}`;
+    if (barraJugadores) {
+      const pct = (res.jugadores.online / res.jugadores.max) * 100;
+      barraJugadores.style.width = `${Math.min(100, Math.max(0, pct))}%`;
+    }
+    if (subtextoJugadores) subtextoJugadores.textContent = `${res.jugadores.online} jugador(es) activos`;
+    if (insigniaConteo) insigniaConteo.textContent = `${res.jugadores.online} activos`;
+
+    // Renderizar gráfica histórica
+    if (res.historico24h) {
+      renderizarGrafica24h(res.historico24h);
+    }
+
+    // Renderizar tabla de jugadores activos
+    if (res.jugadores) {
+      renderizarTablaJugadores(servidorId, res.jugadores.lista || []);
+    }
+
+    // Renderizar registro de conexiones
+    if (res.historicoConexiones) {
+      renderizarEventosConexion(res.historicoConexiones);
+    }
+  } catch {
+    // Silencio en fallos transitorios
+  }
+}
+
+function renderizarGrafica24h(puntos) {
+  const contenedor = document.getElementById('contenedor-grafica-svg');
+  if (!contenedor || !puntos || puntos.length === 0) return;
+
+  const ancho = 700;
+  const alto = 200;
+  const margenX = 35;
+  const margenY = 20;
+  const anchoUtil = ancho - margenX * 2;
+  const altoUtil = alto - margenY * 2;
+
+  const pasoX = puntos.length > 1 ? anchoUtil / (puntos.length - 1) : anchoUtil;
+
+  // Coordenadas para RAM (%)
+  const coordsRam = puntos.map((p, idx) => {
+    const x = margenX + idx * pasoX;
+    const y = margenY + altoUtil - (p.ramPorcentaje / 100) * altoUtil;
+    return { x, y };
+  });
+
+  // Coordenadas para CPU (%)
+  const coordsCpu = puntos.map((p, idx) => {
+    const x = margenX + idx * pasoX;
+    const y = margenY + altoUtil - (p.cpuPorcentaje / 100) * altoUtil;
+    return { x, y };
+  });
+
+  // Coordenadas para Jugadores (escala 0 a 10)
+  const coordsJugadores = puntos.map((p, idx) => {
+    const x = margenX + idx * pasoX;
+    const maxEscala = 10;
+    const y = margenY + altoUtil - (Math.min(maxEscala, p.jugadores) / maxEscala) * altoUtil;
+    return { x, y, valor: p.jugadores, hora: p.hora };
+  });
+
+  const dRam = coordsRam.reduce((acc, c, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`, '');
+  const dRamArea = `${dRam} L ${coordsRam[coordsRam.length - 1].x.toFixed(1)} ${alto - margenY} L ${coordsRam[0].x.toFixed(1)} ${alto - margenY} Z`;
+  const dCpu = coordsCpu.reduce((acc, c, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`, '');
+  const dJugadores = coordsJugadores.reduce((acc, c, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`, '');
+
+  // Líneas de cuadrícula horizontal
+  let lineasCuadricula = '';
+  const niveles = [0, 25, 50, 75, 100];
+  niveles.forEach(n => {
+    const y = margenY + altoUtil - (n / 100) * altoUtil;
+    lineasCuadricula += `
+      <line x1="${margenX}" y1="${y}" x2="${ancho - margenX}" y2="${y}" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3,3"/>
+      <text x="${margenX - 6}" y="${y + 3}" fill="#6b7280" font-size="9" text-anchor="end" font-family="monospace">${n}%</text>
+    `;
+  });
+
+  // Etiquetas de tiempo en el eje X
+  let etiquetasX = '';
+  puntos.forEach((p, idx) => {
+    if (idx % 2 === 0 || idx === puntos.length - 1) {
+      const x = margenX + idx * pasoX;
+      etiquetasX += `<text x="${x}" y="${alto - 4}" fill="#6b7280" font-size="10" text-anchor="middle" font-family="monospace">${p.hora}</text>`;
+    }
+  });
+
+  // Puntos interactivos sobre la curva de jugadores
+  let puntosSvg = '';
+  coordsJugadores.forEach(c => {
+    puntosSvg += `
+      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="4" fill="#10b981" stroke="#0b0f0d" stroke-width="2">
+        <title>${c.hora}: ${c.valor} jugador(es)</title>
+      </circle>
+    `;
+  });
+
+  contenedor.innerHTML = `
+    <svg class="grafica-svg-elemento" viewBox="0 0 ${ancho} ${alto}" preserveAspectRatio="none" aria-label="Gráfica histórica de concurrencia">
+      <defs>
+        <linearGradient id="degradado-ram" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+        </linearGradient>
+      </defs>
+      ${lineasCuadricula}
+      <path d="${dRamArea}" fill="url(#degradado-ram)"/>
+      <path d="${dRam}" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+      <path d="${dCpu}" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <path d="${dJugadores}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+      ${puntosSvg}
+      ${etiquetasX}
+    </svg>
+  `;
+}
+
+function renderizarTablaJugadores(servidorId, jugadores) {
+  const tablaCuerpo = document.getElementById('cuerpo-tabla-jugadores');
+  if (!tablaCuerpo) return;
+
+  if (jugadores.length === 0) {
+    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">No hay jugadores conectados en este momento.</td></tr>`;
+    return;
+  }
+
+  tablaCuerpo.innerHTML = '';
+  jugadores.forEach(j => {
+    const tr = document.createElement('tr');
+    tr.className = 'archivos-fila-item';
+
+    tr.innerHTML = `
+      <td>
+        <div class="jugador-celda">
+          <img src="https://mc-heads.net/avatar/${encodeURIComponent(j.nombre)}/28" alt="${j.nombre}" class="jugador-avatar-img" onerror="this.src='https://minotar.net/avatar/${encodeURIComponent(j.nombre)}/28'">
+          <div>
+            <span class="jugador-nombre-texto">${j.nombre}</span>
+            ${j.esOp ? '<span class="insignia-op">OP</span>' : ''}
+          </div>
+        </div>
+      </td>
+      <td>${j.tiempoSesionMinutos} min</td>
+      <td>${j.horasTotales} h</td>
+      <td>
+        <span class="ping-indicador">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V4"/></svg>
+          ${j.ping} ms
+        </span>
+      </td>
+      <td class="texto-derecha">
+        <div class="archivos-acciones-fila">
+          <button type="button" class="boton boton-fantasma" data-accion-jugador="op" data-nombre="${j.nombre}" data-es-op="${j.esOp ? 'true' : 'false'}" title="${j.esOp ? 'Quitar privilegios OP' : 'Otorgar permisos de Administrador (OP)'}">
+            ${j.esOp ? 'DeOP' : 'Hacer OP'}
+          </button>
+          <button type="button" class="boton boton-fantasma" data-accion-jugador="kick" data-nombre="${j.nombre}" title="Expulsar jugador">
+            Expulsar
+          </button>
+          <button type="button" class="boton boton-fantasma" data-accion-jugador="ban" data-nombre="${j.nombre}" title="Banear jugador">
+            Banear
+          </button>
+        </div>
+      </td>
+    `;
+
+    // Eventos de moderación de jugadores
+    const btnOp = tr.querySelector('[data-accion-jugador="op"]');
+    const btnKick = tr.querySelector('[data-accion-jugador="kick"]');
+    const btnBan = tr.querySelector('[data-accion-jugador="ban"]');
+
+    btnOp.addEventListener('click', async () => {
+      const accion = j.esOp ? 'deop' : 'op';
+      try {
+        await api.servidores.accionJugador(servidorId, j.nombre, accion);
+        mostrarNotificacion(`Permisos de ${j.nombre} actualizados con éxito.`, 'exito');
+        await cargarMetricasServidor(servidorId);
+      } catch (e) {
+        mostrarNotificacion(e.message, 'error');
+      }
+    });
+
+    btnKick.addEventListener('click', async () => {
+      const confirmar = window.confirm(`¿Expulsar a "${j.nombre}" del servidor?`);
+      if (!confirmar) return;
+      try {
+        await api.servidores.accionJugador(servidorId, j.nombre, 'kick', 'Expulsado por administrador');
+        mostrarNotificacion(`Jugador ${j.nombre} expulsado.`, 'info');
+        await cargarMetricasServidor(servidorId);
+      } catch (e) {
+        mostrarNotificacion(e.message, 'error');
+      }
+    });
+
+    btnBan.addEventListener('click', async () => {
+      const confirmar = window.confirm(`¿Banear permanentemente a "${j.nombre}" del servidor?`);
+      if (!confirmar) return;
+      try {
+        await api.servidores.accionJugador(servidorId, j.nombre, 'ban', 'Baneado del servidor');
+        mostrarNotificacion(`Jugador ${j.nombre} baneado.`, 'info');
+        await cargarMetricasServidor(servidorId);
+      } catch (e) {
+        mostrarNotificacion(e.message, 'error');
+      }
+    });
+
+    tablaCuerpo.appendChild(tr);
+  });
+}
+
+function renderizarEventosConexion(eventos) {
+  const lista = document.getElementById('lista-eventos-conexiones');
+  if (!lista) return;
+
+  if (eventos.length === 0) {
+    lista.innerHTML = `<li class="evento-item"><span class="evento-detalle">No hay eventos recientes registrados.</span></li>`;
+    return;
+  }
+
+  lista.innerHTML = '';
+  eventos.slice(0, 10).forEach(e => {
+    const li = document.createElement('li');
+    li.className = 'evento-item';
+
+    const esConexion = e.accion === 'conexion';
+    const icono = esConexion
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="evento-icono-conectar" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="evento-icono-desconectar" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>`;
+
+    const horaTexto = e.fecha
+      ? new Date(e.fecha).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+      : 'reciente';
+
+    li.innerHTML = `
+      ${icono}
+      <div class="evento-cuerpo">
+        <span class="evento-jugador">${e.jugador}</span>
+        <span class="evento-detalle">${esConexion ? 'se conectó al servidor' : (e.motivo ? `fue desconectado (${e.motivo})` : 'se desconectó')}</span>
+      </div>
+      <span class="evento-hora">${horaTexto}</span>
+    `;
+
+    lista.appendChild(li);
+  });
+}
+
+/* ==========================================================================
+   Gestor de Archivos, Mods y Descarga de Mundos (Mini Explorador)
    ========================================================================== */
 function configurarGestorArchivos(servidorId) {
   const inputSubir = document.getElementById('input-subir-archivo');
@@ -201,6 +503,24 @@ function configurarGestorArchivos(servidorId) {
   const btnRefrescar = document.getElementById('btn-refrescar-archivos');
   const btnDescargarMundo = document.getElementById('btn-descargar-mundo');
   const btnAbrirModalCarpeta = document.getElementById('btn-abrir-modal-carpeta');
+  const btnAbrirModalNuevoArchivo = document.getElementById('btn-abrir-modal-nuevo-archivo');
+  const inputBuscar = document.getElementById('input-buscar-archivos');
+
+  // Filtrado / Búsqueda en vivo
+  if (inputBuscar) {
+    inputBuscar.addEventListener('input', (e) => {
+      const termino = e.target.value.toLowerCase().trim();
+      if (!termino) {
+        renderizarFilasArchivos(servidorId, archivosEnMemoria);
+        return;
+      }
+      const filtrados = archivosEnMemoria.filter(item =>
+        item.nombre.toLowerCase().includes(termino) ||
+        (item.extension && item.extension.toLowerCase().includes(termino))
+      );
+      renderizarFilasArchivos(servidorId, filtrados);
+    });
+  }
 
   // Subida de Archivos y Mods
   if (btnTriggerSubir && inputSubir) {
@@ -238,7 +558,7 @@ function configurarGestorArchivos(servidorId) {
         mostrarNotificacion('Comprimiendo y preparando la descarga del mundo...', 'info');
         await api.archivos.descargar(servidorId, 'world', 'mundo-servidor.zip');
         mostrarNotificacion('Descarga del mundo iniciada con éxito', 'exito');
-      } catch (error) {
+      } catch {
         mostrarNotificacion('No se pudo descargar el mundo o la carpeta aún no se ha generado.', 'error');
       }
     });
@@ -296,6 +616,78 @@ function configurarGestorArchivos(servidorId) {
     });
   }
 
+  // Modal Nuevo Archivo
+  const modalNuevoArchivo = document.getElementById('modal-nuevo-archivo');
+  const campoNombreNuevoArchivo = document.getElementById('campo-nombre-nuevo-archivo');
+  const btnCerrarModalNuevoArchivo = document.getElementById('btn-cerrar-modal-nuevo-archivo');
+  const btnCancelarNuevoArchivo = document.getElementById('btn-cancelar-crear-archivo');
+  const btnConfirmarNuevoArchivo = document.getElementById('btn-confirmar-crear-archivo');
+
+  if (btnAbrirModalNuevoArchivo && modalNuevoArchivo) {
+    btnAbrirModalNuevoArchivo.addEventListener('click', () => {
+      campoNombreNuevoArchivo.value = '';
+      modalNuevoArchivo.classList.add('abierto');
+      campoNombreNuevoArchivo.focus();
+    });
+
+    const cerrarModalNuevoArchivo = () => modalNuevoArchivo.classList.remove('abierto');
+    btnCerrarModalNuevoArchivo.addEventListener('click', cerrarModalNuevoArchivo);
+    btnCancelarNuevoArchivo.addEventListener('click', cerrarModalNuevoArchivo);
+
+    btnConfirmarNuevoArchivo.addEventListener('click', async () => {
+      const nombre = campoNombreNuevoArchivo.value.trim();
+      if (!nombre) {
+        mostrarNotificacion('Introduce un nombre para el archivo.', 'error');
+        return;
+      }
+      try {
+        await api.archivos.crearArchivo(servidorId, rutaActualArchivos, nombre, '');
+        mostrarNotificacion(`Archivo "${nombre}" creado correctamente`, 'exito');
+        cerrarModalNuevoArchivo();
+        await cargarArchivos(servidorId, rutaActualArchivos);
+
+        // Abrir inmediatamente en el editor para comenzar a editar
+        const rutaFinal = rutaActualArchivos ? `${rutaActualArchivos}/${nombre}` : nombre;
+        abrirEditorArchivo(servidorId, rutaFinal);
+      } catch (error) {
+        mostrarNotificacion(error.message, 'error');
+      }
+    });
+  }
+
+  // Modal Renombrar Elemento
+  const modalRenombrar = document.getElementById('modal-renombrar');
+  const campoNuevoNombre = document.getElementById('campo-nuevo-nombre');
+  const btnCerrarRenombrar = document.getElementById('btn-cerrar-modal-renombrar');
+  const btnCancelarRenombrar = document.getElementById('btn-cancelar-renombrar');
+  const btnConfirmarRenombrar = document.getElementById('btn-confirmar-renombrar');
+
+  if (modalRenombrar) {
+    const cerrarModalRenombrar = () => {
+      modalRenombrar.classList.remove('abierto');
+      elementoARenombrar = null;
+    };
+    btnCerrarRenombrar.addEventListener('click', cerrarModalRenombrar);
+    btnCancelarRenombrar.addEventListener('click', cerrarModalRenombrar);
+
+    btnConfirmarRenombrar.addEventListener('click', async () => {
+      if (!elementoARenombrar) return;
+      const nuevoNombre = campoNuevoNombre.value.trim();
+      if (!nuevoNombre) {
+        mostrarNotificacion('Introduce un nombre válido.', 'error');
+        return;
+      }
+      try {
+        await api.archivos.renombrar(servidorId, elementoARenombrar.rutaOriginal, nuevoNombre);
+        mostrarNotificacion(`Elemento renombrado a "${nuevoNombre}" con éxito`, 'exito');
+        cerrarModalRenombrar();
+        await cargarArchivos(servidorId, rutaActualArchivos);
+      } catch (error) {
+        mostrarNotificacion(error.message, 'error');
+      }
+    });
+  }
+
   // Modal Editor de Archivos
   const modalEditor = document.getElementById('modal-editor-archivo');
   const btnCerrarEditor = document.getElementById('btn-cerrar-editor');
@@ -331,151 +723,194 @@ function configurarGestorArchivos(servidorId) {
 
 async function cargarArchivos(servidorId, ruta = '') {
   const tablaCuerpo = document.getElementById('archivos-cuerpo-tabla');
-  const estadoVacio = document.getElementById('archivos-estado-vacio');
   if (!tablaCuerpo) return;
 
   try {
-    tablaCuerpo.innerHTML = `<tr><td colspan="4" class="texto-centro">Cargando archivos del servidor...</td></tr>`;
+    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">Cargando archivos del servidor...</td></tr>`;
     const res = await api.archivos.listar(servidorId, ruta);
 
     if (!res.exito) {
-      tablaCuerpo.innerHTML = `<tr><td colspan="4" class="texto-centro">${res.mensaje || 'Error al listar archivos'}</td></tr>`;
+      tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">${res.mensaje || 'Error al listar archivos'}</td></tr>`;
       return;
     }
 
     rutaActualArchivos = res.rutaActual || '';
     renderizarMigas(servidorId, rutaActualArchivos);
 
-    const elementos = res.elementos || [];
-    tablaCuerpo.innerHTML = '';
+    archivosEnMemoria = res.elementos || [];
+    renderizarFilasArchivos(servidorId, archivosEnMemoria);
+  } catch (error) {
+    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">Error: ${error.message}</td></tr>`;
+  }
+}
 
-    if (elementos.length === 0) {
-      if (estadoVacio) estadoVacio.hidden = false;
-      return;
+function renderizarFilasArchivos(servidorId, elementos) {
+  const tablaCuerpo = document.getElementById('archivos-cuerpo-tabla');
+  const estadoVacio = document.getElementById('archivos-estado-vacio');
+  if (!tablaCuerpo) return;
+
+  tablaCuerpo.innerHTML = '';
+
+  if (elementos.length === 0) {
+    if (estadoVacio) estadoVacio.hidden = false;
+    return;
+  }
+
+  if (estadoVacio) estadoVacio.hidden = true;
+
+  // Si no estamos en la raíz, añadir fila para subir de nivel (..)
+  if (rutaActualArchivos) {
+    const trSubir = document.createElement('tr');
+    trSubir.className = 'archivos-fila-item';
+    trSubir.innerHTML = `
+      <td class="archivos-nombre-celda">
+        <span class="archivos-icono-tipo es-carpeta">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </span>
+        <button type="button" class="archivos-enlace-nombre" data-accion="subir-nivel">..</button>
+      </td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td></td>
+    `;
+    const btnSubirNivel = trSubir.querySelector('[data-accion="subir-nivel"]');
+    btnSubirNivel.addEventListener('click', () => {
+      const partes = rutaActualArchivos.split('/').filter(Boolean);
+      partes.pop();
+      cargarArchivos(servidorId, partes.join('/'));
+    });
+    tablaCuerpo.appendChild(trSubir);
+  }
+
+  elementos.forEach(item => {
+    const rutaItem = rutaActualArchivos ? `${rutaActualArchivos}/${item.nombre}` : item.nombre;
+    const extensionesEditables = ['.properties', '.yml', '.yaml', '.json', '.txt', '.toml', '.cfg', '.conf', '.log'];
+    const esEditable = !item.esDirectorio && extensionesEditables.includes(item.extension);
+
+    const tr = document.createElement('tr');
+    tr.className = 'archivos-fila-item';
+
+    const icono = item.esDirectorio
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`
+      : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+
+    // Determinar insignia de tipo
+    let insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">ARCHIVO</span>';
+    if (item.esDirectorio) {
+      if (item.nombre.toLowerCase() === 'world') {
+        insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mundo">MUNDO</span>';
+      } else if (item.nombre.toLowerCase() === 'mods') {
+        insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MODS</span>';
+      } else {
+        insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">CARPETA</span>';
+      }
+    } else if (item.extension === '.jar') {
+      insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MOD</span>';
+    } else if (['.yml', '.yaml', '.properties', '.toml', '.json'].includes(item.extension)) {
+      insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-config">CONFIG</span>';
     }
 
-    if (estadoVacio) estadoVacio.hidden = true;
+    const tamanoTexto = item.esDirectorio ? '—' : formatearTamano(item.tamano);
+    const fechaTexto = item.modificadoEn ? new Date(item.modificadoEn).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
 
-    // Si no estamos en la raíz, añadir fila para subir de nivel (..)
-    if (rutaActualArchivos) {
-      const trSubir = document.createElement('tr');
-      trSubir.className = 'archivos-fila-item';
-      trSubir.innerHTML = `
-        <td class="archivos-nombre-celda">
-          <span class="archivos-icono-tipo es-carpeta">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-          </span>
-          <button type="button" class="archivos-enlace-nombre" data-accion="subir-nivel">..</button>
-        </td>
-        <td>—</td>
-        <td>—</td>
-        <td></td>
-      `;
-      const btnSubirNivel = trSubir.querySelector('[data-accion="subir-nivel"]');
-      btnSubirNivel.addEventListener('click', () => {
-        const partes = rutaActualArchivos.split('/').filter(Boolean);
-        partes.pop();
-        cargarArchivos(servidorId, partes.join('/'));
-      });
-      tablaCuerpo.appendChild(trSubir);
-    }
-
-    elementos.forEach(item => {
-      const rutaItem = rutaActualArchivos ? `${rutaActualArchivos}/${item.nombre}` : item.nombre;
-      const extensionesEditables = ['.properties', '.yml', '.yaml', '.json', '.txt', '.toml', '.cfg', '.conf', '.log'];
-      const esEditable = !item.esDirectorio && extensionesEditables.includes(item.extension);
-
-      const tr = document.createElement('tr');
-      tr.className = 'archivos-fila-item';
-
-      const icono = item.esDirectorio
-        ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`
-        : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-
-      const tamanoTexto = item.esDirectorio ? '—' : formatearTamano(item.tamano);
-      const fechaTexto = item.modificadoEn ? new Date(item.modificadoEn).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
-
-      tr.innerHTML = `
-        <td class="archivos-nombre-celda">
-          <span class="archivos-icono-tipo ${item.esDirectorio ? 'es-carpeta' : ''}">
-            ${icono}
-          </span>
-          <button type="button" class="archivos-enlace-nombre" data-tipo="${item.esDirectorio ? 'carpeta' : 'archivo'}" data-ruta="${rutaItem}">
-            ${item.nombre}
+    tr.innerHTML = `
+      <td class="archivos-nombre-celda">
+        <span class="archivos-icono-tipo ${item.esDirectorio ? 'es-carpeta' : ''}">
+          ${icono}
+        </span>
+        <button type="button" class="archivos-enlace-nombre" data-tipo="${item.esDirectorio ? 'carpeta' : 'archivo'}" data-ruta="${rutaItem}">
+          ${item.nombre}
+        </button>
+      </td>
+      <td>${insigniaTipo}</td>
+      <td>${tamanoTexto}</td>
+      <td>${fechaTexto}</td>
+      <td>
+        <div class="archivos-acciones-fila">
+          ${esEditable ? `
+            <button type="button" class="boton boton-fantasma" data-accion="editar" data-ruta="${rutaItem}" title="Editar archivo de configuración" aria-label="Editar archivo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+          ` : ''}
+          <button type="button" class="boton boton-fantasma" data-accion="renombrar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="Renombrar" aria-label="Renombrar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
           </button>
-        </td>
-        <td>${tamanoTexto}</td>
-        <td>${fechaTexto}</td>
-        <td>
-          <div class="archivos-acciones-fila">
-            ${esEditable ? `
-              <button type="button" class="boton boton-fantasma" data-accion="editar" data-ruta="${rutaItem}" title="Editar archivo de configuración">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              </button>
-            ` : ''}
-            <button type="button" class="boton boton-fantasma" data-accion="descargar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="${item.esDirectorio ? 'Descargar carpeta comprimida (.zip)' : 'Descargar archivo'}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-            </button>
-            <button type="button" class="boton boton-fantasma" data-accion="eliminar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="Eliminar">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-            </button>
-          </div>
-        </td>
-      `;
+          <button type="button" class="boton boton-fantasma" data-accion="descargar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="${item.esDirectorio ? 'Descargar carpeta comprimida (.zip)' : 'Descargar archivo'}" aria-label="Descargar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          </button>
+          <button type="button" class="boton boton-fantasma" data-accion="eliminar" data-ruta="${rutaItem}" data-nombre="${item.nombre}" title="Eliminar" aria-label="Eliminar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </td>
+    `;
 
-      // Navegación al hacer clic en el nombre
-      const btnNombre = tr.querySelector('.archivos-enlace-nombre');
-      btnNombre.addEventListener('click', () => {
-        if (item.esDirectorio) {
-          cargarArchivos(servidorId, rutaItem);
-        } else if (esEditable) {
-          abrirEditorArchivo(servidorId, rutaItem);
+    // Navegación al hacer clic en el nombre
+    const btnNombre = tr.querySelector('.archivos-enlace-nombre');
+    btnNombre.addEventListener('click', () => {
+      if (item.esDirectorio) {
+        cargarArchivos(servidorId, rutaItem);
+      } else if (esEditable) {
+        abrirEditorArchivo(servidorId, rutaItem);
+      }
+    });
+
+    // Acción Renombrar
+    const btnRenombrar = tr.querySelector('[data-accion="renombrar"]');
+    if (btnRenombrar) {
+      btnRenombrar.addEventListener('click', () => {
+        elementoARenombrar = { rutaOriginal: rutaItem, nombreActual: item.nombre };
+        const modalRenombrar = document.getElementById('modal-renombrar');
+        const campoNuevoNombre = document.getElementById('campo-nuevo-nombre');
+        if (modalRenombrar && campoNuevoNombre) {
+          campoNuevoNombre.value = item.nombre;
+          modalRenombrar.classList.add('abierto');
+          campoNuevoNombre.focus();
         }
       });
+    }
 
-      // Acción Descargar
-      const btnDescargar = tr.querySelector('[data-accion="descargar"]');
-      if (btnDescargar) {
-        btnDescargar.addEventListener('click', async () => {
-          try {
-            mostrarNotificacion(`Descargando "${item.nombre}"...`, 'info');
-            const nombreDescarga = item.esDirectorio ? `${item.nombre}.zip` : item.nombre;
-            await api.archivos.descargar(servidorId, rutaItem, nombreDescarga);
-          } catch (err) {
-            mostrarNotificacion(err.message, 'error');
-          }
-        });
-      }
+    // Acción Descargar
+    const btnDescargar = tr.querySelector('[data-accion="descargar"]');
+    if (btnDescargar) {
+      btnDescargar.addEventListener('click', async () => {
+        try {
+          mostrarNotificacion(`Descargando "${item.nombre}"...`, 'info');
+          const nombreDescarga = item.esDirectorio ? `${item.nombre}.zip` : item.nombre;
+          await api.archivos.descargar(servidorId, rutaItem, nombreDescarga);
+        } catch (err) {
+          mostrarNotificacion(err.message, 'error');
+        }
+      });
+    }
 
-      // Acción Editar
-      const btnEditar = tr.querySelector('[data-accion="editar"]');
-      if (btnEditar) {
-        btnEditar.addEventListener('click', () => {
-          abrirEditorArchivo(servidorId, rutaItem);
-        });
-      }
+    // Acción Editar
+    const btnEditar = tr.querySelector('[data-accion="editar"]');
+    if (btnEditar) {
+      btnEditar.addEventListener('click', () => {
+        abrirEditorArchivo(servidorId, rutaItem);
+      });
+    }
 
-      // Acción Eliminar
-      const btnEliminar = tr.querySelector('[data-accion="eliminar"]');
-      if (btnEliminar) {
-        btnEliminar.addEventListener('click', async () => {
-          const confirmar = window.confirm(`¿Estás seguro de que deseas eliminar permanentemente "${item.nombre}"?`);
-          if (!confirmar) return;
-          try {
-            await api.archivos.eliminar(servidorId, rutaItem);
-            mostrarNotificacion(`"${item.nombre}" eliminado correctamente`, 'exito');
-            await cargarArchivos(servidorId, rutaActualArchivos);
-          } catch (err) {
-            mostrarNotificacion(err.message, 'error');
-          }
-        });
-      }
+    // Acción Eliminar
+    const btnEliminar = tr.querySelector('[data-accion="eliminar"]');
+    if (btnEliminar) {
+      btnEliminar.addEventListener('click', async () => {
+        const confirmar = window.confirm(`¿Estás seguro de que deseas eliminar permanentemente "${item.nombre}"?`);
+        if (!confirmar) return;
+        try {
+          await api.archivos.eliminar(servidorId, rutaItem);
+          mostrarNotificacion(`"${item.nombre}" eliminado correctamente`, 'exito');
+          await cargarArchivos(servidorId, rutaActualArchivos);
+        } catch (err) {
+          mostrarNotificacion(err.message, 'error');
+        }
+      });
+    }
 
-      tablaCuerpo.appendChild(tr);
-    });
-  } catch (error) {
-    tablaCuerpo.innerHTML = `<tr><td colspan="4" class="texto-centro">Error: ${error.message}</td></tr>`;
-  }
+    tablaCuerpo.appendChild(tr);
+  });
 }
 
 function renderizarMigas(servidorId, ruta) {
