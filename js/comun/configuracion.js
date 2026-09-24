@@ -11,9 +11,11 @@ export const CONFIG_APP = {
   },
 
   // Google OAuth Client ID para Google Identity Services
-  GOOGLE_CLIENT_ID: '1082531398858-galigames.apps.googleusercontent.com',
+  GOOGLE_CLIENT_ID: '437545623250-1pb1ooe1kssiue4plpik12doe1g239u7.apps.googleusercontent.com',
   obtenerGoogleClientId() {
-    return localStorage.getItem('galigames_google_client_id') || this.GOOGLE_CLIENT_ID;
+    const custom = localStorage.getItem('galigames_google_client_id');
+    if (custom && !custom.includes('galigames.apps.googleusercontent.com')) return custom;
+    return this.GOOGLE_CLIENT_ID;
   },
 
   PRECIO_PLAN_4GB: 7.00,
