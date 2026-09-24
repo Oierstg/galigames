@@ -3,17 +3,17 @@ export const CONFIG_APP = {
   URL_API_PROD: 'https://galigamesbackend.duckdns.org/api',
   URL_API_LOCAL: 'http://localhost:3000/api',
 
-  // Obtener URL activa (configurable mediante localStorage si se desea probar en local)
+  // Obtener URL activa (apunta por defecto al backend en producción)
   obtenerUrlApi() {
     const seleccion = localStorage.getItem('galigames_url_api');
     if (seleccion) return seleccion;
-
-    // Si estamos en localhost usando navegador, probar localhost primero
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return this.URL_API_LOCAL;
-    }
-
     return this.URL_API_PROD;
+  },
+
+  // Google OAuth Client ID para Google Identity Services
+  GOOGLE_CLIENT_ID: '1082531398858-galigames.apps.googleusercontent.com',
+  obtenerGoogleClientId() {
+    return localStorage.getItem('galigames_google_client_id') || this.GOOGLE_CLIENT_ID;
   },
 
   PRECIO_PLAN_4GB: 7.00,

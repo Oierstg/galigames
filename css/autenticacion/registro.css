@@ -49,7 +49,7 @@
 }
 
 .autenticacion-pie {
-  margin-top: var(--espacio-24);
+  margin-top: var(--espacio-16);
   text-align: center;
   font-size: 0.875rem;
   color: var(--color-texto-secundario);

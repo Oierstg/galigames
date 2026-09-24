@@ -72,6 +72,11 @@ table {
   outline-offset: 2px;
 }
 
+/* Ocultación estricta de elementos con atributo hidden */
+[hidden] {
+  display: none !important;
+}
+
 /* Contenedor estándar con respiro perimetral */
 .contenedor {
   width: 100%;

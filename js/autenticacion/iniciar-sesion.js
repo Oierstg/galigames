@@ -1,6 +1,7 @@
 import { inicializarCabecera, inicializarPiePagina, mostrarNotificacion } from '../comun/componentes.js';
 import { api } from '../comun/api.js';
 import { estadoSesion } from '../comun/estado-sesion.js';
+import { CONFIG_APP } from '../comun/configuracion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   inicializarCabecera('', '../..');
@@ -55,59 +56,95 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Manejo de Inicio de Sesión con Google
+  // Configuración oficial de Google Identity Services (GSI)
+  configurarGoogleAuth(cajaError);
+});
+
+function configurarGoogleAuth(cajaError) {
+  const contenedorGoogle = document.getElementById('contenedor-google-oficial');
   const botonGoogle = document.getElementById('boton-google');
+
+  const manejarCredencial = async (response) => {
+    if (!response || !response.credential) {
+      cajaError.textContent = 'No se ha podido obtener la credencial de Google.';
+      cajaError.hidden = false;
+      return;
+    }
+
+    try {
+      cajaError.hidden = true;
+      cajaError.textContent = '';
+      mostrarNotificacion('Verificando cuenta de Google...', 'info');
+
+      const respuesta = await api.auth.google({ credential: response.credential });
+
+      if (respuesta.exito && respuesta.token) {
+        estadoSesion.iniciarSesion(respuesta.token, respuesta.usuario);
+        mostrarNotificacion('¡Sesión iniciada con Google correctamente!', 'exito');
+        window.location.href = '../../html/servidores/panel.html';
+      } else {
+        cajaError.textContent = respuesta.mensaje || 'Error al autenticar con Google.';
+        cajaError.hidden = false;
+      }
+    } catch (error) {
+      cajaError.textContent = error.message || 'Error de comunicación con el servidor.';
+      cajaError.hidden = false;
+    }
+  };
+
+  const inicializarGSI = () => {
+    if (window.google?.accounts?.id) {
+      try {
+        window.google.accounts.id.initialize({
+          client_id: CONFIG_APP.obtenerGoogleClientId(),
+          callback: manejarCredencial,
+          auto_select: false,
+          cancel_on_tap_outside: true
+        });
+
+        if (contenedorGoogle) {
+          window.google.accounts.id.renderButton(contenedorGoogle, {
+            type: 'standard',
+            theme: 'outline',
+            size: 'large',
+            text: 'continue_with',
+            shape: 'rectangular',
+            logo_alignment: 'left',
+            width: 376
+          });
+
+          // Si el botón oficial se renderizó, ocultamos el botón de respaldo
+          if (botonGoogle) {
+            botonGoogle.classList.add('oculto');
+          }
+        }
+        return true;
+      } catch (err) {
+        console.warn('[GSI] Inicialización:', err);
+      }
+    }
+    return false;
+  };
+
+  if (!inicializarGSI()) {
+    // Si la librería de Google aún está descargándose
+    const timer = setInterval(() => {
+      if (inicializarGSI()) clearInterval(timer);
+    }, 200);
+    setTimeout(() => clearInterval(timer), 4000);
+  }
+
   if (botonGoogle) {
-    botonGoogle.addEventListener('click', async () => {
+    botonGoogle.addEventListener('click', () => {
       cajaError.hidden = true;
       cajaError.textContent = '';
 
-      const correoSugerido = campoEmail.value.trim() || 'oier.santotomas@gmail.com';
-      const emailGoogle = window.prompt('Introduce tu cuenta de correo de Google (Gmail) para conectar:', correoSugerido);
-
-      if (!emailGoogle) return;
-
-      if (!emailGoogle.includes('@') || !emailGoogle.includes('.')) {
-        cajaError.textContent = 'La dirección proporcionada no es un correo electrónico válido.';
+      if (window.google?.accounts?.id) {
+        window.google.accounts.id.prompt();
+      } else {
+        cajaError.textContent = 'El servicio de Google se está cargando. Por favor, pulsa en unos instantes.';
         cajaError.hidden = false;
-        return;
-      }
-
-      try {
-        botonGoogle.disabled = true;
-        botonGoogle.textContent = 'Conectando con Google...';
-
-        const nombreSugerido = emailGoogle.split('@')[0].replace(/[._-]/g, ' ');
-        const nombreCapitalizado = nombreSugerido.charAt(0).toUpperCase() + nombreSugerido.slice(1);
-
-        const respuesta = await api.auth.google({
-          email: emailGoogle,
-          nombre: nombreCapitalizado
-        });
-
-        if (respuesta.exito && respuesta.token) {
-          estadoSesion.iniciarSesion(respuesta.token, respuesta.usuario);
-          mostrarNotificacion('Autenticado con Google correctamente', 'exito');
-          window.location.href = '../../html/servidores/panel.html';
-        } else {
-          cajaError.textContent = respuesta.mensaje || 'Error al autenticar con Google.';
-          cajaError.hidden = false;
-        }
-      } catch (error) {
-        cajaError.textContent = error.message || 'Error de conexión con el servidor.';
-        cajaError.hidden = false;
-      } finally {
-        botonGoogle.disabled = false;
-        botonGoogle.innerHTML = `
-          <svg class="icono-svg" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.96 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          <span>Iniciar sesión con Google</span>
-        `;
       }
     });
   }
-});
+}
