@@ -1,0 +1,344 @@
+/* ==========================================================================
+   Botones Enterprise
+   ========================================================================== */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-8);
+  padding: 10px var(--espacio-16);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radio-md);
+  border: 1px solid transparent;
+  transition: background-color var(--transicion-rapida),
+              border-color var(--transicion-rapida),
+              color var(--transicion-rapida),
+              box-shadow var(--transicion-rapida),
+              transform var(--transicion-rapida);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.boton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.boton-primario {
+  background-color: var(--color-acento-primario);
+  color: #ffffff;
+  border-color: var(--color-acento-borde);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.boton-primario:hover {
+  background-color: var(--color-acento-hover);
+}
+
+.boton-primario:active {
+  background-color: var(--color-acento-activo);
+}
+
+.boton-secundario {
+  background-color: var(--color-fondo-elevado);
+  color: var(--color-texto-principal);
+  border-color: var(--color-borde-medio);
+}
+
+.boton-secundario:hover {
+  background-color: var(--color-fondo-tarjeta);
+  border-color: var(--color-borde-foco);
+}
+
+.boton-fantasma {
+  background-color: transparent;
+  color: var(--color-texto-secundario);
+  border-color: transparent;
+}
+
+.boton-fantasma:hover {
+  background-color: var(--color-fondo-elevado);
+  color: var(--color-texto-principal);
+}
+
+.boton-peligro {
+  background-color: var(--color-peligro-fondo);
+  color: var(--color-peligro);
+  border-color: var(--color-peligro-borde);
+}
+
+.boton-peligro:hover {
+  background-color: var(--color-peligro);
+  color: #ffffff;
+}
+
+.boton-grande {
+  padding: 14px var(--espacio-24);
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radio-lg);
+}
+
+.boton-completo {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Tarjetas de Contenido
+   ========================================================================== */
+.tarjeta {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-24);
+  box-shadow: var(--sombra-sm);
+  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+}
+
+.tarjeta-interactiva {
+  cursor: pointer;
+  user-select: none;
+}
+
+.tarjeta-interactiva:hover {
+  border-color: var(--color-borde-medio);
+  background-color: var(--color-fondo-elevado);
+}
+
+.tarjeta-interactiva.activa,
+.tarjeta-seleccionada {
+  border-color: var(--color-acento-primario);
+  background-color: var(--color-acento-superficie);
+}
+
+/* ==========================================================================
+   Insignias de Estado (Badges)
+   ========================================================================== */
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-4);
+  padding: 2px var(--espacio-8);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radio-completo);
+  border: 1px solid var(--color-borde-tenue);
+  background-color: var(--color-fondo-elevado);
+  color: var(--color-texto-secundario);
+}
+
+.insignia-punto {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.insignia-exito {
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  color: var(--color-exito);
+}
+
+.insignia-alerta {
+  background-color: var(--color-alerta-fondo);
+  border-color: var(--color-alerta-borde);
+  color: var(--color-alerta);
+}
+
+.insignia-peligro {
+  background-color: var(--color-peligro-fondo);
+  border-color: var(--color-peligro-borde);
+  color: var(--color-peligro);
+}
+
+.insignia-primaria {
+  background-color: var(--color-acento-superficie);
+  border-color: var(--color-acento-borde);
+  color: var(--color-acento-primario);
+}
+
+/* ==========================================================================
+   Formularios y Controles
+   ========================================================================== */
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-8);
+  margin-bottom: var(--espacio-16);
+}
+
+.etiqueta {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+}
+
+.campo-texto,
+.campo-seleccion,
+.campo-area {
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-md);
+  padding: 10px var(--espacio-12);
+  color: var(--color-texto-principal);
+  font-size: 0.875rem;
+  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+}
+
+.campo-texto:focus,
+.campo-seleccion:focus,
+.campo-area:focus {
+  border-color: var(--color-acento-primario);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-acento-superficie);
+}
+
+.campo-texto::placeholder,
+.campo-area::placeholder {
+  color: var(--color-texto-atenuado);
+}
+
+.texto-ayuda {
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+}
+
+.alerta-mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-12);
+  padding: var(--espacio-12) var(--espacio-16);
+  border-radius: var(--radio-md);
+  font-size: 0.875rem;
+  margin-bottom: var(--espacio-16);
+}
+
+.alerta-peligro {
+  background-color: var(--color-peligro-fondo);
+  border: 1px solid var(--color-peligro-borde);
+  color: var(--color-peligro);
+}
+
+.alerta-exito {
+  background-color: var(--color-exito-fondo);
+  border: 1px solid var(--color-exito-borde);
+  color: var(--color-exito);
+}
+
+.alerta-aviso {
+  background-color: var(--color-alerta-fondo);
+  border: 1px solid var(--color-alerta-borde);
+  color: var(--color-alerta);
+}
+
+/* ==========================================================================
+   Modales Dialog
+   ========================================================================== */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espacio-16);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transicion-normal), visibility var(--transicion-normal);
+}
+
+.modal-fondo.abierto {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-caja {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-xl);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--sombra-lg);
+  overflow: hidden;
+  transform: translateY(12px) scale(0.98);
+  transition: transform var(--transicion-normal);
+}
+
+.modal-fondo.abierto .modal-caja {
+  transform: translateY(0) scale(1);
+}
+
+.modal-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espacio-16) var(--espacio-24);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.modal-titulo {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.modal-cuerpo {
+  padding: var(--espacio-24);
+}
+
+.modal-pie {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-12);
+  padding: var(--espacio-16) var(--espacio-24);
+  background-color: var(--color-fondo-superficie);
+  border-top: 1px solid var(--color-borde-tenue);
+}
+
+/* ==========================================================================
+   Notificaciones Toast
+   ========================================================================== */
+.notificaciones-contenedor {
+  position: fixed;
+  bottom: var(--espacio-24);
+  right: var(--espacio-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-8);
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.notificacion-item {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 420px;
+  padding: var(--espacio-12) var(--espacio-16);
+  border-radius: var(--radio-md);
+  background-color: var(--color-fondo-elevado);
+  border: 1px solid var(--color-borde-medio);
+  color: var(--color-texto-principal);
+  box-shadow: var(--sombra-md);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-12);
+  animation: slideUp 200ms ease forwards;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

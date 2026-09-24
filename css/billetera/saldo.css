@@ -1,0 +1,188 @@
+/* Billetera de Créditos y Recarga Simulada */
+.billetera-seccion {
+  padding-top: var(--espacio-32);
+  padding-bottom: var(--espacio-64);
+}
+
+.billetera-cabecera {
+  margin-bottom: var(--espacio-32);
+  padding-bottom: var(--espacio-24);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.billetera-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-4);
+}
+
+.billetera-subtitulo {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+}
+
+.billetera-rejilla-principal {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--espacio-32);
+  margin-bottom: var(--espacio-48);
+}
+
+@media (max-width: 900px) {
+  .billetera-rejilla-principal {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tarjeta de Saldo Disponible */
+.tarjeta-saldo-actual {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-32);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.saldo-etiqueta-bloque {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-12);
+}
+
+.saldo-monto-grande {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-texto-principal);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--espacio-16);
+}
+
+.saldo-aviso-simulado {
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-md);
+  padding: var(--espacio-12);
+  font-size: 0.8125rem;
+  color: var(--color-texto-atenuado);
+  line-height: 1.4;
+}
+
+.subtitulo-paquetes {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--espacio-16);
+  color: var(--color-texto-principal);
+}
+
+/* Paquetes de Recarga */
+.paquetes-recarga-rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--espacio-16);
+}
+
+.tarjeta-paquete {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-24);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--espacio-16);
+  transition: transform var(--transicion-rapida), border-color var(--transicion-rapida);
+}
+
+.tarjeta-paquete:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-borde-foco);
+}
+
+.paquete-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.paquete-nombre {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.paquete-monto {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+}
+
+.paquete-descripcion {
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+  line-height: 1.4;
+}
+
+/* Historial de Movimientos */
+.historial-seccion {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-24);
+}
+
+.historial-cabecera {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-16);
+}
+
+.tabla-movimientos {
+  width: 100%;
+}
+
+.tabla-movimientos th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-atenuado);
+  padding: var(--espacio-12) var(--espacio-16);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.tabla-movimientos td {
+  padding: var(--espacio-16);
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.tabla-movimientos tr:last-child td {
+  border-bottom: none;
+}
+
+.monto-positivo {
+  color: var(--color-exito);
+  font-weight: 600;
+}
+
+.monto-negativo {
+  color: var(--color-texto-principal);
+  font-weight: 600;
+}
+
+.celda-vacia-historial {
+  text-align: center;
+  padding: var(--espacio-32);
+  color: var(--color-texto-atenuado);
+  font-size: 0.875rem;
+}
+

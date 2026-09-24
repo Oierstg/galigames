@@ -1,0 +1,69 @@
+:root {
+  /* Escala Cromática Neutra (Dark Slate Enterprise) */
+  --color-fondo-base: #090d16;
+  --color-fondo-superficie: #0f172a;
+  --color-fondo-tarjeta: #131c31;
+  --color-fondo-elevado: #1e293b;
+  --color-fondo-sutil: #162035;
+
+  /* Bordes y Líneas Divisoras */
+  --color-borde-tenue: rgba(255, 255, 255, 0.08);
+  --color-borde-medio: rgba(255, 255, 255, 0.14);
+  --color-borde-foco: #3b82f6;
+
+  /* Escala Tipográfica y Contrastes */
+  --color-texto-principal: #f8fafc;
+  --color-texto-secundario: #94a3b8;
+  --color-texto-atenuado: #64748b;
+  --color-texto-inverso: #090d16;
+
+  /* Acento Institucional Corporativo */
+  --color-acento-primario: #2563eb;
+  --color-acento-hover: #1d4ed8;
+  --color-acento-activo: #1e40af;
+  --color-acento-superficie: rgba(37, 99, 235, 0.12);
+  --color-acento-borde: rgba(37, 99, 235, 0.35);
+
+  /* Estados Funcionales Sobrios */
+  --color-exito: #10b981;
+  --color-exito-fondo: rgba(16, 185, 129, 0.12);
+  --color-exito-borde: rgba(16, 185, 129, 0.28);
+
+  --color-alerta: #f59e0b;
+  --color-alerta-fondo: rgba(245, 158, 11, 0.12);
+  --color-alerta-borde: rgba(245, 158, 11, 0.28);
+
+  --color-peligro: #ef4444;
+  --color-peligro-fondo: rgba(239, 68, 68, 0.12);
+  --color-peligro-borde: rgba(239, 68, 68, 0.28);
+
+  /* Tipografía */
+  --fuente-principal: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fuente-codigo: "JetBrains Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Escala de Espaciado (Múltiplos de 4px y 8px) */
+  --espacio-4: 4px;
+  --espacio-8: 8px;
+  --espacio-12: 12px;
+  --espacio-16: 16px;
+  --espacio-24: 24px;
+  --espacio-32: 32px;
+  --espacio-48: 48px;
+  --espacio-64: 64px;
+
+  /* Radios de Borde */
+  --radio-sm: 4px;
+  --radio-md: 8px;
+  --radio-lg: 12px;
+  --radio-xl: 16px;
+  --radio-completo: 9999px;
+
+  /* Sombras Sutiles */
+  --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+  --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+
+  /* Transiciones */
+  --transicion-rapida: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transicion-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}

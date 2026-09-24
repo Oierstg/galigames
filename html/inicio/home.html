@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GaliGames - Servidores de Juegos Aislados en Docker</title>
+  <meta name="description" content="Despliega servidores de Minecraft Java y Bedrock de alto rendimiento en contenedores Docker independientes. PaperMC, Fabric, Forge y Vanilla por 6 € al mes.">
+
+  <!-- Hojas de estilo estructuradas -->
+  <link rel="stylesheet" href="../../css/comun/variables.css">
+  <link rel="stylesheet" href="../../css/comun/normalizacion.css">
+  <link rel="stylesheet" href="../../css/comun/componentes.css">
+  <link rel="stylesheet" href="../../css/comun/cabecera.css">
+  <link rel="stylesheet" href="../../css/comun/pie-pagina.css">
+  <link rel="stylesheet" href="../../css/inicio/home.css">
+
+  <!-- Script modular -->
+  <script type="module" src="../../js/inicio/home.js" defer></script>
+</head>
+<body>
+  <!-- Cabecera Institucional Global -->
+  <header id="cabecera-principal"></header>
+
+  <main>
+    <!-- Sección Hero Principal -->
+    <section class="hero-seccion">
+      <div class="contenedor">
+        <div class="hero-insignia">
+          <span class="insignia-punto"></span>
+          <span>Nodo Linux Activo: galigamesbackend.duckdns.org</span>
+        </div>
+
+        <h1 class="hero-titulo">Servidores de juegos privados en contenedores Docker de alta velocidad</h1>
+
+        <p class="hero-subtitulo">
+          Olvídate de las colas de espera y las caídas de rendimiento. Disfruta de un entorno privado, aislado y dedicado para tu comunidad por una tarifa fija de 6,00 € al mes.
+        </p>
+
+        <div class="hero-acciones">
+          <a href="../../html/servidores/crear.html" class="boton boton-primario boton-grande">
+            <span>Crear Servidor Ahora</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" x2="19" y1="12" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#catalogo-seccion" class="boton boton-secundario boton-grande">Explorar Juegos Disponibles</a>
+        </div>
+
+        <div class="metricas-barra">
+          <div class="metrica-item">
+            <span class="metrica-valor">6,00 €</span>
+            <span class="metrica-etiqueta">Precio mensual único</span>
+          </div>
+          <div class="metrica-item">
+            <span class="metrica-valor">4 GB RAM</span>
+            <span class="metrica-etiqueta">Memoria dedicada por servidor</span>
+          </div>
+          <div class="metrica-item">
+            <span class="metrica-valor">100% Docker</span>
+            <span class="metrica-etiqueta">Aislamiento total de recursos</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogo de Juegos -->
+    <section id="catalogo-seccion" class="seccion-espaciada">
+      <div class="contenedor">
+        <div class="seccion-encabezado">
+          <h2 class="seccion-titulo">Catálogo de Servidores</h2>
+          <p class="seccion-bajada">Selecciona el juego que deseas hospedar en tu nodo dedicado.</p>
+        </div>
+
+        <div class="catalogo-rejilla" id="rejilla-juegos">
+          <!-- Tarjeta Minecraft (Disponible) -->
+          <article class="tarjeta tarjeta-juego tarjeta-juego-destacada">
+            <div>
+              <div class="tarjeta-juego-cabecera">
+                <div class="tarjeta-juego-icono">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                </div>
+                <span class="insignia insignia-exito">
+                  <span class="insignia-punto"></span>
+                  Disponible
+                </span>
+              </div>
+
+              <h3 class="tarjeta-juego-titulo">Minecraft</h3>
+              <p class="tarjeta-juego-descripcion">
+                Compatible con Java Edition y Bedrock. Soporte integral para PaperMC, Purpur, Fabric, Forge y servidores oficiales Vanilla.
+              </p>
+
+              <div class="tarjeta-juego-caracteristicas">
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>4 GB RAM DDR4 / NVMe SSD</span>
+                </div>
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Consola en vivo con comandos RCON</span>
+                </div>
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Instalación de Mods y Plugins en 1 clic</span>
+                </div>
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Puerto dedicado directo</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="tarjeta-juego-precio">
+                <span class="tarjeta-juego-monto">6,00 €</span>
+                <span class="tarjeta-juego-periodo">/ mes</span>
+              </div>
+              <a href="../../html/servidores/crear.html" class="boton boton-primario boton-completo">
+                Configurar Servidor Minecraft
+              </a>
+            </div>
+          </article>
+
+          <!-- Próximamente: Rust -->
+          <article class="tarjeta tarjeta-juego">
+            <div>
+              <div class="tarjeta-juego-cabecera">
+                <div class="tarjeta-juego-icono">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+                </div>
+                <span class="insignia insignia-atenuada">Próximamente</span>
+              </div>
+
+              <h3 class="tarjeta-juego-titulo">Rust</h3>
+              <p class="tarjeta-juego-descripcion">
+                Supervivencia multijugador extrema en mundos generados por procedimientos. Soporte para Oxide y Umod.
+              </p>
+
+              <div class="tarjeta-juego-caracteristicas">
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>8 GB RAM dedicada</span>
+                </div>
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Wipes automáticos programables</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="tarjeta-juego-precio">
+                <span class="tarjeta-juego-monto">12,00 €</span>
+                <span class="tarjeta-juego-periodo">/ mes estimado</span>
+              </div>
+              <button type="button" class="boton boton-secundario boton-completo" disabled>Próximamente</button>
+            </div>
+          </article>
+
+          <!-- Próximamente: Palworld -->
+          <article class="tarjeta tarjeta-juego">
+            <div>
+              <div class="tarjeta-juego-cabecera">
+                <div class="tarjeta-juego-icono">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/></svg>
+                </div>
+                <span class="insignia insignia-atenuada">Próximamente</span>
+              </div>
+
+              <h3 class="tarjeta-juego-titulo">Palworld</h3>
+              <p class="tarjeta-juego-descripcion">
+                Servidores dedicados con soporte cooperativo de hasta 32 jugadores en simultáneo.
+              </p>
+
+              <div class="tarjeta-juego-caracteristicas">
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>8 GB RAM / 4 vCPU</span>
+                </div>
+                <div class="tarjeta-juego-caracteristica-item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Guardado periódico sin pérdida</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="tarjeta-juego-precio">
+                <span class="tarjeta-juego-monto">10,00 €</span>
+                <span class="tarjeta-juego-periodo">/ mes estimado</span>
+              </div>
+              <button type="button" class="boton boton-secundario boton-completo" disabled>Próximamente</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Diferenciales Corporativos -->
+    <section class="seccion-espaciada">
+      <div class="contenedor">
+        <div class="seccion-encabezado">
+          <h2 class="seccion-titulo">¿Por qué GaliGames?</h2>
+          <p class="seccion-bajada">Arquitectura moderna construida sobre Docker y Linux para garantizar estabilidad.</p>
+        </div>
+
+        <div class="caracteristicas-rejilla">
+          <article class="tarjeta-caracteristica">
+            <div class="tarjeta-caracteristica-icono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 9 6 6m0-6-6 6"/></svg>
+            </div>
+            <h3 class="tarjeta-caracteristica-titulo">Cero Colas de Espera</h3>
+            <p class="tarjeta-caracteristica-texto">
+              Tu servidor se inicia en segundos sin tiempos muertos ni pantallas de espera obligatorias como en plataformas gratuitas.
+            </p>
+          </article>
+
+          <article class="tarjeta-caracteristica">
+            <div class="tarjeta-caracteristica-icono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+            </div>
+            <h3 class="tarjeta-caracteristica-titulo">Aislamiento en Contenedores</h3>
+            <p class="tarjeta-caracteristica-texto">
+              Cada servidor se ejecuta en un contenedor Docker con cuotas de CPU y memoria protegidas, previniendo interferencias externas.
+            </p>
+          </article>
+
+          <article class="tarjeta-caracteristica">
+            <div class="tarjeta-caracteristica-icono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
+            </div>
+            <h3 class="tarjeta-caracteristica-titulo">Consola Web en Vivo</h3>
+            <p class="tarjeta-caracteristica-texto">
+              Accede a la salida en tiempo real del servidor, ejecuta comandos OP y gestiona permisos sin necesidad de clientes SSH externos.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de Página Institucional Global -->
+  <footer id="pie-principal"></footer>
+</body>
+</html>

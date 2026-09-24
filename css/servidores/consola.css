@@ -1,0 +1,115 @@
+/* Consola Terminal de Servidor */
+.consola-seccion {
+  padding-top: var(--espacio-32);
+  padding-bottom: var(--espacio-48);
+}
+
+.consola-cabecera-bloque {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-24);
+  margin-bottom: var(--espacio-24);
+  flex-wrap: wrap;
+}
+
+.consola-titulo-grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.consola-titulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-texto-principal);
+}
+
+.consola-direccion {
+  font-family: var(--fuente-codigo);
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+}
+
+.consola-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+}
+
+/* Caja de Terminal */
+.terminal-caja {
+  background-color: #050811;
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  overflow: hidden;
+  box-shadow: var(--sombra-lg);
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+.terminal-barra-superior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espacio-12) var(--espacio-16);
+  background-color: var(--color-fondo-superficie);
+  border-bottom: 1px solid var(--color-borde-tenue);
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+}
+
+.terminal-puntos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-fondo-elevado);
+}
+
+.terminal-visor-logs {
+  flex: 1;
+  padding: var(--espacio-16);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  user-select: text;
+}
+
+/* Barra de Entrada de Comandos */
+.terminal-entrada-formulario {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  padding: var(--espacio-12) var(--espacio-16);
+  background-color: var(--color-fondo-tarjeta);
+  border-top: 1px solid var(--color-borde-tenue);
+}
+
+.terminal-prompt-simbolo {
+  font-family: var(--fuente-codigo);
+  font-weight: 700;
+  color: var(--color-acento-primario);
+}
+
+.terminal-campo-comando {
+  flex: 1;
+  font-family: var(--fuente-codigo);
+  font-size: 0.875rem;
+  color: var(--color-texto-principal);
+}
+
+.terminal-campo-comando:focus {
+  outline: none;
+}

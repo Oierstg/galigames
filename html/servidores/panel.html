@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Servidores - GaliGames</title>
+  <meta name="description" content="Gestiona tus servidores de Minecraft y otros juegos desplegados en Docker.">
+
+  <!-- Hojas de estilo estructuradas -->
+  <link rel="stylesheet" href="../../css/comun/variables.css">
+  <link rel="stylesheet" href="../../css/comun/normalizacion.css">
+  <link rel="stylesheet" href="../../css/comun/componentes.css">
+  <link rel="stylesheet" href="../../css/comun/cabecera.css">
+  <link rel="stylesheet" href="../../css/comun/pie-pagina.css">
+  <link rel="stylesheet" href="../../css/servidores/panel.css">
+
+  <!-- Script modular -->
+  <script type="module" src="../../js/servidores/panel.js" defer></script>
+</head>
+<body>
+  <!-- Cabecera Institucional Global -->
+  <header id="cabecera-principal"></header>
+
+  <main>
+    <section class="panel-seccion">
+      <div class="contenedor">
+        <!-- Encabezado del Panel -->
+        <div class="panel-cabecera">
+          <div class="panel-titulo-bloque">
+            <h1 class="panel-titulo">Mis Servidores</h1>
+            <p class="panel-subtitulo">Supervisa, enciende o administra la consola de tus instancias de juego en Docker</p>
+          </div>
+
+          <div class="panel-acciones-superiores">
+            <a href="../../html/servidores/crear.html" class="boton boton-primario">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>
+              <span>Crear Nuevo Servidor</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Banner de Saldo y Facturación (6€/mes) -->
+        <div class="banner-facturacion">
+          <div class="banner-facturacion-info">
+            <div class="banner-facturacion-icono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+            </div>
+            <div class="banner-facturacion-texto">
+              <strong>Tarifa plana: 6,00 € / mes por servidor activo</strong>
+              <p>Cada instancia incluye 4 GB RAM dedicada, aislamiento en Docker y disco NVMe persistente.</p>
+            </div>
+          </div>
+
+          <div class="banner-facturacion-saldo">
+            <div>
+              <span class="etiqueta">Tu saldo disponible:</span>
+              <div class="banner-saldo-cifra" id="panel-saldo-display">0,00 €</div>
+            </div>
+            <a href="../../html/billetera/saldo.html" class="boton boton-secundario">
+              Recargar Saldo de Prueba
+            </a>
+          </div>
+        </div>
+
+        <!-- Listado dinámico de servidores -->
+        <div id="contenedor-servidores" class="servidores-rejilla">
+          <!-- Cargando estado inicial -->
+          <div class="estado-vacio">
+            <div class="estado-vacio-icono">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <h2 class="estado-vacio-titulo">Cargando tus servidores...</h2>
+            <p class="estado-vacio-texto">Conectando con el nodo en Linux para sincronizar el estado de los contenedores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Confirmación de Eliminación -->
+  <div id="modal-eliminar" class="modal-fondo" role="dialog" aria-modal="true" aria-labelledby="modal-eliminar-titulo" hidden>
+    <div class="modal-caja">
+      <div class="modal-cabecera">
+        <h2 id="modal-eliminar-titulo" class="modal-titulo">¿Eliminar servidor definitivamente?</h2>
+      </div>
+      <div class="modal-cuerpo">
+        <p class="texto-ayuda">
+          Esta acción destruirá el contenedor Docker y todos los mundos y configuraciones guardados en el almacenamiento del servidor. Esta operación no se puede revertir.
+        </p>
+      </div>
+      <div class="modal-pie">
+        <button type="button" id="btn-cancelar-eliminar" class="boton boton-secundario">Cancelar</button>
+        <button type="button" id="btn-confirmar-eliminar" class="boton boton-peligro">Eliminar Servidor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie de Página Institucional Global -->
+  <footer id="pie-principal"></footer>
+</body>
+</html>

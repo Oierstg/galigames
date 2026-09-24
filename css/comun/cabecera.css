@@ -1,0 +1,84 @@
+.cabecera-global {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(9, 13, 22, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-borde-tenue);
+  height: 64px;
+}
+
+.cabecera-contenedor {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-24);
+}
+
+.cabecera-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-12);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-texto-principal);
+}
+
+.cabecera-logo-icono {
+  width: 32px;
+  height: 32px;
+  color: var(--color-acento-primario);
+}
+
+.cabecera-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-24);
+}
+
+.cabecera-enlace {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
+  transition: color var(--transicion-rapida);
+}
+
+.cabecera-enlace:hover,
+.cabecera-enlace.activo {
+  color: var(--color-texto-principal);
+}
+
+.cabecera-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-12);
+}
+
+.cabecera-saldo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-6);
+  padding: 6px var(--espacio-12);
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-completo);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  transition: border-color var(--transicion-rapida);
+}
+
+.cabecera-saldo-pill:hover {
+  border-color: var(--color-acento-primario);
+}
+
+.cabecera-usuario-nombre {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

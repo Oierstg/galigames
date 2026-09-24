@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta - GaliGames</title>
+  <meta name="description" content="Crea tu cuenta en GaliGames para administrar servidores de juegos en Linux con Docker.">
+
+  <!-- Hojas de estilo estructuradas -->
+  <link rel="stylesheet" href="../../css/comun/variables.css">
+  <link rel="stylesheet" href="../../css/comun/normalizacion.css">
+  <link rel="stylesheet" href="../../css/comun/componentes.css">
+  <link rel="stylesheet" href="../../css/comun/cabecera.css">
+  <link rel="stylesheet" href="../../css/comun/pie-pagina.css">
+  <link rel="stylesheet" href="../../css/autenticacion/registro.css">
+
+  <!-- Script modular -->
+  <script type="module" src="../../js/autenticacion/registro.js" defer></script>
+</head>
+<body>
+  <!-- Cabecera Institucional Global -->
+  <header id="cabecera-principal"></header>
+
+  <main>
+    <section class="autenticacion-seccion">
+      <div class="tarjeta-autenticacion">
+        <div class="autenticacion-cabecera">
+          <div class="autenticacion-logo-icono">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+          </div>
+          <h1 class="autenticacion-titulo">Crear Cuenta</h1>
+          <p class="autenticacion-subtitulo">Comienza a desplegar servidores de Minecraft en minutos</p>
+        </div>
+
+        <div id="caja-error" class="alerta-mensaje alerta-peligro" hidden></div>
+
+        <form id="formulario-registro" novalidate>
+          <div class="grupo-campo">
+            <label for="campo-nombre" class="etiqueta">Nombre completo o alias</label>
+            <input type="text" id="campo-nombre" class="campo-texto" placeholder="Ej. Alex Martinez" required autocomplete="name">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="campo-email" class="etiqueta">Correo electrónico</label>
+            <input type="email" id="campo-email" class="campo-texto" placeholder="tu-correo@ejemplo.com" required autocomplete="email">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="campo-password" class="etiqueta">Contraseña</label>
+            <input type="password" id="campo-password" class="campo-texto" placeholder="Mínimo 6 caracteres" minlength="6" required autocomplete="new-password">
+            <span class="texto-ayuda">Debe contener un mínimo de 6 caracteres.</span>
+          </div>
+
+          <button type="submit" id="boton-enviar" class="boton boton-primario boton-completo">
+            Registrarme y Acceder
+          </button>
+        </form>
+
+        <div class="autenticacion-pie">
+          ¿Ya tienes cuenta? <a href="../../html/autenticacion/iniciar-sesion.html">Inicia sesión</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de Página Institucional Global -->
+  <footer id="pie-principal"></footer>
+</body>
+</html>

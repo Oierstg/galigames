@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - GaliGames</title>
+  <meta name="description" content="Accede a tu panel de control de servidores de juegos GaliGames.">
+
+  <!-- Hojas de estilo estructuradas -->
+  <link rel="stylesheet" href="../../css/comun/variables.css">
+  <link rel="stylesheet" href="../../css/comun/normalizacion.css">
+  <link rel="stylesheet" href="../../css/comun/componentes.css">
+  <link rel="stylesheet" href="../../css/comun/cabecera.css">
+  <link rel="stylesheet" href="../../css/comun/pie-pagina.css">
+  <link rel="stylesheet" href="../../css/autenticacion/iniciar-sesion.css">
+
+  <!-- Script modular -->
+  <script type="module" src="../../js/autenticacion/iniciar-sesion.js" defer></script>
+</head>
+<body>
+  <!-- Cabecera Institucional Global -->
+  <header id="cabecera-principal"></header>
+
+  <main>
+    <section class="autenticacion-seccion">
+      <div class="tarjeta-autenticacion">
+        <div class="autenticacion-cabecera">
+          <div class="autenticacion-logo-icono">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+          </div>
+          <h1 class="autenticacion-titulo">Iniciar Sesión</h1>
+          <p class="autenticacion-subtitulo">Introduce tus credenciales para acceder a tus servidores</p>
+        </div>
+
+        <div id="caja-error" class="alerta-mensaje alerta-peligro" hidden></div>
+
+        <form id="formulario-login" novalidate>
+          <div class="grupo-campo">
+            <label for="campo-email" class="etiqueta">Correo electrónico</label>
+            <input type="email" id="campo-email" class="campo-texto" placeholder="tu-correo@ejemplo.com" required autocomplete="email">
+          </div>
+
+          <div class="grupo-campo">
+            <label for="campo-password" class="etiqueta">Contraseña</label>
+            <input type="password" id="campo-password" class="campo-texto" placeholder="Introduce tu contraseña" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" id="boton-enviar" class="boton boton-primario boton-completo">
+            Iniciar Sesión
+          </button>
+        </form>
+
+        <div class="autenticacion-pie">
+          ¿Aún no tienes una cuenta? <a href="../../html/autenticacion/registro.html">Regístrate aquí</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de Página Institucional Global -->
+  <footer id="pie-principal"></footer>
+</body>
+</html>

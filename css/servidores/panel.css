@@ -1,0 +1,240 @@
+/* Vista Panel de Servidores (Dashboard) */
+.panel-seccion {
+  padding-top: var(--espacio-32);
+  padding-bottom: var(--espacio-64);
+}
+
+.panel-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-24);
+  margin-bottom: var(--espacio-32);
+  padding-bottom: var(--espacio-24);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+@media (max-width: 640px) {
+  .panel-cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.panel-titulo-bloque {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+}
+
+.panel-titulo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-texto-principal);
+}
+
+.panel-subtitulo {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+}
+
+.panel-acciones-superiores {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-12);
+}
+
+/* Tarjeta informativa de Saldo y Facturación */
+.banner-facturacion {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-20);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-24);
+  margin-bottom: var(--espacio-32);
+}
+
+@media (max-width: 768px) {
+  .banner-facturacion {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.banner-facturacion-info {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.banner-facturacion-icono {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radio-md);
+  background-color: var(--color-acento-superficie);
+  color: var(--color-acento-primario);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.banner-facturacion-texto strong {
+  color: var(--color-texto-principal);
+  font-size: 1rem;
+  display: block;
+  margin-bottom: var(--espacio-4);
+}
+
+.banner-facturacion-texto p {
+  color: var(--color-texto-secundario);
+  font-size: 0.8125rem;
+}
+
+.banner-facturacion-saldo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.banner-saldo-cifra {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-texto-principal);
+}
+
+/* Rejilla de Servidores Activos */
+.servidores-rejilla {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-16);
+}
+
+.tarjeta-servidor {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-tenue);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-20) var(--espacio-24);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-24);
+  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida);
+}
+
+.tarjeta-servidor:hover {
+  border-color: var(--color-borde-medio);
+}
+
+@media (max-width: 900px) {
+  .tarjeta-servidor {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.servidor-info-principal {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.servidor-icono-juego {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radio-md);
+  background-color: var(--color-fondo-elevado);
+  border: 1px solid var(--color-borde-tenue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-acento-primario);
+  flex-shrink: 0;
+}
+
+.servidor-detalles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+}
+
+.servidor-nombre-linea {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-12);
+}
+
+.servidor-nombre {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.servidor-conexion-bloque {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+}
+
+.boton-copiar-ip {
+  color: var(--color-texto-atenuado);
+  padding: 2px var(--espacio-4);
+  border-radius: var(--radio-sm);
+  display: inline-flex;
+  align-items: center;
+}
+
+.boton-copiar-ip:hover {
+  color: var(--color-texto-principal);
+  background-color: var(--color-fondo-elevado);
+}
+
+.servidor-meta-etiquetas {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  margin-top: var(--espacio-4);
+}
+
+.servidor-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  flex-wrap: wrap;
+}
+
+/* Estado Vacío */
+.estado-vacio {
+  text-align: center;
+  padding: var(--espacio-64) var(--espacio-24);
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px dashed var(--color-borde-medio);
+  border-radius: var(--radio-xl);
+}
+
+.estado-vacio-icono {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto var(--espacio-16);
+  color: var(--color-texto-atenuado);
+}
+
+.estado-vacio-titulo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--espacio-8);
+}
+
+.estado-vacio-texto {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  max-width: 440px;
+  margin: 0 auto var(--espacio-24);
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consola en Vivo - GaliGames</title>
+  <meta name="description" content="Visor de consola y registros en tiempo real para servidores de Minecraft en Docker.">
+
+  <!-- Hojas de estilo estructuradas -->
+  <link rel="stylesheet" href="../../css/comun/variables.css">
+  <link rel="stylesheet" href="../../css/comun/normalizacion.css">
+  <link rel="stylesheet" href="../../css/comun/componentes.css">
+  <link rel="stylesheet" href="../../css/comun/cabecera.css">
+  <link rel="stylesheet" href="../../css/comun/pie-pagina.css">
+  <link rel="stylesheet" href="../../css/servidores/consola.css">
+
+  <!-- Script modular -->
+  <script type="module" src="../../js/servidores/consola.js" defer></script>
+</head>
+<body>
+  <!-- Cabecera Institucional Global -->
+  <header id="cabecera-principal"></header>
+
+  <main>
+    <section class="consola-seccion">
+      <div class="contenedor">
+        <div class="consola-cabecera-bloque">
+          <div class="consola-titulo-grupo">
+            <a href="../../html/servidores/panel.html" class="boton boton-secundario" title="Volver al panel">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              <span>Volver</span>
+            </a>
+            <div>
+              <h1 id="consola-nombre-servidor" class="consola-titulo">Cargando servidor...</h1>
+              <span id="consola-ip-servidor" class="consola-direccion">...</span>
+            </div>
+            <span id="consola-estado-insignia" class="insignia insignia-atenuada">
+              <span class="insignia-punto"></span>
+              Comprobando...
+            </span>
+          </div>
+
+          <div class="consola-acciones">
+            <button type="button" id="btn-iniciar-servidor" class="boton boton-primario">Iniciar</button>
+            <button type="button" id="btn-detener-servidor" class="boton boton-secundario">Detener</button>
+            <button type="button" id="btn-reiniciar-servidor" class="boton boton-fantasma" title="Reiniciar">Reiniciar</button>
+          </div>
+        </div>
+
+        <!-- Terminal Box -->
+        <div class="terminal-caja">
+          <div class="terminal-barra-superior">
+            <div class="terminal-puntos">
+              <span class="terminal-punto"></span>
+              <span class="terminal-punto"></span>
+              <span class="terminal-punto"></span>
+            </div>
+            <span id="terminal-info-nodo">Docker Container Log Stream</span>
+            <button type="button" id="btn-limpiar-terminal" class="boton boton-fantasma">Limpiar pantalla</button>
+          </div>
+
+          <div id="terminal-visor" class="terminal-visor-logs" role="log" aria-live="polite">Conectando al flujo de registros del contenedor Docker...</div>
+
+          <form id="formulario-comando" class="terminal-entrada-formulario" novalidate>
+            <span class="terminal-prompt-simbolo">&gt;</span>
+            <input type="text" id="campo-comando" class="terminal-campo-comando" placeholder="Escribe un comando (ej. op mi_usuario, help, say hola)..." autocomplete="off">
+            <button type="submit" id="btn-enviar-comando" class="boton boton-secundario">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de Página Institucional Global -->
+  <footer id="pie-principal"></footer>
+</body>
+</html>
