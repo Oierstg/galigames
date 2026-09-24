@@ -126,10 +126,10 @@ async function cargarServidores() {
               </div>
 
               <div class="servidor-etiquetas-tecnicas">
-                <span class="insignia">${srv.edicion.toUpperCase()}</span>
-                <span class="insignia">${srv.plataforma.toUpperCase()} ${srv.version}</span>
+                <span class="insignia insignia-atenuada">Nodo: ${srv.tokenNodo || ('srv-' + (srv.id || '').substring(0, 8))}</span>
+                <span class="insignia">${(srv.edicion || 'java').toUpperCase()}</span>
+                <span class="insignia">${(srv.plataforma || 'paper').toUpperCase()} ${srv.version || '1.20.4'}</span>
                 <span class="insignia">${ramGb} GB RAM Dedicada</span>
-                <span class="insignia">0 / 20 Jugadores</span>
               </div>
             </div>
           </div>

@@ -120,6 +120,11 @@ class ClienteApi {
       this.peticion(`/servidores/${id}/jugadores/${encodeURIComponent(jugador)}/accion`, {
         method: 'POST',
         body: JSON.stringify({ accion, motivo })
+      }),
+    actualizarConfiguracion: (id, datos) =>
+      this.peticion(`/servidores/${id}/configuracion`, {
+        method: 'PUT',
+        body: JSON.stringify(datos)
       })
   };
 

@@ -203,8 +203,8 @@
 
 .tarjeta-plan-destacada {
   border-color: var(--color-acento-primario);
-  background: linear-gradient(180deg, rgba(37, 99, 235, 0.1) 0%, var(--color-fondo-tarjeta) 40%);
-  box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.2);
+  background-color: var(--color-fondo-elevado);
+  box-shadow: var(--sombra-md);
 }
 
 .plan-etiqueta-superior {

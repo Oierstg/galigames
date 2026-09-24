@@ -814,8 +814,361 @@
   border: 1px solid #d97706;
 }
 
+.insignia-tipo-log {
+  background-color: #1f2937;
+  color: #9ca3af;
+  border: 1px solid #374151;
+}
+
 .insignia-tipo-general {
   background-color: var(--color-fondo-elevado);
   color: var(--color-texto-secundario);
   border: 1px solid var(--color-borde-tenue);
 }
+
+/* Metadatos de Cabecera */
+.consola-metas-fila {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   Pestaña de Ajustes de Servidor (Estilo Crafty Controller / Hostinger)
+   ========================================================================== */
+.ajustes-contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-24);
+  max-width: 960px;
+}
+
+.ajustes-cabecera-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-16);
+  flex-wrap: wrap;
+  padding-bottom: var(--espacio-16);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.ajustes-titulo-seccion {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-texto-principal);
+  margin-bottom: 4px;
+}
+
+.ajustes-subtitulo-seccion {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  margin: 0;
+}
+
+.ajustes-tarjeta-bloque {
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-lg);
+  padding: var(--espacio-24);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-16);
+}
+
+.ajustes-bloque-encabezado {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+  margin: 0;
+}
+
+.ajustes-bloque-ayuda {
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+  margin: -8px 0 0 0;
+}
+
+/* Selector Edición */
+.ajustes-selector-edicion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--espacio-16);
+}
+
+.btn-opcion-edicion {
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-md);
+  padding: var(--espacio-16);
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all var(--transicion-rapida);
+}
+
+.btn-opcion-edicion:hover {
+  border-color: var(--color-acento-borde);
+}
+
+.btn-opcion-edicion.seleccionada {
+  border-color: var(--color-acento-primario);
+  background-color: rgba(5, 150, 105, 0.06);
+}
+
+.opcion-edicion-titulo {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.opcion-edicion-desc {
+  font-size: 0.8125rem;
+  color: var(--color-texto-secundario);
+}
+
+/* Grid de Mod Loaders */
+.ajustes-grid-loaders {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--espacio-12);
+}
+
+.tarjeta-loader-item {
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-md);
+  padding: var(--espacio-16);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-8);
+  transition: all var(--transicion-rapida);
+}
+
+.tarjeta-loader-item:hover {
+  border-color: var(--color-acento-borde);
+}
+
+.tarjeta-loader-item.seleccionada {
+  border-color: var(--color-acento-primario);
+  background-color: rgba(5, 150, 105, 0.08);
+}
+
+.loader-item-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loader-nombre {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-texto-principal);
+}
+
+.loader-desc {
+  font-size: 0.75rem;
+  color: var(--color-texto-secundario);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Selectores de Versión */
+.ajustes-version-grupo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--espacio-16);
+}
+
+.campo-select {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--color-fondo-superficie);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: var(--radio-md);
+  color: var(--color-texto-principal);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--transicion-rapida);
+}
+
+.campo-select:focus {
+  border-color: var(--color-borde-foco);
+}
+
+.campo-select optgroup {
+  background-color: var(--color-fondo-superficie);
+  color: var(--color-texto-atenuado);
+  font-weight: 600;
+}
+
+.campo-select option {
+  background-color: var(--color-fondo-superficie);
+  color: var(--color-texto-principal);
+  font-weight: 400;
+}
+
+/* Dos Columnas Ajustes */
+.ajustes-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-16);
+}
+
+@media (max-width: 640px) {
+  .ajustes-dos-columnas {
+    grid-template-columns: 1fr;
+  }
+}
+
+.campo-solo-lectura {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--color-texto-atenuado);
+  cursor: not-allowed;
+}
+
+.grupo-campo-checkboxes {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-8);
+  padding-top: var(--espacio-8);
+}
+
+.checkbox-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  font-size: 0.875rem;
+  color: var(--color-texto-principal);
+  cursor: pointer;
+}
+
+.checkbox-etiqueta input[type="checkbox"] {
+  accent-color: var(--color-acento-primario);
+  width: 16px;
+  height: 16px;
+}
+
+.ajustes-acciones-guardar {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--espacio-8);
+}
+
+/* ==========================================================================
+   Mejoras de Gestor de Archivos Enterprise (Checkboxes, Drag&Drop, Editor)
+   ========================================================================== */
+.celda-checkbox {
+  width: 40px;
+  text-align: center;
+}
+
+.celda-checkbox input[type="checkbox"] {
+  accent-color: var(--color-acento-primario);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.archivos-lote-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--espacio-12) var(--espacio-20);
+  background-color: rgba(220, 38, 38, 0.08);
+  border-bottom: 1px solid rgba(220, 38, 38, 0.25);
+  font-size: 0.875rem;
+  color: #fca5a5;
+}
+
+.lote-info-grupo {
+  font-weight: 500;
+}
+
+.archivos-dropzone-indicador {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(9, 14, 11, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.dropzone-caja {
+  border: 2px dashed var(--color-acento-primario);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-48);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-12);
+  color: var(--color-acento-primario);
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+/* Editor de Archivos con Números de Línea */
+.editor-cuerpo-contenedor {
+  padding: 0;
+  overflow: hidden;
+}
+
+.editor-area-envoltorio {
+  display: flex;
+  height: 480px;
+  background-color: #050811;
+}
+
+.editor-lineas-numeros {
+  width: 48px;
+  background-color: var(--color-fondo-superficie);
+  border-right: 1px solid var(--color-borde-tenue);
+  color: var(--color-texto-atenuado);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  text-align: right;
+  padding: var(--espacio-16) var(--espacio-8) var(--espacio-16) 0;
+  user-select: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.modal-editor-area {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: var(--espacio-16);
+  font-family: var(--fuente-codigo);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.editor-atajo-texto {
+  font-size: 0.75rem;
+  color: var(--color-texto-atenuado);
+  font-family: var(--fuente-codigo);
+}
+
+.modal-pie-botones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+}
+

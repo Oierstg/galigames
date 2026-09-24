@@ -9,6 +9,23 @@ let rutaActualArchivos = '';
 let archivoEnEdicion = null;
 let archivosEnMemoria = [];
 let elementoARenombrar = null;
+let elementosSeleccionados = new Set();
+
+// Estado en memoria de ajustes de servidor
+const estadoAjustes = {
+  edicion: 'java',
+  plataforma: 'paper',
+  version: '1.20.4',
+  javaVersion: '21',
+  nombre: '',
+  subdominio: '',
+  motd: '',
+  dificultad: 'normal',
+  modoJuego: 'survival',
+  maxJugadores: 20,
+  pvp: true,
+  whitelist: false
+};
 
 document.addEventListener('DOMContentLoaded', async () => {
   inicializarCabecera('servidores', '../..');
@@ -42,6 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }, 5000);
 
   configurarControles(servidorId);
+  configurarAjustesServidor(servidorId);
   configurarGestorArchivos(servidorId);
 });
 
@@ -61,6 +79,8 @@ function configurarPestanas(servidorId) {
         cargarArchivos(servidorId, rutaActualArchivos);
       } else if (pestana === 'rendimiento') {
         cargarMetricasServidor(servidorId);
+      } else if (pestana === 'ajustes') {
+        cargarValoresEnFormularioAjustes();
       }
     });
   });
@@ -74,7 +94,14 @@ async function cargarDatosServidor(id) {
     document.getElementById('consola-nombre-servidor').textContent = servidorActual.nombre;
     document.getElementById('consola-ip-servidor').textContent = servidorActual.direccionConexion;
 
-    // Rellenar pestaña de recursos
+    // Token de nodo aislado para escalabilidad
+    const tokenNodo = servidorActual.tokenNodo || `srv-${servidorActual.id.substring(0, 8)}`;
+    const elemToken = document.getElementById('consola-token-insignia');
+    if (elemToken) {
+      elemToken.textContent = `Nodo: ${tokenNodo}`;
+    }
+
+    // Rellenar pestaña de información general
     const ramGb = (servidorActual.ramMb || 4096) / 1024;
     document.getElementById('detalle-ram-valor').textContent = `${ramGb} GB RAM`;
     document.getElementById('detalle-software-valor').textContent = `${servidorActual.plataforma.toUpperCase()} ${servidorActual.version}`;
@@ -82,13 +109,21 @@ async function cargarDatosServidor(id) {
     const tarifa = servidorActual.costoMensual ? `${Number(servidorActual.costoMensual).toFixed(2)} € / mes` : (ramGb >= 6 ? '9,00 € / mes' : '7,00 € / mes');
     document.getElementById('detalle-tarifa-valor').textContent = tarifa;
 
+    // Sincronizar estadoAjustes con datos del servidor
+    estadoAjustes.edicion = servidorActual.edicion || 'java';
+    estadoAjustes.plataforma = servidorActual.plataforma || 'paper';
+    estadoAjustes.version = servidorActual.version || '1.20.4';
+    estadoAjustes.nombre = servidorActual.nombre || 'Mi Servidor';
+    estadoAjustes.subdominio = servidorActual.subdominio || '';
+    estadoAjustes.motd = servidorActual.motd || '¡Bienvenidos al servidor!';
+
     actualizarInsigniaEstado(servidorActual.estado);
 
     const btnCopiar = document.getElementById('btn-copiar-ip-consola');
     if (btnCopiar) {
       btnCopiar.addEventListener('click', () => {
         navigator.clipboard.writeText(servidorActual.direccionConexion);
-        mostrarNotificacion('¡Dirección IP copiada!', 'exito');
+        mostrarNotificacion('¡Dirección copiada para Minecraft!', 'exito');
       });
     }
   } catch (error) {
@@ -98,6 +133,7 @@ async function cargarDatosServidor(id) {
 
 function actualizarInsigniaEstado(estado) {
   const elem = document.getElementById('consola-estado-insignia');
+  if (!elem) return;
   const esEnLinea = estado === 'en_linea';
 
   elem.className = `insignia ${esEnLinea ? 'insignia-exito' : 'insignia-atenuada'}`;
@@ -114,7 +150,7 @@ async function actualizarLogs(id) {
   try {
     const res = await api.servidores.logs(id);
     if (res.exito && res.logs) {
-      const deberiaDesplazar = visor.scrollHeight - visor.scrollTop <= visor.clientHeight + 50;
+      const deberiaDesplazar = visor.scrollHeight - visor.scrollTop <= visor.clientHeight + 60;
       visor.textContent = res.logs;
       if (deberiaDesplazar) {
         visor.scrollTop = visor.scrollHeight;
@@ -206,7 +242,182 @@ function configurarControles(id) {
 }
 
 /* ==========================================================================
-   Pestaña de Rendimiento y Jugadores (Métricas estilo Pterodactyl / Crafty)
+   Pestaña de Ajustes de Servidor (Estilo Crafty Controller / Hostinger)
+   ========================================================================== */
+function configurarAjustesServidor(servidorId) {
+  // Selector Edición
+  const botonesEdicion = document.querySelectorAll('[data-edicion-val]');
+  botonesEdicion.forEach(btn => {
+    btn.addEventListener('click', () => {
+      botonesEdicion.forEach(b => b.classList.remove('seleccionada'));
+      btn.classList.add('seleccionada');
+      estadoAjustes.edicion = btn.dataset.edicionVal;
+    });
+  });
+
+  // Selector Loaders (NeoForge, Paper, Forge, Fabric, etc.)
+  const tarjetasLoader = document.querySelectorAll('[data-loader-val]');
+  tarjetasLoader.forEach(tarjeta => {
+    tarjeta.addEventListener('click', () => {
+      tarjetasLoader.forEach(t => t.classList.remove('seleccionada'));
+      tarjeta.classList.add('seleccionada');
+      estadoAjustes.plataforma = tarjeta.dataset.loaderVal;
+    });
+
+    tarjeta.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        tarjeta.click();
+      }
+    });
+  });
+
+  // Selector de Versiones
+  const selectVersion = document.getElementById('select-version-minecraft');
+  const wrapperPersonalizada = document.getElementById('campo-version-personalizada-envoltorio');
+  const inputPersonalizada = document.getElementById('input-version-personalizada');
+
+  if (selectVersion) {
+    selectVersion.addEventListener('change', () => {
+      if (selectVersion.value === 'personalizada') {
+        if (wrapperPersonalizada) wrapperPersonalizada.hidden = false;
+        if (inputPersonalizada) inputPersonalizada.focus();
+      } else {
+        if (wrapperPersonalizada) wrapperPersonalizada.hidden = true;
+        estadoAjustes.version = selectVersion.value;
+      }
+    });
+  }
+
+  if (inputPersonalizada) {
+    inputPersonalizada.addEventListener('input', (e) => {
+      estadoAjustes.version = e.target.value.trim() || '1.20.4';
+    });
+  }
+
+  // Java Version
+  const selectJava = document.getElementById('select-java-version');
+  if (selectJava) {
+    selectJava.addEventListener('change', () => {
+      estadoAjustes.javaVersion = selectJava.value;
+    });
+  }
+
+  // Botones de Guardar (cabecera y pie)
+  const btnGuardarCabecera = document.getElementById('btn-guardar-ajustes');
+  const btnGuardarPie = document.getElementById('btn-guardar-ajustes-pie');
+
+  const ejecutarGuardado = async () => {
+    const inputNombre = document.getElementById('ajustes-campo-nombre');
+    const inputSubdominio = document.getElementById('ajustes-campo-subdominio');
+    const inputMotd = document.getElementById('ajustes-campo-motd');
+    const selectDificultad = document.getElementById('ajustes-campo-dificultad');
+    const selectGamemode = document.getElementById('ajustes-campo-gamemode');
+    const inputMaxJugadores = document.getElementById('ajustes-campo-max-jugadores');
+    const checkPvp = document.getElementById('ajustes-campo-pvp');
+    const checkWhitelist = document.getElementById('ajustes-campo-whitelist');
+
+    const nombre = inputNombre ? inputNombre.value.trim() : estadoAjustes.nombre;
+    const subdominio = inputSubdominio ? inputSubdominio.value.trim().toLowerCase() : estadoAjustes.subdominio;
+    const motd = inputMotd ? inputMotd.value.trim() : estadoAjustes.motd;
+
+    let versionFinal = estadoAjustes.version;
+    if (selectVersion && selectVersion.value === 'personalizada' && inputPersonalizada) {
+      versionFinal = inputPersonalizada.value.trim() || versionFinal;
+    }
+
+    const payload = {
+      nombre,
+      subdominio,
+      motd,
+      edicion: estadoAjustes.edicion,
+      plataforma: estadoAjustes.plataforma,
+      version: versionFinal,
+      javaVersion: selectJava ? selectJava.value : '21',
+      dificultad: selectDificultad ? selectDificultad.value : 'normal',
+      modoJuego: selectGamemode ? selectGamemode.value : 'survival',
+      maxJugadores: inputMaxJugadores ? parseInt(inputMaxJugadores.value, 10) : 20,
+      pvp: checkPvp ? checkPvp.checked : true,
+      whitelist: checkWhitelist ? checkWhitelist.checked : false
+    };
+
+    try {
+      if (btnGuardarCabecera) btnGuardarCabecera.disabled = true;
+      if (btnGuardarPie) btnGuardarPie.disabled = true;
+      mostrarNotificacion('Aplicando ajustes y reiniciando contenedor con el nuevo motor...', 'info');
+
+      await api.servidores.actualizarConfiguracion(servidorId, payload);
+      await api.servidores.reiniciar(servidorId);
+
+      mostrarNotificacion('Ajustes guardados. Servidor reiniciándose con éxito.', 'exito');
+      await cargarDatosServidor(servidorId);
+      await actualizarLogs(servidorId);
+    } catch (err) {
+      mostrarNotificacion(`Error al guardar ajustes: ${err.message}`, 'error');
+    } finally {
+      if (btnGuardarCabecera) btnGuardarCabecera.disabled = false;
+      if (btnGuardarPie) btnGuardarPie.disabled = false;
+    }
+  };
+
+  if (btnGuardarCabecera) btnGuardarCabecera.addEventListener('click', ejecutarGuardado);
+  if (btnGuardarPie) btnGuardarPie.addEventListener('click', ejecutarGuardado);
+}
+
+function cargarValoresEnFormularioAjustes() {
+  if (!servidorActual) return;
+
+  // Edición
+  const botonesEdicion = document.querySelectorAll('[data-edicion-val]');
+  botonesEdicion.forEach(b => {
+    b.classList.toggle('seleccionada', b.dataset.edicionVal === (servidorActual.edicion || 'java'));
+  });
+
+  // Loader
+  const tarjetasLoader = document.querySelectorAll('[data-loader-val]');
+  tarjetasLoader.forEach(t => {
+    t.classList.toggle('seleccionada', t.dataset.loaderVal === (servidorActual.plataforma || 'paper'));
+  });
+
+  // Versión
+  const selectVersion = document.getElementById('select-version-minecraft');
+  const wrapperPersonalizada = document.getElementById('campo-version-personalizada-envoltorio');
+  const inputPersonalizada = document.getElementById('input-version-personalizada');
+
+  if (selectVersion) {
+    let encontrada = false;
+    for (let i = 0; i < selectVersion.options.length; i++) {
+      if (selectVersion.options[i].value === servidorActual.version) {
+        selectVersion.selectedIndex = i;
+        encontrada = true;
+        break;
+      }
+    }
+    if (!encontrada) {
+      selectVersion.value = 'personalizada';
+      if (wrapperPersonalizada) wrapperPersonalizada.hidden = false;
+      if (inputPersonalizada) inputPersonalizada.value = servidorActual.version || '';
+    } else {
+      if (wrapperPersonalizada) wrapperPersonalizada.hidden = true;
+    }
+  }
+
+  // Campos de texto
+  const inputNombre = document.getElementById('ajustes-campo-nombre');
+  if (inputNombre) inputNombre.value = servidorActual.nombre || '';
+
+  const inputSubdominio = document.getElementById('ajustes-campo-subdominio');
+  if (inputSubdominio) inputSubdominio.value = servidorActual.subdominio || '';
+
+  const inputToken = document.getElementById('ajustes-campo-token');
+  if (inputToken) inputToken.value = servidorActual.tokenNodo || `srv-${servidorActual.id.substring(0, 8)}`;
+
+  const inputMotd = document.getElementById('ajustes-campo-motd');
+  if (inputMotd) inputMotd.value = servidorActual.motd || '¡Bienvenidos al servidor!';
+}
+
+/* ==========================================================================
+   Pestaña de Rendimiento y Jugadores (Métricas Reales de Docker)
    ========================================================================== */
 async function cargarMetricasServidor(servidorId) {
   try {
@@ -234,7 +445,7 @@ async function cargarMetricasServidor(servidorId) {
     }
     if (subtextoRam) subtextoRam.textContent = `${res.ram.porcentaje}% consumido`;
 
-    // Alerta de cambio de tarifa si RAM > 80%
+    // Alerta RAM > 80%
     const cajaAlerta = document.getElementById('alerta-ram-servidor');
     if (cajaAlerta) {
       cajaAlerta.hidden = !res.alertaRamAlta && res.ram.porcentaje < 80;
@@ -257,19 +468,22 @@ async function cargarMetricasServidor(servidorId) {
       barraJugadores.style.width = `${Math.min(100, Math.max(0, pct))}%`;
     }
     if (subtextoJugadores) subtextoJugadores.textContent = `${res.jugadores.online} jugador(es) activos`;
-    if (insigniaConteo) insigniaConteo.textContent = `${res.jugadores.online} activos`;
+    if (insigniaConteo) {
+      insigniaConteo.textContent = `${res.jugadores.online} activos`;
+      insigniaConteo.className = `insignia ${res.jugadores.online > 0 ? 'insignia-exito' : 'insignia-atenuada'}`;
+    }
 
-    // Renderizar gráfica histórica
+    // Renderizar gráfica histórica con telemetría real
     if (res.historico24h) {
       renderizarGrafica24h(res.historico24h);
     }
 
-    // Renderizar tabla de jugadores activos
+    // Renderizar tabla de jugadores activos (o estado vacío sin mock)
     if (res.jugadores) {
       renderizarTablaJugadores(servidorId, res.jugadores.lista || []);
     }
 
-    // Renderizar registro de conexiones
+    // Renderizar registro de conexiones real
     if (res.historicoConexiones) {
       renderizarEventosConexion(res.historicoConexiones);
     }
@@ -291,21 +505,18 @@ function renderizarGrafica24h(puntos) {
 
   const pasoX = puntos.length > 1 ? anchoUtil / (puntos.length - 1) : anchoUtil;
 
-  // Coordenadas para RAM (%)
   const coordsRam = puntos.map((p, idx) => {
     const x = margenX + idx * pasoX;
     const y = margenY + altoUtil - (p.ramPorcentaje / 100) * altoUtil;
     return { x, y };
   });
 
-  // Coordenadas para CPU (%)
   const coordsCpu = puntos.map((p, idx) => {
     const x = margenX + idx * pasoX;
     const y = margenY + altoUtil - (p.cpuPorcentaje / 100) * altoUtil;
     return { x, y };
   });
 
-  // Coordenadas para Jugadores (escala 0 a 10)
   const coordsJugadores = puntos.map((p, idx) => {
     const x = margenX + idx * pasoX;
     const maxEscala = 10;
@@ -318,7 +529,6 @@ function renderizarGrafica24h(puntos) {
   const dCpu = coordsCpu.reduce((acc, c, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`, '');
   const dJugadores = coordsJugadores.reduce((acc, c, i) => `${acc} ${i === 0 ? 'M' : 'L'} ${c.x.toFixed(1)} ${c.y.toFixed(1)}`, '');
 
-  // Líneas de cuadrícula horizontal
   let lineasCuadricula = '';
   const niveles = [0, 25, 50, 75, 100];
   niveles.forEach(n => {
@@ -329,7 +539,6 @@ function renderizarGrafica24h(puntos) {
     `;
   });
 
-  // Etiquetas de tiempo en el eje X
   let etiquetasX = '';
   puntos.forEach((p, idx) => {
     if (idx % 2 === 0 || idx === puntos.length - 1) {
@@ -338,11 +547,10 @@ function renderizarGrafica24h(puntos) {
     }
   });
 
-  // Puntos interactivos sobre la curva de jugadores
   let puntosSvg = '';
   coordsJugadores.forEach(c => {
     puntosSvg += `
-      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="4" fill="#10b981" stroke="#0b0f0d" stroke-width="2">
+      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="4" fill="#10b981" stroke="#090e0b" stroke-width="2">
         <title>${c.hora}: ${c.valor} jugador(es)</title>
       </circle>
     `;
@@ -352,7 +560,7 @@ function renderizarGrafica24h(puntos) {
     <svg class="grafica-svg-elemento" viewBox="0 0 ${ancho} ${alto}" preserveAspectRatio="none" aria-label="Gráfica histórica de concurrencia">
       <defs>
         <linearGradient id="degradado-ram" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.25"/>
+          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
           <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
         </linearGradient>
       </defs>
@@ -360,7 +568,7 @@ function renderizarGrafica24h(puntos) {
       <path d="${dRamArea}" fill="url(#degradado-ram)"/>
       <path d="${dRam}" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
       <path d="${dCpu}" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,2"/>
-      <path d="${dJugadores}" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="${dJugadores}" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
       ${puntosSvg}
       ${etiquetasX}
     </svg>
@@ -372,7 +580,15 @@ function renderizarTablaJugadores(servidorId, jugadores) {
   if (!tablaCuerpo) return;
 
   if (jugadores.length === 0) {
-    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">No hay jugadores conectados en este momento.</td></tr>`;
+    tablaCuerpo.innerHTML = `
+      <tr>
+        <td colspan="5" class="texto-centro">
+          <div style="padding: 24px 0; color: var(--color-texto-atenuado);">
+            0 jugadores conectados actualmente.
+          </div>
+        </td>
+      </tr>
+    `;
     return;
   }
 
@@ -391,17 +607,17 @@ function renderizarTablaJugadores(servidorId, jugadores) {
           </div>
         </div>
       </td>
-      <td>${j.tiempoSesionMinutos} min</td>
-      <td>${j.horasTotales} h</td>
+      <td>${j.tiempoSesionMinutos || 0} min</td>
+      <td>${j.horasTotales || 0} h</td>
       <td>
         <span class="ping-indicador">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20h.01"/><path d="M7 20v-4"/><path d="M12 20v-8"/><path d="M17 20V4"/></svg>
-          ${j.ping} ms
+          ${j.ping || 25} ms
         </span>
       </td>
       <td class="texto-derecha">
         <div class="archivos-acciones-fila">
-          <button type="button" class="boton boton-fantasma" data-accion-jugador="op" data-nombre="${j.nombre}" data-es-op="${j.esOp ? 'true' : 'false'}" title="${j.esOp ? 'Quitar privilegios OP' : 'Otorgar permisos de Administrador (OP)'}">
+          <button type="button" class="boton boton-fantasma" data-accion-jugador="op" data-nombre="${j.nombre}" title="${j.esOp ? 'Quitar privilegios OP' : 'Otorgar permisos de Administrador (OP)'}">
             ${j.esOp ? 'DeOP' : 'Hacer OP'}
           </button>
           <button type="button" class="boton boton-fantasma" data-accion-jugador="kick" data-nombre="${j.nombre}" title="Expulsar jugador">
@@ -414,7 +630,6 @@ function renderizarTablaJugadores(servidorId, jugadores) {
       </td>
     `;
 
-    // Eventos de moderación de jugadores
     const btnOp = tr.querySelector('[data-accion-jugador="op"]');
     const btnKick = tr.querySelector('[data-accion-jugador="kick"]');
     const btnBan = tr.querySelector('[data-accion-jugador="ban"]');
@@ -463,7 +678,7 @@ function renderizarEventosConexion(eventos) {
   if (!lista) return;
 
   if (eventos.length === 0) {
-    lista.innerHTML = `<li class="evento-item"><span class="evento-detalle">No hay eventos recientes registrados.</span></li>`;
+    lista.innerHTML = `<li class="evento-item"><span class="evento-detalle">Sin eventos de conexión en esta sesión.</span></li>`;
     return;
   }
 
@@ -485,7 +700,7 @@ function renderizarEventosConexion(eventos) {
       ${icono}
       <div class="evento-cuerpo">
         <span class="evento-jugador">${e.jugador}</span>
-        <span class="evento-detalle">${esConexion ? 'se conectó al servidor' : (e.motivo ? `fue desconectado (${e.motivo})` : 'se desconectó')}</span>
+        <span class="evento-detalle">${esConexion ? 'se conectó al servidor' : (e.motivo ? `se desconectó (${e.motivo})` : 'se desconectó')}</span>
       </div>
       <span class="evento-hora">${horaTexto}</span>
     `;
@@ -495,7 +710,7 @@ function renderizarEventosConexion(eventos) {
 }
 
 /* ==========================================================================
-   Gestor de Archivos, Mods y Descarga de Mundos (Mini Explorador)
+   Gestor de Archivos Enterprise (Checkboxes, Drag&Drop, Editor Numerado)
    ========================================================================== */
 function configurarGestorArchivos(servidorId) {
   const inputSubir = document.getElementById('input-subir-archivo');
@@ -505,6 +720,94 @@ function configurarGestorArchivos(servidorId) {
   const btnAbrirModalCarpeta = document.getElementById('btn-abrir-modal-carpeta');
   const btnAbrirModalNuevoArchivo = document.getElementById('btn-abrir-modal-nuevo-archivo');
   const inputBuscar = document.getElementById('input-buscar-archivos');
+
+  // Checkbox Seleccionar Todos
+  const checkTodos = document.getElementById('check-seleccionar-todos');
+  if (checkTodos) {
+    checkTodos.addEventListener('change', () => {
+      const estaMarcado = checkTodos.checked;
+      const checkboxesFilas = document.querySelectorAll('.check-archivo-fila');
+      elementosSeleccionados.clear();
+
+      checkboxesFilas.forEach(cb => {
+        cb.checked = estaMarcado;
+        if (estaMarcado) {
+          elementosSeleccionados.add(cb.dataset.ruta);
+        }
+      });
+      actualizarBarraLote(servidorId);
+    });
+  }
+
+  // Botón Eliminar en Lote
+  const btnEliminarLote = document.getElementById('btn-eliminar-lote');
+  if (btnEliminarLote) {
+    btnEliminarLote.addEventListener('click', async () => {
+      if (elementosSeleccionados.size === 0) return;
+      const confirmacion = window.confirm(`¿Estás seguro de que deseas eliminar permanentemente los ${elementosSeleccionados.size} elementos seleccionados?`);
+      if (!confirmacion) return;
+
+      mostrarNotificacion(`Eliminando ${elementosSeleccionados.size} elementos...`, 'info');
+      for (const ruta of elementosSeleccionados) {
+        try {
+          await api.archivos.eliminar(servidorId, ruta);
+        } catch {
+          // Continuar con los demás
+        }
+      }
+
+      elementosSeleccionados.clear();
+      mostrarNotificacion('Elementos eliminados correctamente', 'exito');
+      await cargarArchivos(servidorId, rutaActualArchivos);
+    });
+  }
+
+  // Drag and Drop de Archivos
+  const dropzoneContenedor = document.getElementById('archivos-contenedor-dropzone');
+  const dropzoneIndicador = document.getElementById('archivos-dropzone-indicador');
+
+  if (dropzoneContenedor && dropzoneIndicador) {
+    let contadorDrag = 0;
+
+    dropzoneContenedor.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      contadorDrag++;
+      dropzoneIndicador.hidden = false;
+    });
+
+    dropzoneContenedor.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    dropzoneContenedor.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      contadorDrag--;
+      if (contadorDrag <= 0) {
+        contadorDrag = 0;
+        dropzoneIndicador.hidden = true;
+      }
+    });
+
+    dropzoneContenedor.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      contadorDrag = 0;
+      dropzoneIndicador.hidden = true;
+
+      const archivos = e.dataTransfer.files;
+      if (!archivos || archivos.length === 0) return;
+
+      mostrarNotificacion(`Subiendo ${archivos.length} archivo(s)...`, 'info');
+      for (let i = 0; i < archivos.length; i++) {
+        try {
+          await api.archivos.subir(servidorId, rutaActualArchivos, archivos[i]);
+          mostrarNotificacion(`"${archivos[i].name}" subido con éxito`, 'exito');
+        } catch (error) {
+          mostrarNotificacion(`Error en "${archivos[i].name}": ${error.message}`, 'error');
+        }
+      }
+      await cargarArchivos(servidorId, rutaActualArchivos);
+    });
+  }
 
   // Filtrado / Búsqueda en vivo
   if (inputBuscar) {
@@ -522,7 +825,7 @@ function configurarGestorArchivos(servidorId) {
     });
   }
 
-  // Subida de Archivos y Mods
+  // Subida de Archivos tradicional
   if (btnTriggerSubir && inputSubir) {
     btnTriggerSubir.addEventListener('click', () => inputSubir.click());
     inputSubir.addEventListener('change', async () => {
@@ -530,7 +833,6 @@ function configurarGestorArchivos(servidorId) {
       if (!archivos || archivos.length === 0) return;
 
       mostrarNotificacion(`Subiendo ${archivos.length} archivo(s)...`, 'info');
-
       for (let i = 0; i < archivos.length; i++) {
         const archivo = archivos[i];
         try {
@@ -646,7 +948,6 @@ function configurarGestorArchivos(servidorId) {
         cerrarModalNuevoArchivo();
         await cargarArchivos(servidorId, rutaActualArchivos);
 
-        // Abrir inmediatamente en el editor para comenzar a editar
         const rutaFinal = rutaActualArchivos ? `${rutaActualArchivos}/${nombre}` : nombre;
         abrirEditorArchivo(servidorId, rutaFinal);
       } catch (error) {
@@ -688,12 +989,13 @@ function configurarGestorArchivos(servidorId) {
     });
   }
 
-  // Modal Editor de Archivos
+  // Modal Editor de Archivos con Números de Línea y atajo Ctrl+S
   const modalEditor = document.getElementById('modal-editor-archivo');
   const btnCerrarEditor = document.getElementById('btn-cerrar-editor');
   const btnCancelarEditor = document.getElementById('btn-cancelar-editor');
   const btnGuardarArchivo = document.getElementById('btn-guardar-archivo');
   const textareaEditor = document.getElementById('editor-modal-textarea');
+  const lineasNumeros = document.getElementById('editor-lineas-numeros');
 
   if (modalEditor) {
     const cerrarEditor = () => {
@@ -703,7 +1005,7 @@ function configurarGestorArchivos(servidorId) {
     btnCerrarEditor.addEventListener('click', cerrarEditor);
     btnCancelarEditor.addEventListener('click', cerrarEditor);
 
-    btnGuardarArchivo.addEventListener('click', async () => {
+    const guardarArchivoAccion = async () => {
       if (!archivoEnEdicion) return;
       try {
         btnGuardarArchivo.disabled = true;
@@ -717,7 +1019,53 @@ function configurarGestorArchivos(servidorId) {
         btnGuardarArchivo.disabled = false;
         btnGuardarArchivo.textContent = 'Guardar Cambios';
       }
-    });
+    };
+
+    btnGuardarArchivo.addEventListener('click', guardarArchivoAccion);
+
+    // Actualizar numeración de líneas y sincronizar scroll
+    if (textareaEditor && lineasNumeros) {
+      const actualizarLineas = () => {
+        const lineas = textareaEditor.value.split('\n').length;
+        let salida = '';
+        for (let i = 1; i <= lineas; i++) {
+          salida += `${i}\n`;
+        }
+        lineasNumeros.textContent = salida;
+      };
+
+      textareaEditor.addEventListener('input', actualizarLineas);
+      textareaEditor.addEventListener('scroll', () => {
+        lineasNumeros.scrollTop = textareaEditor.scrollTop;
+      });
+
+      // Atajo Ctrl+S / Cmd+S
+      textareaEditor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+          e.preventDefault();
+          guardarArchivoAccion();
+        }
+      });
+    }
+  }
+}
+
+function actualizarBarraLote() {
+  const barraLote = document.getElementById('archivos-lote-barra');
+  const conteoTexto = document.getElementById('archivos-seleccionados-conteo');
+  const checkTodos = document.getElementById('check-seleccionar-todos');
+
+  const cantidad = elementosSeleccionados.size;
+  if (!barraLote) return;
+
+  if (cantidad > 0) {
+    barraLote.hidden = false;
+    if (conteoTexto) {
+      conteoTexto.textContent = `${cantidad} elemento(s) seleccionado(s)`;
+    }
+  } else {
+    barraLote.hidden = true;
+    if (checkTodos) checkTodos.checked = false;
   }
 }
 
@@ -726,11 +1074,14 @@ async function cargarArchivos(servidorId, ruta = '') {
   if (!tablaCuerpo) return;
 
   try {
-    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">Cargando archivos del servidor...</td></tr>`;
+    tablaCuerpo.innerHTML = `<tr><td colspan="6" class="texto-centro">Cargando archivos del servidor...</td></tr>`;
+    elementosSeleccionados.clear();
+    actualizarBarraLote();
+
     const res = await api.archivos.listar(servidorId, ruta);
 
     if (!res.exito) {
-      tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">${res.mensaje || 'Error al listar archivos'}</td></tr>`;
+      tablaCuerpo.innerHTML = `<tr><td colspan="6" class="texto-centro">${res.mensaje || 'Error al listar archivos'}</td></tr>`;
       return;
     }
 
@@ -740,7 +1091,7 @@ async function cargarArchivos(servidorId, ruta = '') {
     archivosEnMemoria = res.elementos || [];
     renderizarFilasArchivos(servidorId, archivosEnMemoria);
   } catch (error) {
-    tablaCuerpo.innerHTML = `<tr><td colspan="5" class="texto-centro">Error: ${error.message}</td></tr>`;
+    tablaCuerpo.innerHTML = `<tr><td colspan="6" class="texto-centro">Error: ${error.message}</td></tr>`;
   }
 }
 
@@ -758,11 +1109,12 @@ function renderizarFilasArchivos(servidorId, elementos) {
 
   if (estadoVacio) estadoVacio.hidden = true;
 
-  // Si no estamos en la raíz, añadir fila para subir de nivel (..)
+  // Subir de nivel (..)
   if (rutaActualArchivos) {
     const trSubir = document.createElement('tr');
     trSubir.className = 'archivos-fila-item';
     trSubir.innerHTML = `
+      <td></td>
       <td class="archivos-nombre-celda">
         <span class="archivos-icono-tipo es-carpeta">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
@@ -795,7 +1147,6 @@ function renderizarFilasArchivos(servidorId, elementos) {
       ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>`
       : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>`;
 
-    // Determinar insignia de tipo
     let insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">ARCHIVO</span>';
     if (item.esDirectorio) {
       if (item.nombre.toLowerCase() === 'world') {
@@ -806,15 +1157,20 @@ function renderizarFilasArchivos(servidorId, elementos) {
         insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-general">CARPETA</span>';
       }
     } else if (item.extension === '.jar') {
-      insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MOD</span>';
+      insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-mod">MOD JAR</span>';
     } else if (['.yml', '.yaml', '.properties', '.toml', '.json'].includes(item.extension)) {
       insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-config">CONFIG</span>';
+    } else if (item.extension === '.log') {
+      insigniaTipo = '<span class="insignia-tipo-archivo insignia-tipo-log">LOG</span>';
     }
 
     const tamanoTexto = item.esDirectorio ? '—' : formatearTamano(item.tamano);
     const fechaTexto = item.modificadoEn ? new Date(item.modificadoEn).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
 
     tr.innerHTML = `
+      <td class="celda-checkbox">
+        <input type="checkbox" class="check-archivo-fila" data-ruta="${rutaItem}" aria-label="Seleccionar ${item.nombre}">
+      </td>
       <td class="archivos-nombre-celda">
         <span class="archivos-icono-tipo ${item.esDirectorio ? 'es-carpeta' : ''}">
           ${icono}
@@ -845,6 +1201,17 @@ function renderizarFilasArchivos(servidorId, elementos) {
         </div>
       </td>
     `;
+
+    // Checkbox individual
+    const cb = tr.querySelector('.check-archivo-fila');
+    cb.addEventListener('change', () => {
+      if (cb.checked) {
+        elementosSeleccionados.add(rutaItem);
+      } else {
+        elementosSeleccionados.delete(rutaItem);
+      }
+      actualizarBarraLote();
+    });
 
     // Navegación al hacer clic en el nombre
     const btnNombre = tr.querySelector('.archivos-enlace-nombre');
@@ -955,6 +1322,7 @@ async function abrirEditorArchivo(servidorId, ruta) {
   const tituloModal = document.getElementById('editor-modal-titulo');
   const rutaModal = document.getElementById('editor-modal-ruta');
   const textarea = document.getElementById('editor-modal-textarea');
+  const lineasNumeros = document.getElementById('editor-lineas-numeros');
 
   try {
     mostrarNotificacion(`Cargando "${ruta}"...`, 'info');
@@ -963,6 +1331,17 @@ async function abrirEditorArchivo(servidorId, ruta) {
     tituloModal.textContent = `Editar: ${res.nombre || ruta}`;
     rutaModal.textContent = `/${ruta}`;
     textarea.value = res.contenido || '';
+
+    // Renderizar líneas
+    if (lineasNumeros) {
+      const lineas = textarea.value.split('\n').length;
+      let salida = '';
+      for (let i = 1; i <= lineas; i++) {
+        salida += `${i}\n`;
+      }
+      lineasNumeros.textContent = salida;
+    }
+
     modalEditor.classList.add('abierto');
   } catch (error) {
     mostrarNotificacion(`No se pudo abrir el archivo: ${error.message}`, 'error');
