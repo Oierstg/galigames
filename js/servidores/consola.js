@@ -614,7 +614,7 @@ function renderizarGrafica24h(puntos) {
   let puntosSvg = '';
   coordsJugadores.forEach(c => {
     puntosSvg += `
-      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="4" fill="#10b981" stroke="#090e0b" stroke-width="2">
+      <circle cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="4" fill="#38bdf8" stroke="#09090b" stroke-width="2">
         <title>${c.hora}: ${c.valor} jugador(es)</title>
       </circle>
     `;
@@ -624,15 +624,15 @@ function renderizarGrafica24h(puntos) {
     <svg class="grafica-svg-elemento" viewBox="0 0 ${ancho} ${alto}" preserveAspectRatio="none" aria-label="Gráfica histórica de concurrencia">
       <defs>
         <linearGradient id="degradado-ram" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
-          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+          <stop offset="0%" stop-color="#818cf8" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#818cf8" stop-opacity="0.0"/>
         </linearGradient>
       </defs>
       ${lineasCuadricula}
       <path d="${dRamArea}" fill="url(#degradado-ram)"/>
-      <path d="${dRam}" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
-      <path d="${dCpu}" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,2"/>
-      <path d="${dJugadores}" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+      <path d="${dRam}" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round"/>
+      <path d="${dCpu}" fill="none" stroke="#c084fc" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <path d="${dJugadores}" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
       ${puntosSvg}
       ${etiquetasX}
     </svg>

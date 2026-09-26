@@ -184,7 +184,7 @@
 
 .tarjeta-plan-crear.seleccionada {
   border-color: var(--color-acento-primario);
-  background-color: rgba(5, 150, 105, 0.05);
+  background-color: var(--color-acento-superficie);
 }
 
 .tarjeta-plan-cabecera {

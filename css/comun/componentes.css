@@ -225,6 +225,42 @@
   color: var(--color-acento-primario);
 }
 
+.insignia-pastel-azul {
+  background-color: var(--color-pastel-azul-fondo);
+  border-color: var(--color-pastel-azul-borde);
+  color: var(--color-pastel-azul);
+}
+
+.insignia-pastel-violeta {
+  background-color: var(--color-pastel-violeta-fondo);
+  border-color: var(--color-pastel-violeta-borde);
+  color: var(--color-pastel-violeta);
+}
+
+.insignia-pastel-rosa {
+  background-color: var(--color-pastel-rosa-fondo);
+  border-color: var(--color-pastel-rosa-borde);
+  color: var(--color-pastel-rosa);
+}
+
+.insignia-pastel-ambar {
+  background-color: var(--color-pastel-ambar-fondo);
+  border-color: var(--color-pastel-ambar-borde);
+  color: var(--color-pastel-ambar);
+}
+
+.insignia-pastel-verde {
+  background-color: var(--color-pastel-verde-fondo);
+  border-color: var(--color-pastel-verde-borde);
+  color: var(--color-pastel-verde);
+}
+
+.insignia-pastel-gris {
+  background-color: var(--color-pastel-gris-fondo);
+  border-color: var(--color-pastel-gris-borde);
+  color: var(--color-pastel-gris);
+}
+
 /* ==========================================================================
    Formularios y Controles
    ========================================================================== */

@@ -623,27 +623,27 @@
 }
 
 .archivos-icono-tipo.es-carpeta {
-  color: #f59e0b;
-  background-color: rgba(245, 158, 11, 0.08);
-  border-color: rgba(245, 158, 11, 0.22);
+  color: var(--color-pastel-ambar);
+  background-color: var(--color-pastel-ambar-fondo);
+  border-color: var(--color-pastel-ambar-borde);
 }
 
 .archivos-icono-tipo.es-mod {
-  color: #10b981;
-  background-color: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.22);
+  color: var(--color-pastel-verde);
+  background-color: var(--color-pastel-verde-fondo);
+  border-color: var(--color-pastel-verde-borde);
 }
 
 .archivos-icono-tipo.es-config {
-  color: #3b82f6;
-  background-color: rgba(59, 130, 246, 0.08);
-  border-color: rgba(59, 130, 246, 0.22);
+  color: var(--color-pastel-azul);
+  background-color: var(--color-pastel-azul-fondo);
+  border-color: var(--color-pastel-azul-borde);
 }
 
 .archivos-icono-tipo.es-mundo {
-  color: #eab308;
-  background-color: rgba(234, 179, 8, 0.08);
-  border-color: rgba(234, 179, 8, 0.22);
+  color: var(--color-pastel-violeta);
+  background-color: var(--color-pastel-violeta-fondo);
+  border-color: var(--color-pastel-violeta-borde);
 }
 
 .archivos-enlace-nombre {
@@ -680,27 +680,27 @@
 }
 
 .insignia-tipo-mod {
-  background-color: rgba(5, 150, 105, 0.12);
-  color: #34d399;
-  border: 1px solid rgba(5, 150, 105, 0.3);
+  background-color: var(--color-pastel-verde-fondo);
+  color: var(--color-pastel-verde);
+  border: 1px solid var(--color-pastel-verde-borde);
 }
 
 .insignia-tipo-config {
-  background-color: rgba(59, 130, 246, 0.1);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.25);
+  background-color: var(--color-pastel-azul-fondo);
+  color: var(--color-pastel-azul);
+  border: 1px solid var(--color-pastel-azul-borde);
 }
 
 .insignia-tipo-mundo {
-  background-color: rgba(217, 119, 6, 0.1);
-  color: #fcd34d;
-  border: 1px solid rgba(217, 119, 6, 0.25);
+  background-color: var(--color-pastel-violeta-fondo);
+  color: var(--color-pastel-violeta);
+  border: 1px solid var(--color-pastel-violeta-borde);
 }
 
 .insignia-tipo-log {
-  background-color: rgba(107, 114, 128, 0.12);
-  color: #9ca3af;
-  border: 1px solid rgba(107, 114, 128, 0.25);
+  background-color: var(--color-pastel-gris-fondo);
+  color: var(--color-pastel-gris);
+  border: 1px solid var(--color-pastel-gris-borde);
 }
 
 .insignia-tipo-general {
@@ -806,17 +806,17 @@
 
 .dropzone-caja {
   border: 2px dashed var(--color-acento-primario);
-  background-color: rgba(5, 150, 105, 0.06);
+  background-color: var(--color-acento-superficie);
   border-radius: var(--radio-xl);
   padding: var(--espacio-48) var(--espacio-64);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--espacio-16);
-  color: var(--color-acento-primario);
+  color: var(--color-texto-principal);
   font-weight: 600;
   font-size: 1.125rem;
-  box-shadow: 0 0 30px rgba(5, 150, 105, 0.2);
+  box-shadow: var(--sombra-lg);
 }
 
 /* Editor de Archivos con Líneas de Código Numeradas */
@@ -1127,15 +1127,15 @@
 }
 
 .leyenda-muestra-jugadores {
-  background-color: #10b981;
+  background-color: var(--color-pastel-azul);
 }
 
 .leyenda-muestra-ram {
-  background-color: #3b82f6;
+  background-color: var(--color-pastel-violeta);
 }
 
 .leyenda-muestra-cpu {
-  background-color: #8b5cf6;
+  background-color: var(--color-pastel-ambar);
 }
 
 .grafica-envoltorio {
@@ -1218,7 +1218,7 @@
   gap: 4px;
   font-family: var(--fuente-codigo);
   font-size: 0.8125rem;
-  color: #10b981;
+  color: var(--color-pastel-verde);
 }
 
 .insignia-op {
@@ -1259,7 +1259,7 @@
 }
 
 .evento-icono-conectar {
-  color: #10b981;
+  color: var(--color-pastel-azul);
   flex-shrink: 0;
 }
 
@@ -1312,27 +1312,27 @@
 }
 
 .insignia-tipo-mod {
-  background-color: #1e3a2f;
-  color: #6ee7b7;
-  border: 1px solid #059669;
+  background-color: var(--color-pastel-verde-fondo);
+  color: var(--color-pastel-verde);
+  border: 1px solid var(--color-pastel-verde-borde);
 }
 
 .insignia-tipo-config {
-  background-color: #1e293b;
-  color: #93c5fd;
-  border: 1px solid #3b82f6;
+  background-color: var(--color-pastel-azul-fondo);
+  color: var(--color-pastel-azul);
+  border: 1px solid var(--color-pastel-azul-borde);
 }
 
 .insignia-tipo-mundo {
-  background-color: #2e2617;
-  color: #fcd34d;
-  border: 1px solid #d97706;
+  background-color: var(--color-pastel-violeta-fondo);
+  color: var(--color-pastel-violeta);
+  border: 1px solid var(--color-pastel-violeta-borde);
 }
 
 .insignia-tipo-log {
-  background-color: #1f2937;
-  color: #9ca3af;
-  border: 1px solid #374151;
+  background-color: var(--color-pastel-gris-fondo);
+  color: var(--color-pastel-gris);
+  border: 1px solid var(--color-pastel-gris-borde);
 }
 
 .insignia-tipo-general {

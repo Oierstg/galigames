@@ -1,4 +1,4 @@
-/* Vista Inicio / Landing Page (Gamer Friendly & Enterprise Green - Estilo Hostinger) */
+/* Vista Inicio / Landing Page (Moderna & Enterprise - Dark Mode Sobrio) */
 .hero-seccion {
   padding-top: var(--espacio-64);
   padding-bottom: var(--espacio-48);
@@ -32,7 +32,7 @@
   font-size: 0.8125rem;
   font-weight: 600;
   margin-bottom: var(--espacio-20);
-  box-shadow: 0 0 12px rgba(5, 150, 105, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .hero-titulo {
@@ -46,7 +46,7 @@
 
 .hero-titulo span {
   color: var(--color-acento-primario);
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -157,7 +157,7 @@
   align-items: center;
   gap: var(--espacio-8);
   padding: 8px 14px;
-  background-color: rgba(15, 23, 18, 0.88);
+  background-color: rgba(22, 22, 25, 0.9);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.12);

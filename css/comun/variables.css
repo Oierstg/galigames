@@ -1,42 +1,67 @@
 :root {
-  /* Escala Cromática Neutra (Matte Forest & Slate Enterprise) */
-  --color-fondo-base: #090e0b;
-  --color-fondo-superficie: #0f1712;
-  --color-fondo-tarjeta: #131f18;
-  --color-fondo-elevado: #18281f;
-  --color-fondo-sutil: #111a14;
+  /* Escala Cromática Neutra (Charcoal, Zinc & Slate Enterprise - Cero verde de fondo) */
+  --color-fondo-base: #09090b;       /* Zinc 950: Fondo base neutro profundo y sobrio */
+  --color-fondo-superficie: #111114; /* Superficie secundaria profunda */
+  --color-fondo-tarjeta: #161619;    /* Paneles principales y tarjetas integradas */
+  --color-fondo-elevado: #202024;    /* Elementos interactivos, chips y hover */
+  --color-fondo-sutil: #131316;      /* Alternancia suave de filas */
 
-  /* Bordes y Líneas Divisoras (Líneas finas de 1px sin resplandor) */
-  --color-borde-tenue: rgba(255, 255, 255, 0.07);
-  --color-borde-medio: rgba(255, 255, 255, 0.12);
-  --color-borde-foco: #059669;
+  /* Bordes y Líneas Divisoras (Líneas finas de 1px matemáticas y sutiles) */
+  --color-borde-tenue: rgba(255, 255, 255, 0.08);
+  --color-borde-medio: rgba(255, 255, 255, 0.14);
+  --color-borde-foco: #6366f1;
 
-  /* Escala Tipográfica de Alta Legibilidad y Contraste */
-  --color-texto-principal: #f9fafb;
-  --color-texto-secundario: #9ca3af;
-  --color-texto-atenuado: #6b7280;
-  --color-texto-terciario: #4b5563;
-  --color-texto-inverso: #090e0b;
+  /* Escala Tipográfica Neutra de Alta Legibilidad y Contraste */
+  --color-texto-principal: #f4f4f5;  /* Blanco zinc nítido */
+  --color-texto-secundario: #a1a1aa;  /* Gris medio de alta legibilidad */
+  --color-texto-atenuado: #71717a;    /* Gris secundario tenue */
+  --color-texto-terciario: #52525b;   /* Gris de soporte sutil */
+  --color-texto-inverso: #09090b;
 
-  /* Acento Institucional Verde Esmeralda (Mate Corporativo, Cero Neón) */
-  --color-acento-primario: #059669;
-  --color-acento-hover: #047857;
-  --color-acento-activo: #065f46;
-  --color-acento-superficie: rgba(5, 150, 105, 0.1);
-  --color-acento-borde: rgba(5, 150, 105, 0.28);
+  /* Acento Institucional Índigo Zafiro (Sobrio, Moderno, Cero Neón) */
+  --color-acento-primario: #4f46e5;
+  --color-acento-hover: #4338ca;
+  --color-acento-activo: #3730a3;
+  --color-acento-superficie: rgba(99, 102, 241, 0.1);
+  --color-acento-borde: rgba(99, 102, 241, 0.25);
+
+  /* Paleta Pastel Sofisticada (Para badges, estados, chips e indicadores de motor) */
+  --color-pastel-azul: #93c5fd;
+  --color-pastel-azul-fondo: rgba(59, 130, 246, 0.1);
+  --color-pastel-azul-borde: rgba(59, 130, 246, 0.22);
+
+  --color-pastel-violeta: #c4b5fd;
+  --color-pastel-violeta-fondo: rgba(139, 92, 246, 0.1);
+  --color-pastel-violeta-borde: rgba(139, 92, 246, 0.22);
+
+  --color-pastel-rosa: #f472b6;
+  --color-pastel-rosa-fondo: rgba(236, 72, 153, 0.1);
+  --color-pastel-rosa-borde: rgba(236, 72, 153, 0.22);
+
+  --color-pastel-ambar: #fcd34d;
+  --color-pastel-ambar-fondo: rgba(245, 158, 11, 0.1);
+  --color-pastel-ambar-borde: rgba(245, 158, 11, 0.22);
+
+  --color-pastel-verde: #86efac;
+  --color-pastel-verde-fondo: rgba(34, 197, 94, 0.1);
+  --color-pastel-verde-borde: rgba(34, 197, 94, 0.22);
+
+  --color-pastel-gris: #d4d4d8;
+  --color-pastel-gris-fondo: rgba(255, 255, 255, 0.05);
+  --color-pastel-gris-borde: rgba(255, 255, 255, 0.12);
 
   /* Estados Funcionales Sobrios */
   --color-exito: #10b981;
-  --color-exito-fondo: rgba(16, 185, 129, 0.08);
-  --color-exito-borde: rgba(16, 185, 129, 0.2);
+  --color-exito-fondo: rgba(16, 185, 129, 0.1);
+  --color-exito-borde: rgba(16, 185, 129, 0.22);
 
-  --color-alerta: #d97706;
-  --color-alerta-fondo: rgba(217, 119, 6, 0.08);
-  --color-alerta-borde: rgba(217, 119, 6, 0.2);
+  --color-alerta: #f59e0b;
+  --color-alerta-fondo: rgba(245, 158, 11, 0.1);
+  --color-alerta-borde: rgba(245, 158, 11, 0.22);
 
-  --color-peligro: #dc2626;
-  --color-peligro-fondo: rgba(220, 38, 38, 0.08);
-  --color-peligro-borde: rgba(220, 38, 38, 0.2);
+  --color-peligro: #ef4444;
+  --color-peligro-fondo: rgba(239, 68, 68, 0.1);
+  --color-peligro-borde: rgba(239, 68, 68, 0.22);
 
   /* Tipografía */
   --fuente-principal: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
