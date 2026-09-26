@@ -1,23 +1,22 @@
-/* Vista Inicio / Landing Page (Moderna & Enterprise - Dark Mode Sobrio) */
+/* ==========================================================================
+   Vista Inicio / Landing Page (Natural, Integrada y Fluida - Cero Cajas Rígidas)
+   ========================================================================== */
+
+/* 1. Hero Principal */
 .hero-seccion {
-  padding-top: var(--espacio-64);
-  padding-bottom: var(--espacio-48);
+  padding-top: var(--espacio-80);
+  padding-bottom: var(--espacio-64);
   position: relative;
+  overflow: hidden;
 }
 
-.hero-contenedor-rejilla {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
+.hero-contenedor {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--espacio-48);
-}
-
-@media (max-width: 992px) {
-  .hero-contenedor-rejilla {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: var(--espacio-40);
-  }
+  text-align: center;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
 .hero-insignia {
@@ -31,17 +30,17 @@
   color: var(--color-acento-primario);
   font-size: 0.8125rem;
   font-weight: 600;
-  margin-bottom: var(--espacio-20);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  margin-bottom: var(--espacio-24);
 }
 
 .hero-titulo {
-  font-size: clamp(2.3rem, 4.8vw, 3.5rem);
+  font-size: clamp(2.4rem, 5vw, 3.75rem);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
   color: var(--color-texto-principal);
   margin-bottom: var(--espacio-20);
+  max-width: 820px;
 }
 
 .hero-titulo span {
@@ -52,25 +51,19 @@
 }
 
 .hero-subtitulo {
-  font-size: 1.0625rem;
+  font-size: clamp(1rem, 1.8vw, 1.125rem);
   line-height: 1.65;
   color: var(--color-texto-secundario);
-  margin-bottom: var(--espacio-28);
-  max-width: 600px;
-}
-
-@media (max-width: 992px) {
-  .hero-subtitulo {
-    margin-left: auto;
-    margin-right: auto;
-  }
+  margin-bottom: var(--espacio-32);
+  max-width: 640px;
 }
 
 .hero-acciones {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--espacio-16);
-  margin-bottom: var(--espacio-32);
+  margin-bottom: var(--espacio-48);
 }
 
 .hero-acciones .boton-primario svg {
@@ -79,12 +72,6 @@
 
 .hero-acciones .boton-primario:hover svg {
   transform: translateX(3px);
-}
-
-@media (max-width: 992px) {
-  .hero-acciones {
-    justify-content: center;
-  }
 }
 
 @media (max-width: 600px) {
@@ -97,518 +84,361 @@
   }
 }
 
-/* Puntos Clave de Confianza (Pills Horizontales Estilo Hostinger) */
-.hero-puntos-clave {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--espacio-12);
-  margin-top: var(--espacio-8);
-}
-
-@media (max-width: 992px) {
-  .hero-puntos-clave {
-    justify-content: center;
-  }
-}
-
-.hero-punto-item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--espacio-8);
-  padding: 6px 14px;
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--color-borde-tenue);
-  border-radius: var(--radio-completo);
-  font-size: 0.8125rem;
-  color: var(--color-texto-secundario);
-  font-weight: 500;
-  transition: border-color var(--transicion-rapida), color var(--transicion-rapida);
-}
-
-.hero-punto-item:hover {
-  border-color: var(--color-borde-medio);
-  color: var(--color-texto-principal);
-}
-
-.hero-punto-item svg {
-  color: var(--color-acento-primario);
-  flex-shrink: 0;
-}
-
-/* Tarjeta Visual de Hero con Imagen Real y Micro-Badges */
-.hero-tarjeta-imagen {
+/* Vista previa cinemática que se integra suavemente con la página */
+.hero-vista-previa {
   position: relative;
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-xl);
-  overflow: hidden;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
-  transition: border-color var(--transicion-normal), transform var(--transicion-normal);
-}
-
-.hero-tarjeta-imagen:hover {
-  border-color: var(--color-acento-borde);
-  transform: translateY(-2px);
-}
-
-.hero-flotante {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--espacio-8);
-  padding: 8px 14px;
-  background-color: rgba(22, 22, 25, 0.9);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radio-lg);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-texto-principal);
-  box-shadow: var(--sombra-md);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.hero-flotante .texto-acento {
-  color: var(--color-acento-primario);
-}
-
-.hero-flotante-ping {
-  top: 16px;
-  right: 16px;
-}
-
-.hero-flotante-uptime {
-  bottom: 64px;
-  left: 16px;
-}
-
-.hero-imagen-principal {
   width: 100%;
-  height: 400px;
+  max-width: 980px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--color-borde-medio);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.hero-vista-imagen {
+  width: 100%;
+  height: 420px;
   object-fit: cover;
   display: block;
 }
 
-.hero-imagen-pie {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--espacio-12) var(--espacio-20);
-  background-color: var(--color-fondo-superficie);
-  border-top: 1px solid var(--color-borde-tenue);
-  font-size: 0.8125rem;
+.hero-vista-degradado {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(9, 9, 11, 0.75) 0%, rgba(9, 9, 11, 0) 40%);
+  pointer-events: none;
 }
 
-.hero-imagen-estado {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-8);
-  color: var(--color-texto-principal);
-  font-weight: 500;
-}
-
-.hero-imagen-version {
-  color: var(--color-acento-primario);
-  font-family: var(--fuente-codigo);
-  font-weight: 600;
-}
-
-/* Cinta de Ventajas / Hostinger Feature Highlights */
-.seccion-ventajas-cinta {
-  padding-top: var(--espacio-16);
+/* 2. Flujo de Ventajas Esenciales (Abierto, Sin Cajas ni Bordes Rígidos) */
+.seccion-ventajas-flujo {
+  padding-top: var(--espacio-48);
   padding-bottom: var(--espacio-64);
+  border-top: 1px solid var(--color-borde-tenue);
+  border-bottom: 1px solid var(--color-borde-tenue);
 }
 
-.ventajas-barra {
+.ventajas-fila-abierta {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--espacio-20);
+  gap: var(--espacio-32);
 }
 
-@media (max-width: 1024px) {
-  .ventajas-barra {
+@media (max-width: 992px) {
+  .ventajas-fila-abierta {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--espacio-32) var(--espacio-24);
   }
 }
 
-@media (max-width: 640px) {
-  .ventajas-barra {
+@media (max-width: 560px) {
+  .ventajas-fila-abierta {
     grid-template-columns: 1fr;
-    gap: var(--espacio-16);
+    gap: var(--espacio-24);
   }
 }
 
-.ventaja-item {
+.ventaja-columna {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: var(--espacio-16);
-  padding: var(--espacio-24) var(--espacio-20);
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-xl);
-  transition: transform var(--transicion-normal), border-color var(--transicion-normal), box-shadow var(--transicion-normal);
-  box-shadow: var(--sombra-sm);
+  gap: var(--espacio-8);
 }
 
-.ventaja-item:hover {
-  transform: translateY(-3px);
-  border-color: var(--color-acento-borde);
-  box-shadow: var(--sombra-md);
-}
-
-.ventaja-icono {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+.ventaja-icono-simple {
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-acento-superficie);
-  border: 1px solid var(--color-acento-borde);
-  border-radius: var(--radio-lg);
-  color: var(--color-acento-primario);
-}
-
-.ventaja-icono svg {
-  width: 22px;
-  height: 22px;
-}
-
-.ventaja-texto {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-}
-
-.ventaja-texto strong {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--color-texto-principal);
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-}
-
-.ventaja-texto span {
-  font-size: 0.875rem;
-  color: var(--color-texto-secundario);
-  line-height: 1.45;
-}
-
-/* Sección de Planes y Tarifas (4GB por 7€ y 6GB por 9€) */
-.seccion-espaciada {
-  padding-top: var(--espacio-64);
-  padding-bottom: var(--espacio-64);
-}
-
-.seccion-encabezado {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto var(--espacio-48);
-}
-
-.seccion-titulo {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-texto-principal);
-  margin-bottom: var(--espacio-8);
-}
-
-.seccion-bajada {
-  font-size: 1rem;
-  color: var(--color-texto-secundario);
-}
-
-.planes-rejilla {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--espacio-32);
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .planes-rejilla {
-    grid-template-columns: 1fr;
-  }
-}
-
-.tarjeta-plan {
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-xl);
-  padding: var(--espacio-32);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  transition: transform var(--transicion-normal), border-color var(--transicion-normal);
-}
-
-.tarjeta-plan:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-borde-foco);
-}
-
-.tarjeta-plan-destacada {
-  border-color: var(--color-acento-primario);
-  background-color: var(--color-fondo-elevado);
-  box-shadow: var(--sombra-md);
-}
-
-.plan-etiqueta-superior {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--color-acento-primario);
-  color: #ffffff;
-  padding: 4px var(--espacio-12);
-  border-radius: var(--radio-completo);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.plan-cabecera {
-  margin-bottom: var(--espacio-24);
-}
-
-.plan-nombre {
-  font-size: 1.375rem;
-  font-weight: 700;
-  color: var(--color-texto-principal);
+  color: var(--color-pastel-azul);
   margin-bottom: var(--espacio-4);
 }
 
-.plan-descripcion {
-  font-size: 0.875rem;
-  color: var(--color-texto-secundario);
-  min-height: 42px;
-}
-
-.plan-precio-bloque {
-  display: flex;
-  align-items: baseline;
-  gap: var(--espacio-4);
-  margin-bottom: var(--espacio-24);
-  padding-bottom: var(--espacio-24);
-  border-bottom: 1px solid var(--color-borde-tenue);
-}
-
-.plan-monto {
-  font-size: 2.75rem;
-  font-weight: 800;
+.ventaja-titulo {
+  font-size: 1.0625rem;
+  font-weight: 600;
   color: var(--color-texto-principal);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.01em;
 }
 
-.plan-periodo {
-  font-size: 0.9375rem;
-  color: var(--color-texto-atenuado);
-}
-
-.plan-caracteristicas {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-12);
-  margin-bottom: var(--espacio-32);
-}
-
-.plan-caracteristica-item {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio-12);
+.ventaja-descripcion {
   font-size: 0.875rem;
   color: var(--color-texto-secundario);
+  line-height: 1.55;
 }
 
-.plan-caracteristica-item svg {
-  color: var(--color-exito);
-  flex-shrink: 0;
+/* 3. Sección Showcase del Panel (Integrada) */
+.seccion-showcase-panel {
+  padding-top: var(--espacio-80);
+  padding-bottom: var(--espacio-80);
 }
 
-/* Sección Showcase del Panel de Control */
-.seccion-panel-showcase {
-  background-color: var(--color-fondo-superficie);
-  border-top: 1px solid var(--color-borde-tenue);
-  border-bottom: 1px solid var(--color-borde-tenue);
+.seccion-encabezado-limpio {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto var(--espacio-48);
 }
 
-.showcase-contenedor {
-  max-width: 1040px;
-  margin: 0 auto;
+.seccion-titulo-limpio {
+  font-size: clamp(1.75rem, 3.2vw, 2.375rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-texto-principal);
+  margin-bottom: var(--espacio-12);
+  line-height: 1.25;
 }
 
-.showcase-captura-caja {
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-xl);
+.seccion-bajada-limpia {
+  font-size: 1rem;
+  color: var(--color-texto-secundario);
+  line-height: 1.6;
+}
+
+.showcase-marco-integrado {
+  max-width: 1000px;
+  margin: 0 auto var(--espacio-48);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: var(--sombra-lg);
-  margin-bottom: var(--espacio-32);
+  border: 1px solid var(--color-borde-medio);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6);
 }
 
-.showcase-imagen {
+.showcase-imagen-fluida {
   width: 100%;
   height: auto;
   display: block;
 }
 
-.showcase-caracteristicas-rejilla {
+.showcase-puntos-claros {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--espacio-24);
+  gap: var(--espacio-32);
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
-  .showcase-caracteristicas-rejilla {
+  .showcase-puntos-claros {
     grid-template-columns: 1fr;
+    gap: var(--espacio-24);
   }
 }
 
-.tarjeta-caracteristica-showcase {
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-tenue);
-  border-radius: var(--radio-lg);
-  padding: var(--espacio-20);
+.showcase-punto-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-12);
 }
 
-.caracteristica-icono-bloque {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radio-md);
-  background-color: var(--color-acento-superficie);
-  color: var(--color-acento-primario);
+.showcase-punto-indicador {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--color-pastel-azul-fondo);
+  color: var(--color-pastel-azul);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--espacio-12);
-  border: 1px solid var(--color-acento-borde);
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.caracteristica-showcase-titulo {
-  font-size: 1rem;
-  font-weight: 700;
+.showcase-punto-titulo {
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--color-texto-principal);
-  margin-bottom: var(--espacio-8);
+  margin-bottom: var(--espacio-4);
 }
 
-.caracteristica-showcase-texto {
+.showcase-punto-desc {
   font-size: 0.875rem;
   color: var(--color-texto-secundario);
   line-height: 1.5;
 }
 
-/* Sección Mods Destacada */
-.seccion-mods-destacada {
-  border-bottom: 1px solid var(--color-borde-tenue);
+/* 4. Sección Mods y Libertad de Juego */
+.seccion-narrativa-mods {
+  padding-top: var(--espacio-64);
+  padding-bottom: var(--espacio-80);
+  border-top: 1px solid var(--color-borde-tenue);
 }
 
-.mods-contenedor-rejilla {
+.mods-narrativa-rejilla {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: 1fr 1.15fr;
   align-items: center;
   gap: var(--espacio-48);
 }
 
 @media (max-width: 992px) {
-  .mods-contenedor-rejilla {
+  .mods-narrativa-rejilla {
     grid-template-columns: 1fr;
+    gap: var(--espacio-36);
   }
 }
 
-.mods-visual-columna {
-  border-radius: var(--radio-xl);
+.mods-narrativa-visual {
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--color-borde-medio);
-  box-shadow: var(--sombra-lg);
+  box-shadow: 0 15px 35px -8px rgba(0, 0, 0, 0.5);
 }
 
-.mods-imagen {
+.mods-imagen-organica {
   width: 100%;
-  height: 360px;
+  height: 380px;
   object-fit: cover;
   display: block;
 }
 
-.mods-plataformas-chips {
+.mods-narrativa-texto {
   display: flex;
-  align-items: center;
-  gap: var(--espacio-8);
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mods-insignias-flujo {
+  display: flex;
   flex-wrap: wrap;
+  gap: var(--espacio-8);
   margin-top: var(--espacio-24);
 }
 
-.mods-chip {
-  padding: 6px 14px;
-  background-color: var(--color-fondo-elevado);
-  border: 1px solid var(--color-borde-medio);
-  border-radius: var(--radio-md);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-texto-principal);
+/* 5. Sección de Tarifas y Precios (Superficie Unificada Sin Cajas Separadas) */
+.seccion-tarifas-integrada {
+  padding-top: var(--espacio-80);
+  padding-bottom: var(--espacio-80);
+  border-top: 1px solid var(--color-borde-tenue);
 }
 
-/* Catálogo de Juegos */
-.catalogo-rejilla {
+.tarifas-superficie-unificada {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--espacio-24);
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 920px;
+  margin: 0 auto;
+  background-color: var(--color-fondo-tarjeta);
+  border: 1px solid var(--color-borde-medio);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--sombra-md);
 }
 
-.tarjeta-juego {
-  background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-tenue);
-  border-radius: var(--radio-xl);
-  padding: var(--espacio-24);
+@media (max-width: 800px) {
+  .tarifas-superficie-unificada {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tarifa-bloque-lado {
+  padding: var(--espacio-40);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform var(--transicion-normal), border-color var(--transicion-normal);
+  position: relative;
 }
 
-.tarjeta-juego:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-borde-medio);
+.tarifa-bloque-lado:first-child {
+  border-right: 1px solid var(--color-borde-tenue);
 }
 
-.tarjeta-juego-destacada {
-  border-color: var(--color-acento-borde);
+@media (max-width: 800px) {
+  .tarifa-bloque-lado:first-child {
+    border-right: none;
+    border-bottom: 1px solid var(--color-borde-tenue);
+  }
 }
 
-.tarjeta-juego-cabecera {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: var(--espacio-16);
+.tarifa-bloque-destacada {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
-.tarjeta-juego-icono {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radio-lg);
-  background-color: var(--color-fondo-elevado);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-acento-primario);
-  border: 1px solid var(--color-borde-tenue);
+.tarifa-etiqueta-destacada {
+  position: absolute;
+  top: 16px;
+  right: 20px;
 }
 
-.tarjeta-juego-titulo {
-  font-size: 1.25rem;
-  font-weight: 600;
+.tarifa-lado-cabecera {
+  margin-bottom: var(--espacio-28);
+}
+
+.tarifa-nombre {
+  font-size: 1.375rem;
+  font-weight: 700;
   color: var(--color-texto-principal);
-  margin-bottom: var(--espacio-8);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--espacio-6);
 }
 
-.tarjeta-juego-descripcion {
+.tarifa-subtexto {
   font-size: 0.875rem;
   color: var(--color-texto-secundario);
-  margin-bottom: var(--espacio-20);
-  min-height: 44px;
+  line-height: 1.45;
+  min-height: 38px;
+}
+
+.tarifa-precio-fila {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espacio-4);
+  margin-top: var(--espacio-16);
+  padding-bottom: var(--espacio-20);
+  border-bottom: 1px solid var(--color-borde-tenue);
+}
+
+.tarifa-precio-cifra {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-texto-principal);
+  letter-spacing: -0.03em;
+}
+
+.tarifa-precio-mes {
+  font-size: 0.9375rem;
+  color: var(--color-texto-atenuado);
+}
+
+.tarifa-lista-puntos {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--espacio-36) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-16);
+}
+
+.tarifa-lista-puntos li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-12);
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  line-height: 1.45;
+}
+
+.tarifa-lista-puntos li svg {
+  color: var(--color-pastel-verde);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.tarifa-lado-accion {
+  margin-top: auto;
+}
+
+/* Nota sutil de próximos juegos */
+.seccion-proximos-juegos-sutil {
+  text-align: center;
+  max-width: 620px;
+  margin: var(--espacio-32) auto 0;
+}
+
+.proximos-juegos-texto {
+  font-size: 0.875rem;
+  color: var(--color-texto-atenuado);
+  line-height: 1.5;
+}
+
+.proximos-juegos-texto strong {
+  color: var(--color-texto-secundario);
 }
