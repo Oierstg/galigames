@@ -131,12 +131,12 @@ export function inicializarPiePagina(prefijoRuta = '../..') {
         </div>
 
         <div>
-          <h4 class="pie-pagina-columna-titulo">Infraestructura</h4>
+          <h4 class="pie-pagina-columna-titulo">Garantías</h4>
           <ul class="pie-pagina-lista">
-            <li><span class="pie-pagina-enlace">Nodo: galigamesbackend.duckdns.org</span></li>
-            <li><span class="pie-pagina-enlace">Aislamiento: Docker Containers</span></li>
-            <li><span class="pie-pagina-enlace">Minecraft: Paper, Fabric, Forge</span></li>
-            <li><span class="pie-pagina-enlace">Tarifa fija: 6,00 € / mes</span></li>
+            <li><span class="pie-pagina-enlace">Servidores 24/7 sin caídas</span></li>
+            <li><span class="pie-pagina-enlace">Copias de seguridad descargables</span></li>
+            <li><span class="pie-pagina-enlace">Minecraft Java y Bedrock</span></li>
+            <li><span class="pie-pagina-enlace">Desde 7,00 € / mes</span></li>
           </ul>
         </div>
       </div>

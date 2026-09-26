@@ -37,7 +37,7 @@
   color: var(--color-texto-secundario);
 }
 
-/* Tarjetas de Estadísticas Globales (Estilo Hostinger Overview) */
+/* Tarjetas de Estadísticas Globales Integradas */
 .resumen-estadisticas-rejilla {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -53,12 +53,18 @@
 
 .tarjeta-estadistica {
   background-color: var(--color-fondo-tarjeta);
-  border: 1px solid var(--color-borde-medio);
+  border: 1px solid var(--color-borde-tenue);
   border-radius: var(--radio-lg);
   padding: var(--espacio-20);
   display: flex;
   align-items: center;
   gap: var(--espacio-16);
+  box-shadow: var(--sombra-sm);
+  transition: border-color var(--transicion-rapida);
+}
+
+.tarjeta-estadistica:hover {
+  border-color: var(--color-borde-medio);
 }
 
 .tarjeta-estadistica-icono {
@@ -173,6 +179,9 @@
   font-size: 0.8125rem;
   color: var(--color-texto-principal);
   margin-top: var(--espacio-4);
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 
 .servidor-ip-copiar {

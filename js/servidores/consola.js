@@ -10,6 +10,30 @@ let archivoEnEdicion = null;
 let archivosEnMemoria = [];
 let elementoARenombrar = null;
 let elementosSeleccionados = new Set();
+let hayAjustesPendientes = false;
+
+function marcarAjustesPendientes(hayCambios) {
+  hayAjustesPendientes = hayCambios;
+  const btnIniciar = document.getElementById('btn-iniciar-servidor');
+  const aviso = document.getElementById('aviso-ajustes-pendientes');
+
+  if (aviso) {
+    aviso.hidden = !hayCambios;
+  }
+
+  if (btnIniciar) {
+    if (hayCambios) {
+      btnIniciar.disabled = true;
+      btnIniciar.title = 'Debes guardar los ajustes antes de iniciar el servidor';
+      btnIniciar.classList.add('bloqueado-ajustes');
+    } else {
+      const estaEnLinea = servidorActual && servidorActual.estado === 'en_linea';
+      btnIniciar.disabled = estaEnLinea;
+      btnIniciar.title = estaEnLinea ? 'El servidor ya está en línea' : 'Iniciar servidor';
+      btnIniciar.classList.remove('bloqueado-ajustes');
+    }
+  }
+}
 
 // Estado en memoria de ajustes de servidor
 const estadoAjustes = {
@@ -126,6 +150,16 @@ async function cargarDatosServidor(id) {
         mostrarNotificacion('¡Dirección copiada para Minecraft!', 'exito');
       });
     }
+
+    const btnCopiarDetalles = document.getElementById('btn-copiar-ip-detalles');
+    if (btnCopiarDetalles) {
+      btnCopiarDetalles.addEventListener('click', () => {
+        navigator.clipboard.writeText(servidorActual.direccionConexion);
+        mostrarNotificacion('¡Dirección copiada para entrar al juego!', 'exito');
+      });
+    }
+
+    marcarAjustesPendientes(false);
   } catch (error) {
     mostrarNotificacion(error.message, 'error');
   }
@@ -141,6 +175,8 @@ function actualizarInsigniaEstado(estado) {
     <span class="insignia-punto"></span>
     ${esEnLinea ? 'En línea' : 'Apagado'}
   `;
+
+  marcarAjustesPendientes(hayAjustesPendientes);
 }
 
 async function actualizarLogs(id) {
@@ -170,6 +206,11 @@ function configurarControles(id) {
   const campoComando = document.getElementById('campo-comando');
 
   btnIniciar.addEventListener('click', async () => {
+    if (hayAjustesPendientes) {
+      mostrarNotificacion('No puedes iniciar el servidor hasta que no hayas guardado los ajustes.', 'alerta');
+      return;
+    }
+
     btnIniciar.disabled = true;
     try {
       await api.servidores.iniciar(id);
@@ -180,7 +221,7 @@ function configurarControles(id) {
     } catch (e) {
       mostrarNotificacion(e.message, 'error');
     } finally {
-      btnIniciar.disabled = false;
+      marcarAjustesPendientes(hayAjustesPendientes);
     }
   });
 
@@ -252,16 +293,18 @@ function configurarAjustesServidor(servidorId) {
       botonesEdicion.forEach(b => b.classList.remove('seleccionada'));
       btn.classList.add('seleccionada');
       estadoAjustes.edicion = btn.dataset.edicionVal;
+      marcarAjustesPendientes(true);
     });
   });
 
-  // Selector Loaders (NeoForge, Paper, Forge, Fabric, etc.)
+  // Selector Loaders (Paper, Fabric, Forge, NeoForge, etc.)
   const tarjetasLoader = document.querySelectorAll('[data-loader-val]');
   tarjetasLoader.forEach(tarjeta => {
     tarjeta.addEventListener('click', () => {
       tarjetasLoader.forEach(t => t.classList.remove('seleccionada'));
       tarjeta.classList.add('seleccionada');
       estadoAjustes.plataforma = tarjeta.dataset.loaderVal;
+      marcarAjustesPendientes(true);
     });
 
     tarjeta.addEventListener('keydown', (e) => {
@@ -279,6 +322,7 @@ function configurarAjustesServidor(servidorId) {
 
   if (selectVersion) {
     selectVersion.addEventListener('change', () => {
+      marcarAjustesPendientes(true);
       if (selectVersion.value === 'personalizada') {
         if (wrapperPersonalizada) wrapperPersonalizada.hidden = false;
         if (inputPersonalizada) inputPersonalizada.focus();
@@ -292,6 +336,7 @@ function configurarAjustesServidor(servidorId) {
   if (inputPersonalizada) {
     inputPersonalizada.addEventListener('input', (e) => {
       estadoAjustes.version = e.target.value.trim() || '1.20.4';
+      marcarAjustesPendientes(true);
     });
   }
 
@@ -300,23 +345,38 @@ function configurarAjustesServidor(servidorId) {
   if (selectJava) {
     selectJava.addEventListener('change', () => {
       estadoAjustes.javaVersion = selectJava.value;
+      marcarAjustesPendientes(true);
     });
   }
 
-  // Botones de Guardar (cabecera y pie)
+  // Campos de texto y selección de partida
+  const inputNombre = document.getElementById('ajustes-campo-nombre');
+  const inputSubdominio = document.getElementById('ajustes-campo-subdominio');
+  const inputMotd = document.getElementById('ajustes-campo-motd');
+  const selectDificultad = document.getElementById('ajustes-campo-dificultad');
+  const selectGamemode = document.getElementById('ajustes-campo-gamemode');
+  const inputMaxJugadores = document.getElementById('ajustes-campo-max-jugadores');
+  const checkPvp = document.getElementById('ajustes-campo-pvp');
+  const checkWhitelist = document.getElementById('ajustes-campo-whitelist');
+
+  [inputNombre, inputSubdominio, inputMotd, inputMaxJugadores].forEach(campo => {
+    if (campo) {
+      campo.addEventListener('input', () => marcarAjustesPendientes(true));
+    }
+  });
+
+  [selectDificultad, selectGamemode, checkPvp, checkWhitelist].forEach(campo => {
+    if (campo) {
+      campo.addEventListener('change', () => marcarAjustesPendientes(true));
+    }
+  });
+
+  // Botones de Guardar (cabecera, pie y banner de aviso)
   const btnGuardarCabecera = document.getElementById('btn-guardar-ajustes');
   const btnGuardarPie = document.getElementById('btn-guardar-ajustes-pie');
+  const btnGuardarBanner = document.getElementById('btn-guardar-aviso-banner');
 
   const ejecutarGuardado = async () => {
-    const inputNombre = document.getElementById('ajustes-campo-nombre');
-    const inputSubdominio = document.getElementById('ajustes-campo-subdominio');
-    const inputMotd = document.getElementById('ajustes-campo-motd');
-    const selectDificultad = document.getElementById('ajustes-campo-dificultad');
-    const selectGamemode = document.getElementById('ajustes-campo-gamemode');
-    const inputMaxJugadores = document.getElementById('ajustes-campo-max-jugadores');
-    const checkPvp = document.getElementById('ajustes-campo-pvp');
-    const checkWhitelist = document.getElementById('ajustes-campo-whitelist');
-
     const nombre = inputNombre ? inputNombre.value.trim() : estadoAjustes.nombre;
     const subdominio = inputSubdominio ? inputSubdominio.value.trim().toLowerCase() : estadoAjustes.subdominio;
     const motd = inputMotd ? inputMotd.value.trim() : estadoAjustes.motd;
@@ -344,12 +404,14 @@ function configurarAjustesServidor(servidorId) {
     try {
       if (btnGuardarCabecera) btnGuardarCabecera.disabled = true;
       if (btnGuardarPie) btnGuardarPie.disabled = true;
-      mostrarNotificacion('Aplicando ajustes y reiniciando contenedor con el nuevo motor...', 'info');
+      if (btnGuardarBanner) btnGuardarBanner.disabled = true;
+      mostrarNotificacion('Guardando ajustes en el servidor...', 'info');
 
       await api.servidores.actualizarConfiguracion(servidorId, payload);
       await api.servidores.reiniciar(servidorId);
 
-      mostrarNotificacion('Ajustes guardados. Servidor reiniciándose con éxito.', 'exito');
+      marcarAjustesPendientes(false);
+      mostrarNotificacion('¡Ajustes guardados con éxito! El servidor ya puede iniciarse con los nuevos cambios.', 'exito');
       await cargarDatosServidor(servidorId);
       await actualizarLogs(servidorId);
     } catch (err) {
@@ -357,11 +419,13 @@ function configurarAjustesServidor(servidorId) {
     } finally {
       if (btnGuardarCabecera) btnGuardarCabecera.disabled = false;
       if (btnGuardarPie) btnGuardarPie.disabled = false;
+      if (btnGuardarBanner) btnGuardarBanner.disabled = false;
     }
   };
 
   if (btnGuardarCabecera) btnGuardarCabecera.addEventListener('click', ejecutarGuardado);
   if (btnGuardarPie) btnGuardarPie.addEventListener('click', ejecutarGuardado);
+  if (btnGuardarBanner) btnGuardarBanner.addEventListener('click', ejecutarGuardado);
 }
 
 function cargarValoresEnFormularioAjustes() {
@@ -1097,7 +1161,7 @@ async function cargarArchivos(servidorId, ruta = '') {
       return;
     }
 
-    rutaActualArchivos = res.rutaActual || '';
+    rutaActualArchivos = (res.rutaActual === '.' || res.rutaActual === './' || !res.rutaActual) ? '' : res.rutaActual;
     renderizarMigas(servidorId, rutaActualArchivos);
 
     archivosEnMemoria = res.elementos || [];
@@ -1113,24 +1177,28 @@ function renderizarMigas(servidorId, ruta) {
 
   contenedor.innerHTML = '';
 
+  const rutaLimpia = (ruta || '')
+    .trim()
+    .replace(/^[./\\]+/, '')
+    .replace(/[./\\]+$/, '');
+  const partes = rutaLimpia ? rutaLimpia.split('/').filter(p => p && p !== '.' && p !== '..') : [];
+
   const btnRaiz = document.createElement('button');
   btnRaiz.type = 'button';
-  btnRaiz.className = `archivos-miga-item ${!ruta ? 'activo' : ''}`;
+  btnRaiz.className = `archivos-miga-item ${partes.length === 0 ? 'activo' : ''}`;
   btnRaiz.dataset.ruta = '';
   btnRaiz.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     <span>raíz</span>
   `;
-  if (ruta) {
+  if (partes.length > 0) {
     btnRaiz.addEventListener('click', () => cargarArchivos(servidorId, ''));
   }
   contenedor.appendChild(btnRaiz);
 
-  if (!ruta) return;
+  if (partes.length === 0) return;
 
-  const partes = ruta.split('/').filter(Boolean);
   let rutaAcumulada = '';
-
   partes.forEach((parte, index) => {
     rutaAcumulada = rutaAcumulada ? `${rutaAcumulada}/${parte}` : parte;
     const esUltima = index === partes.length - 1;
@@ -1169,8 +1237,14 @@ function renderizarFilasArchivos(servidorId, elementos) {
 
   if (estadoVacio) estadoVacio.hidden = true;
 
-  // Subir de nivel (..)
-  if (rutaActualArchivos) {
+  // Subir de nivel (..) - Solo si estamos dentro de una subcarpeta real
+  const rutaLimpia = (rutaActualArchivos || '')
+    .trim()
+    .replace(/^[./\\]+/, '')
+    .replace(/[./\\]+$/, '');
+  const partesSubir = rutaLimpia ? rutaLimpia.split('/').filter(p => p && p !== '.' && p !== '..') : [];
+
+  if (partesSubir.length > 0) {
     const trSubir = document.createElement('tr');
     trSubir.className = 'archivos-fila-item';
     trSubir.innerHTML = `
@@ -1188,9 +1262,9 @@ function renderizarFilasArchivos(servidorId, elementos) {
     `;
     const btnSubirNivel = trSubir.querySelector('[data-accion="subir-nivel"]');
     btnSubirNivel.addEventListener('click', () => {
-      const partes = rutaActualArchivos.split('/').filter(Boolean);
-      partes.pop();
-      cargarArchivos(servidorId, partes.join('/'));
+      const nuevasPartes = [...partesSubir];
+      nuevasPartes.pop();
+      cargarArchivos(servidorId, nuevasPartes.join('/'));
     });
     tablaCuerpo.appendChild(trSubir);
   }

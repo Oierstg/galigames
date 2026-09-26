@@ -25,25 +25,25 @@
     <section class="crear-seccion">
       <div class="contenedor crear-contenedor-flujo">
         <div class="crear-cabecera">
-          <h1 class="crear-titulo">Desplegar Nuevo Servidor</h1>
-          <p class="crear-subtitulo">Tu servidor dedicado de alto rendimiento listo en segundos con subdominio propio y puerto aislado.</p>
+          <h1 class="crear-titulo">Crear Nuevo Servidor</h1>
+          <p class="crear-subtitulo">Tu servidor de Minecraft listo en segundos para que juegues con tus amigos sin complicaciones.</p>
         </div>
 
         <form id="formulario-crear-servidor" class="crear-formulario-card" novalidate>
           <!-- 1. Selección de Juego -->
           <div class="crear-bloque-grupo">
-            <h2 class="crear-bloque-titulo">1. Juego Seleccionado</h2>
+            <h2 class="crear-bloque-titulo">1. Juego</h2>
             <div class="crear-juegos-selector">
               <div class="tarjeta-juego-despliegue seleccionada" tabindex="0">
                 <div class="tarjeta-juego-cabecera">
                   <div class="tarjeta-juego-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                   </div>
-                  <span class="insignia insignia-exito">Disponible Inmediato</span>
+                  <span class="insignia insignia-exito">Listo para usar</span>
                 </div>
                 <div class="tarjeta-juego-cuerpo">
                   <h3 class="tarjeta-juego-nombre">Minecraft</h3>
-                  <p class="tarjeta-juego-desc">Compatible con Java y Bedrock. Soporte nativo para NeoForge, Forge, Fabric, PaperMC, Purpur, Spigot y Vanilla.</p>
+                  <p class="tarjeta-juego-desc">Para jugar desde ordenador (Java) o desde móviles y consolas (Bedrock). Compatible con mods y plugins.</p>
                 </div>
               </div>
             </div>
@@ -51,28 +51,28 @@
 
           <!-- 2. Identificación y Red Escalable -->
           <div class="crear-bloque-grupo">
-            <h2 class="crear-bloque-titulo">2. Identificación y Dirección de Conexión</h2>
+            <h2 class="crear-bloque-titulo">2. Nombre y Dirección</h2>
             <div class="crear-dos-columnas">
               <div class="grupo-campo">
                 <label for="campo-nombre-servidor" class="etiqueta">Nombre de tu servidor</label>
-                <input type="text" id="campo-nombre-servidor" class="campo-texto" placeholder="Ej. Servidor Survival con Amigos" value="Mi Servidor Minecraft" required>
-                <span class="campo-ayuda">Nombre descriptivo visible en tu panel de control.</span>
+                <input type="text" id="campo-nombre-servidor" class="campo-texto" placeholder="Ej. Servidor con Amigos" value="Mi Servidor Minecraft" required>
+                <span class="campo-ayuda">El nombre que verás en tu lista de servidores.</span>
               </div>
 
               <div class="grupo-campo">
-                <label for="campo-subdominio" class="etiqueta">Subdominio Dedicado</label>
+                <label for="campo-subdominio" class="etiqueta">Dirección para entrar</label>
                 <div class="campo-subdominio-envoltorio">
                   <input type="text" id="campo-subdominio" class="campo-texto campo-subdominio-input" placeholder="mi-servidor" value="mi-partida" required pattern="^[a-z0-9-]+$">
                   <span class="subdominio-sufijo">.galigames.net</span>
                 </div>
-                <span class="campo-ayuda">Dirección única para tus jugadores. Se enrutará a tu contenedor dedicado.</span>
+                <span class="campo-ayuda">La dirección que le pasarás a tus amigos para entrar al juego.</span>
               </div>
             </div>
           </div>
 
           <!-- 3. Selección de Tarifa / Plan -->
           <div class="crear-bloque-grupo">
-            <h2 class="crear-bloque-titulo">3. Selecciona tu Plan de Recursos</h2>
+            <h2 class="crear-bloque-titulo">3. Elige tu Plan</h2>
             <div class="rejilla-planes-crear">
               <!-- Plan 4GB (7€) -->
               <div class="tarjeta-plan-crear seleccionada" data-plan="4gb" data-precio="7.00" data-ram="4096" tabindex="0">
@@ -90,11 +90,11 @@
                 <ul class="tarjeta-plan-caracteristicas">
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span><strong>4 GB RAM</strong> Dedicada</span>
+                    <span><strong>4 GB RAM</strong></span>
                   </li>
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span><strong>20 GB</strong> Almacenamiento NVMe</span>
+                    <span><strong>20 GB</strong> Espacio en Disco</span>
                   </li>
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -113,9 +113,9 @@
                   <div class="tarjeta-plan-icono">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                   </div>
-                  <span class="insignia insignia-primaria">Alto Rendimiento</span>
+                  <span class="insignia insignia-primaria">Más Potencia</span>
                 </div>
-                <h3 class="tarjeta-plan-titulo">Plan Pro Modpacks</h3>
+                <h3 class="tarjeta-plan-titulo">Plan Pro</h3>
                 <div class="tarjeta-plan-precio">
                   <span class="plan-precio-cifra">9,00 €</span>
                   <span class="plan-precio-periodo">/ mes</span>
@@ -123,15 +123,15 @@
                 <ul class="tarjeta-plan-caracteristicas">
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span><strong>6 GB RAM</strong> Dedicada</span>
+                    <span><strong>6 GB RAM</strong></span>
                   </li>
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span><strong>40 GB</strong> Almacenamiento NVMe</span>
+                    <span><strong>40 GB</strong> Espacio en Disco</span>
                   </li>
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span>Fluidez máxima con modpacks (+100 mods)</span>
+                    <span>Fluidez máxima para muchos amigos y mods</span>
                   </li>
                   <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -142,15 +142,15 @@
             </div>
           </div>
 
-          <!-- 4. Aviso Informativo: Ajustes Técnicos Centralizados (Estilo Crafty/Hostinger) -->
+          <!-- 4. Aviso Informativo: Todo listo desde el inicio -->
           <div class="aviso-ajustes-centralizados">
             <div class="aviso-icono-envoltorio">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
             <div>
-              <h3 class="aviso-titulo">Configuración Técnica Centralizada en tu Servidor</h3>
+              <h3 class="aviso-titulo">Todo listo para jugar desde el primer minuto</h3>
               <p class="aviso-texto">
-                La edición (Java o Bedrock), el motor (<strong>NeoForge</strong>, Forge, Fabric, PaperMC, Purpur, Spigot o Vanilla) y la versión exacta de Minecraft (desde la <strong>1.21.4</strong> hasta la <strong>1.7.10</strong>) se gestionan al instante dentro de la pestaña <strong>Ajustes de Servidor</strong> del panel de administración.
+                Tu servidor se creará listo para entrar. Además, podrás cambiar la versión de Minecraft o añadir mods cuando quieras desde los ajustes del servidor con un solo clic.
               </p>
             </div>
           </div>

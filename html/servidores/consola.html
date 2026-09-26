@@ -34,13 +34,12 @@
             <div>
               <h1 id="consola-nombre-servidor" class="consola-titulo">Cargando servidor...</h1>
               <div class="consola-metas-fila">
-                <div class="consola-direccion-box" title="Dirección de conexión dedicada">
+                <div class="consola-direccion-box" title="Dirección para entrar al juego">
                   <span id="consola-ip-servidor">...</span>
                   <button type="button" id="btn-copiar-ip-consola" class="boton-fantasma" title="Copiar dirección para Minecraft">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                   </button>
                 </div>
-                <span class="insignia insignia-atenuada" id="consola-token-insignia" title="Identificador de nodo aislado">Nodo: srv-...</span>
               </div>
             </div>
             <span id="consola-estado-insignia" class="insignia insignia-atenuada">
@@ -56,7 +55,20 @@
           </div>
         </div>
 
-        <!-- Pestañas de Navegación de Gestión (Estilo Hostinger / Crafty Controller) -->
+        <!-- Aviso de Ajustes Pendientes (Bloquea el inicio del servidor hasta guardar) -->
+        <div id="aviso-ajustes-pendientes" class="aviso-banner-ajustes" hidden>
+          <div class="aviso-banner-icono">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="aviso-banner-texto">
+            <strong>Tienes cambios sin guardar:</strong> Guarda los ajustes para poder iniciar tu servidor con la nueva configuración.
+          </div>
+          <button type="button" id="btn-guardar-aviso-banner" class="boton boton-primario boton-pequeno">
+            Guardar Ajustes Ahora
+          </button>
+        </div>
+
+        <!-- Pestañas de Navegación de Gestión -->
         <nav class="panel-pestanas-nav" aria-label="Secciones de administración">
           <button type="button" class="pestana-boton activa" data-pestana="consola">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
@@ -103,256 +115,262 @@
           </div>
         </div>
 
-        <!-- Pestaña 2: Ajustes de Servidor (Estilo Crafty Controller / Hostinger) -->
+        <!-- Pestaña 2: Ajustes de Servidor -->
         <div id="pestana-ajustes" class="contenido-pestana">
-          <div class="ajustes-contenedor">
-            <div class="ajustes-cabecera-panel">
-              <div>
-                <h2 class="ajustes-titulo-seccion">Configuración de Software y Motor</h2>
-                <p class="ajustes-subtitulo-seccion">Cambia de versión o añade mod loaders en cualquier momento con un solo clic.</p>
+          <div class="ajustes-panel-integrado">
+            <!-- Cabecera de la sección de ajustes -->
+            <div class="ajustes-cabecera-integrada">
+              <div class="ajustes-titulos">
+                <h2 class="ajustes-titulo-principal">Ajustes del Servidor</h2>
+                <p class="ajustes-subtitulo-principal">Configura tu mundo, el tipo de juego y las opciones de tu partida fácilmente.</p>
               </div>
               <button type="button" id="btn-guardar-ajustes" class="boton boton-primario">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                <span>Guardar Ajustes y Reiniciar</span>
+                <span>Guardar Ajustes</span>
               </button>
             </div>
 
-            <!-- 1. Edición de Minecraft -->
-            <div class="ajustes-tarjeta-bloque">
-              <h3 class="ajustes-bloque-encabezado">1. Edición de Minecraft</h3>
-              <div class="ajustes-selector-edicion">
-                <button type="button" class="btn-opcion-edicion seleccionada" data-edicion-val="java">
-                  <span class="opcion-edicion-titulo">Java Edition (PC / Mac)</span>
-                  <span class="opcion-edicion-desc">Compatible con NeoForge, Forge, Fabric, Paper y mods jar.</span>
-                </button>
-                <button type="button" class="btn-opcion-edicion" data-edicion-val="bedrock">
-                  <span class="opcion-edicion-titulo">Bedrock Edition (Consolas / Móviles)</span>
-                  <span class="opcion-edicion-desc">Para iOS, Android, Xbox, Switch y Windows 10/11.</span>
-                </button>
+            <!-- Fila 1: Dispositivos (Edición de Minecraft) -->
+            <div class="ajustes-fila-seccion">
+              <div class="ajustes-seccion-meta">
+                <h3 class="ajustes-seccion-titulo">1. ¿Desde dónde van a jugar?</h3>
+                <p class="ajustes-seccion-desc">Selecciona si tus amigos se conectarán desde ordenador o desde móviles y videoconsolas.</p>
               </div>
-            </div>
-
-            <!-- 2. Software / Mod Loader -->
-            <div class="ajustes-tarjeta-bloque">
-              <h3 class="ajustes-bloque-encabezado">2. Software y Mod Loader</h3>
-              <p class="ajustes-bloque-ayuda">Elige la plataforma sobre la que arrancará tu servidor.</p>
-
-              <div class="ajustes-grid-loaders" id="contenedor-loaders-java">
-                <!-- NeoForge -->
-                <div class="tarjeta-loader-item" data-loader-val="neoforge" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">NeoForge</span>
-                    <span class="insignia insignia-exito">Mods 1.20.2+</span>
-                  </div>
-                  <p class="loader-desc">La nueva generación de modding moderno de Minecraft. Máxima compatibilidad para mods recientes.</p>
-                </div>
-
-                <!-- PaperMC -->
-                <div class="tarjeta-loader-item seleccionada" data-loader-val="paper" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">PaperMC</span>
-                    <span class="insignia insignia-primaria">Optimizado</span>
-                  </div>
-                  <p class="loader-desc">El estándar de alto rendimiento sin lag. Totalmente compatible con plugins Bukkit y Spigot.</p>
-                </div>
-
-                <!-- Forge -->
-                <div class="tarjeta-loader-item" data-loader-val="forge" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">Forge</span>
-                    <span class="insignia">Clásico</span>
-                  </div>
-                  <p class="loader-desc">El loader histórico por excelencia para modpacks pesados y versiones consolidadas.</p>
-                </div>
-
-                <!-- Fabric -->
-                <div class="tarjeta-loader-item" data-loader-val="fabric" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">Fabric</span>
-                    <span class="insignia">Ultraligero</span>
-                  </div>
-                  <p class="loader-desc">Motor liviano y modular, ideal para optimizaciones técnicas como Sodium, Lithium e Iris.</p>
-                </div>
-
-                <!-- Purpur -->
-                <div class="tarjeta-loader-item" data-loader-val="purpur" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">Purpur</span>
-                    <span class="insignia">Personalizado</span>
-                  </div>
-                  <p class="loader-desc">Bifurcación de Paper con cientos de ajustes y opciones avanzadas de jugabilidad.</p>
-                </div>
-
-                <!-- Spigot -->
-                <div class="tarjeta-loader-item" data-loader-val="spigot" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">Spigot</span>
-                    <span class="insignia">Estándar</span>
-                  </div>
-                  <p class="loader-desc">Servidor tradicional con soporte fiable para la API de plugins de Bukkit.</p>
-                </div>
-
-                <!-- Vanilla -->
-                <div class="tarjeta-loader-item" data-loader-val="vanilla" tabindex="0">
-                  <div class="loader-item-cabecera">
-                    <span class="loader-nombre">Vanilla</span>
-                    <span class="insignia">Oficial Mojang</span>
-                  </div>
-                  <p class="loader-desc">Servidor oficial limpio sin ninguna modificación de terceros.</p>
+              <div class="ajustes-seccion-cuerpo">
+                <div class="ajustes-selector-edicion">
+                  <button type="button" class="btn-opcion-edicion seleccionada" data-edicion-val="java">
+                    <span class="opcion-edicion-titulo">Java Edition</span>
+                    <span class="opcion-edicion-desc">Para ordenadores (PC, Mac y Linux)</span>
+                  </button>
+                  <button type="button" class="btn-opcion-edicion" data-edicion-val="bedrock">
+                    <span class="opcion-edicion-titulo">Bedrock Edition</span>
+                    <span class="opcion-edicion-desc">Para móviles, consolas (Xbox, PlayStation, Switch) y Windows</span>
+                  </button>
                 </div>
               </div>
             </div>
 
-            <!-- 3. Selector Completo de Versiones de Minecraft -->
-            <div class="ajustes-tarjeta-bloque">
-              <h3 class="ajustes-bloque-encabezado">3. Versión de Minecraft</h3>
-              <p class="ajustes-bloque-ayuda">Disponibles absolutamente todas las versiones oficiales y soporte para versiones personalizadas.</p>
+            <!-- Fila 2: Tipo de Servidor (Mod Loader) -->
+            <div class="ajustes-fila-seccion">
+              <div class="ajustes-seccion-meta">
+                <h3 class="ajustes-seccion-titulo">2. Tipo de servidor</h3>
+                <p class="ajustes-seccion-desc">Elige el motor con el que arrancará tu mundo según si quieres jugar normal o añadir modificaciones.</p>
+              </div>
+              <div class="ajustes-seccion-cuerpo">
+                <div class="ajustes-grid-loaders" id="contenedor-loaders-java">
+                  <!-- PaperMC -->
+                  <div class="tarjeta-loader-item seleccionada" data-loader-val="paper" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">PaperMC</span>
+                      <span class="insignia insignia-primaria">Recomendado</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">El más rápido y sin lag</span>
+                  </div>
 
-              <div class="ajustes-version-grupo">
-                <div class="grupo-campo">
-                  <label for="select-version-minecraft" class="etiqueta">Versión oficial</label>
-                  <select id="select-version-minecraft" class="campo-select">
-                    <optgroup label="Minecraft 1.21 (Tricky Trials)">
-                      <option value="1.21.4" selected>1.21.4 (Última versión oficial)</option>
-                      <option value="1.21.3">1.21.3</option>
-                      <option value="1.21.2">1.21.2</option>
-                      <option value="1.21.1">1.21.1</option>
-                      <option value="1.21.0">1.21.0</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.20 (Trails & Tales)">
-                      <option value="1.20.6">1.20.6</option>
-                      <option value="1.20.5">1.20.5</option>
-                      <option value="1.20.4">1.20.4</option>
-                      <option value="1.20.3">1.20.3</option>
-                      <option value="1.20.2">1.20.2</option>
-                      <option value="1.20.1">1.20.1</option>
-                      <option value="1.20.0">1.20.0</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.19 (The Wild Update)">
-                      <option value="1.19.4">1.19.4</option>
-                      <option value="1.19.3">1.19.3</option>
-                      <option value="1.19.2">1.19.2</option>
-                      <option value="1.19.1">1.19.1</option>
-                      <option value="1.19.0">1.19.0</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.18 (Caves & Cliffs Part II)">
-                      <option value="1.18.2">1.18.2</option>
-                      <option value="1.18.1">1.18.1</option>
-                      <option value="1.18.0">1.18.0</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.17 (Caves & Cliffs Part I)">
-                      <option value="1.17.1">1.17.1</option>
-                      <option value="1.17.0">1.17.0</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.16 (Nether Update)">
-                      <option value="1.16.5">1.16.5 (Gran soporte mods)</option>
-                      <option value="1.16.4">1.16.4</option>
-                      <option value="1.16.3">1.16.3</option>
-                      <option value="1.16.2">1.16.2</option>
-                      <option value="1.16.1">1.16.1</option>
-                    </optgroup>
-                    <optgroup label="Minecraft 1.15 a 1.13">
-                      <option value="1.15.2">1.15.2</option>
-                      <option value="1.14.4">1.14.4</option>
-                      <option value="1.13.2">1.13.2</option>
-                    </optgroup>
-                    <optgroup label="Versiones Históricas y Clásicas">
-                      <option value="1.12.2">1.12.2 (Legendaria para Modpacks)</option>
-                      <option value="1.8.9">1.8.9 (PvP Competitivo)</option>
-                      <option value="1.7.10">1.7.10 (Clásico modding)</option>
-                    </optgroup>
-                    <optgroup label="Otra versión / Snapshot">
-                      <option value="personalizada">Versión personalizada o Snapshot...</option>
-                    </optgroup>
-                  </select>
-                </div>
+                  <!-- Fabric -->
+                  <div class="tarjeta-loader-item" data-loader-val="fabric" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">Fabric</span>
+                      <span class="insignia">Rápido</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">Para mods ligeros y fluidos</span>
+                  </div>
 
-                <div class="grupo-campo" id="campo-version-personalizada-envoltorio" hidden>
-                  <label for="input-version-personalizada" class="etiqueta">Versión exacta o Snapshot</label>
-                  <input type="text" id="input-version-personalizada" class="campo-texto" placeholder="Ej. 24w40a o 1.21.4-rc1">
-                </div>
+                  <!-- Forge -->
+                  <div class="tarjeta-loader-item" data-loader-val="forge" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">Forge</span>
+                      <span class="insignia">Mods</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">Para paquetes grandes de mods</span>
+                  </div>
 
-                <div class="grupo-campo">
-                  <label for="select-java-version" class="etiqueta">Versión de Java Runtime</label>
-                  <select id="select-java-version" class="campo-select">
-                    <option value="21" selected>Java 21 (Recomendado para 1.20.5+)</option>
-                    <option value="17">Java 17 (Minecraft 1.17 - 1.20.4)</option>
-                    <option value="11">Java 11</option>
-                    <option value="8">Java 8 (Minecraft 1.12.2 e inferiores)</option>
-                  </select>
+                  <!-- NeoForge -->
+                  <div class="tarjeta-loader-item" data-loader-val="neoforge" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">NeoForge</span>
+                      <span class="insignia">Moderno</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">Mods para versiones recientes</span>
+                  </div>
+
+                  <!-- Vanilla -->
+                  <div class="tarjeta-loader-item" data-loader-val="vanilla" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">Vanilla</span>
+                      <span class="insignia">Oficial</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">El juego original sin mods</span>
+                  </div>
+
+                  <!-- Purpur -->
+                  <div class="tarjeta-loader-item" data-loader-val="purpur" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">Purpur</span>
+                      <span class="insignia">Avanzado</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">Con ajustes extra de juego</span>
+                  </div>
+
+                  <!-- Spigot -->
+                  <div class="tarjeta-loader-item" data-loader-val="spigot" tabindex="0">
+                    <div class="loader-item-fila">
+                      <span class="loader-nombre">Spigot</span>
+                      <span class="insignia">Clásico</span>
+                    </div>
+                    <span class="loader-etiqueta-simple">Para complementos clásicos</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- 4. Propiedades y Red Dedicada -->
-            <div class="ajustes-tarjeta-bloque">
-              <h3 class="ajustes-bloque-encabezado">4. Red Dedicada y Ajustes de Partida</h3>
-              <div class="ajustes-dos-columnas">
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-nombre" class="etiqueta">Nombre del servidor</label>
-                  <input type="text" id="ajustes-campo-nombre" class="campo-texto" value="Mi Servidor Minecraft">
-                </div>
+            <!-- Fila 3: Versión de Minecraft -->
+            <div class="ajustes-fila-seccion">
+              <div class="ajustes-seccion-meta">
+                <h3 class="ajustes-seccion-titulo">3. Versión del juego</h3>
+                <p class="ajustes-seccion-desc">Selecciona la versión a la que se van a conectar todos los jugadores.</p>
+              </div>
+              <div class="ajustes-seccion-cuerpo">
+                <div class="ajustes-version-grupo">
+                  <div class="grupo-campo">
+                    <label for="select-version-minecraft" class="etiqueta">Versión del juego</label>
+                    <select id="select-version-minecraft" class="campo-select">
+                      <optgroup label="Minecraft 1.21">
+                        <option value="1.21.4" selected>1.21.4 (Última versión)</option>
+                        <option value="1.21.3">1.21.3</option>
+                        <option value="1.21.2">1.21.2</option>
+                        <option value="1.21.1">1.21.1</option>
+                        <option value="1.21.0">1.21.0</option>
+                      </optgroup>
+                      <optgroup label="Minecraft 1.20">
+                        <option value="1.20.6">1.20.6</option>
+                        <option value="1.20.5">1.20.5</option>
+                        <option value="1.20.4">1.20.4</option>
+                        <option value="1.20.2">1.20.2</option>
+                        <option value="1.20.1">1.20.1</option>
+                      </optgroup>
+                      <optgroup label="Minecraft 1.19">
+                        <option value="1.19.4">1.19.4</option>
+                        <option value="1.19.2">1.19.2</option>
+                      </optgroup>
+                      <optgroup label="Minecraft 1.18 a 1.16">
+                        <option value="1.18.2">1.18.2</option>
+                        <option value="1.16.5">1.16.5 (Muy popular para mods)</option>
+                      </optgroup>
+                      <optgroup label="Versiones clásicas">
+                        <option value="1.12.2">1.12.2 (Clásica para modpacks)</option>
+                        <option value="1.8.9">1.8.9 (PvP clásico)</option>
+                      </optgroup>
+                      <optgroup label="Otra versión">
+                        <option value="personalizada">Versión personalizada o de prueba...</option>
+                      </optgroup>
+                    </select>
+                  </div>
 
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-subdominio" class="etiqueta">Subdominio Dedicado</label>
-                  <div class="campo-subdominio-envoltorio">
-                    <input type="text" id="ajustes-campo-subdominio" class="campo-texto campo-subdominio-input" placeholder="mi-servidor">
-                    <span class="subdominio-sufijo">.galigames.net</span>
+                  <div class="grupo-campo" id="campo-version-personalizada-envoltorio" hidden>
+                    <label for="input-version-personalizada" class="etiqueta">Versión exacta</label>
+                    <input type="text" id="input-version-personalizada" class="campo-texto" placeholder="Ej. 24w40a o 1.21.4-rc1">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 4: Opciones de la partida -->
+            <div class="ajustes-fila-seccion">
+              <div class="ajustes-seccion-meta">
+                <h3 class="ajustes-seccion-titulo">4. Opciones de tu mundo</h3>
+                <p class="ajustes-seccion-desc">El nombre, la dirección para tus amigos y las reglas básicas de juego.</p>
+              </div>
+              <div class="ajustes-seccion-cuerpo">
+                <div class="ajustes-dos-columnas">
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-nombre" class="etiqueta">Nombre del servidor</label>
+                    <input type="text" id="ajustes-campo-nombre" class="campo-texto" value="Mi Servidor Minecraft">
+                    <span class="campo-ayuda">El nombre con el que verás este servidor en tu lista.</span>
+                  </div>
+
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-subdominio" class="etiqueta">Dirección para tus amigos</label>
+                    <div class="campo-subdominio-envoltorio">
+                      <input type="text" id="ajustes-campo-subdominio" class="campo-texto campo-subdominio-input" placeholder="mi-servidor">
+                      <span class="subdominio-sufijo">.galigames.net</span>
+                    </div>
+                    <span class="campo-ayuda">La dirección que pondrán tus amigos para entrar.</span>
+                  </div>
+
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-motd" class="etiqueta">Mensaje de bienvenida</label>
+                    <input type="text" id="ajustes-campo-motd" class="campo-texto" value="¡Bienvenidos al servidor!">
+                    <span class="campo-ayuda">El texto que verán tus amigos en la lista de servidores del juego.</span>
+                  </div>
+
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-max-jugadores" class="etiqueta">Límite de amigos a la vez</label>
+                    <input type="number" id="ajustes-campo-max-jugadores" class="campo-texto" min="1" max="100" value="20">
+                    <span class="campo-ayuda">Número de personas que pueden jugar al mismo tiempo.</span>
+                  </div>
+
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-dificultad" class="etiqueta">Dificultad</label>
+                    <select id="ajustes-campo-dificultad" class="campo-select">
+                      <option value="peaceful">Pacífico (Sin monstruos ni daño)</option>
+                      <option value="easy">Fácil</option>
+                      <option value="normal" selected>Normal</option>
+                      <option value="hard">Difícil</option>
+                    </select>
+                  </div>
+
+                  <div class="grupo-campo">
+                    <label for="ajustes-campo-gamemode" class="etiqueta">Modo de juego</label>
+                    <select id="ajustes-campo-gamemode" class="campo-select">
+                      <option value="survival" selected>Supervivencia (Conseguir recursos)</option>
+                      <option value="creative">Creativo (Bloques infinitos)</option>
+                      <option value="adventure">Aventura (Mapas de historia)</option>
+                    </select>
+                  </div>
+
+                  <div class="grupo-campo-checkboxes">
+                    <label class="checkbox-etiqueta">
+                      <input type="checkbox" id="ajustes-campo-pvp" checked>
+                      <span>Permitir daño y peleas entre jugadores (PvP)</span>
+                    </label>
+                    <label class="checkbox-etiqueta">
+                      <input type="checkbox" id="ajustes-campo-whitelist">
+                      <span>Lista de acceso privado (Solo amigos que tú permitas)</span>
+                    </label>
                   </div>
                 </div>
 
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-motd" class="etiqueta">Mensaje del Día (MOTD)</label>
-                  <input type="text" id="ajustes-campo-motd" class="campo-texto" value="¡Bienvenidos al servidor!">
-                </div>
-
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-token" class="etiqueta">Token de Nodo Aislado (Sistema)</label>
-                  <input type="text" id="ajustes-campo-token" class="campo-texto campo-solo-lectura" readonly disabled value="srv-...">
-                </div>
-
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-dificultad" class="etiqueta">Dificultad</label>
-                  <select id="ajustes-campo-dificultad" class="campo-select">
-                    <option value="peaceful">Pacífico</option>
-                    <option value="easy">Fácil</option>
-                    <option value="normal" selected>Normal</option>
-                    <option value="hard">Difícil</option>
-                  </select>
-                </div>
-
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-gamemode" class="etiqueta">Modo de Juego</label>
-                  <select id="ajustes-campo-gamemode" class="campo-select">
-                    <option value="survival" selected>Supervivencia</option>
-                    <option value="creative">Creativo</option>
-                    <option value="adventure">Aventura</option>
-                  </select>
-                </div>
-
-                <div class="grupo-campo">
-                  <label for="ajustes-campo-max-jugadores" class="etiqueta">Máximo de Jugadores</label>
-                  <input type="number" id="ajustes-campo-max-jugadores" class="campo-texto" min="1" max="100" value="20">
-                </div>
-
-                <div class="grupo-campo-checkboxes">
-                  <label class="checkbox-etiqueta">
-                    <input type="checkbox" id="ajustes-campo-pvp" checked>
-                    <span>Combate entre jugadores (PvP)</span>
-                  </label>
-                  <label class="checkbox-etiqueta">
-                    <input type="checkbox" id="ajustes-campo-whitelist">
-                    <span>Lista blanca obligatoria (Whitelist)</span>
-                  </label>
-                </div>
+                <!-- Desplegable para opciones técnicas avanzadas -->
+                <details class="ajustes-avanzados-desplegable">
+                  <summary class="ajustes-avanzados-resumen">
+                    <span>Opciones avanzadas del sistema</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </summary>
+                  <div class="ajustes-avanzados-contenido">
+                    <div class="grupo-campo">
+                      <label for="select-java-version" class="etiqueta">Versión de Java Runtime</label>
+                      <select id="select-java-version" class="campo-select">
+                        <option value="21" selected>Java 21 (Recomendado para versiones modernas)</option>
+                        <option value="17">Java 17 (Minecraft 1.17 - 1.20.4)</option>
+                        <option value="11">Java 11</option>
+                        <option value="8">Java 8 (Minecraft 1.12.2 e inferiores)</option>
+                      </select>
+                    </div>
+                    <div class="grupo-campo">
+                      <label for="ajustes-campo-token" class="etiqueta">Identificador interno del servidor</label>
+                      <input type="text" id="ajustes-campo-token" class="campo-texto campo-solo-lectura" readonly disabled value="srv-...">
+                    </div>
+                  </div>
+                </details>
               </div>
             </div>
 
             <!-- Guardar cambios pie -->
-            <div class="ajustes-acciones-guardar">
+            <div class="ajustes-pie-guardar">
               <button type="button" id="btn-guardar-ajustes-pie" class="boton boton-primario boton-grande">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                <span>Guardar Ajustes y Reiniciar Servidor</span>
+                <span>Guardar Ajustes</span>
               </button>
             </div>
           </div>
@@ -479,6 +497,7 @@
         </div>
 
         <!-- Pestaña 4: Jugadores y Rendimiento (Métricas Reales de Docker) -->
+        <!-- Pestaña 4: Rendimiento y Jugadores (Diseño Integrado) -->
         <div id="pestana-rendimiento" class="contenido-pestana">
           <!-- Alerta de saturación de RAM (>80%) -->
           <div id="alerta-ram-servidor" class="alerta-ram-caja" hidden>
@@ -487,92 +506,102 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               </span>
               <div>
-                <h2 class="alerta-ram-titulo">Aviso de Rendimiento: Memoria RAM al límite (&gt;80%)</h2>
-                <p id="alerta-ram-texto" class="alerta-ram-descripcion">El contenedor está utilizando gran parte de su cuota de memoria. Puedes mejorar al Plan Pro de 6 GB por 9 €/mes para máxima estabilidad.</p>
+                <h2 class="alerta-ram-titulo">Aviso: Memoria RAM casi llena (&gt;80%)</h2>
+                <p id="alerta-ram-texto" class="alerta-ram-descripcion">Tu servidor está usando casi toda su memoria. Si notas cortes, puedes mejorar al Plan Pro de 6 GB.</p>
               </div>
             </div>
             <a href="../../html/servidores/crear.html" class="boton boton-primario alerta-ram-boton">Mejorar a 6 GB (9 €/mes)</a>
           </div>
 
-          <!-- Métricas de Recursos en Vivo (Docker Stats reales) -->
-          <div class="metricas-rejilla">
-            <div class="tarjeta-metrica">
-              <div class="metrica-cabecera">
-                <span class="metrica-etiqueta">Uso Real de CPU</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+          <!-- Panel Integrado de Recursos y Gráfica -->
+          <div class="rendimiento-panel-integrado">
+            <div class="rendimiento-cabecera-integrada">
+              <div class="rendimiento-titulos">
+                <h2 class="rendimiento-titulo-principal">Rendimiento en Vivo</h2>
+                <p class="rendimiento-subtitulo-principal">Supervisa el consumo y la fluidez de tu servidor en tiempo real.</p>
               </div>
-              <div class="metrica-valor" id="metrica-cpu-valor">0.0%</div>
-              <div class="barra-progreso-fondo">
-                <div id="barra-progreso-cpu" class="barra-progreso-relleno"></div>
-              </div>
-              <div class="metrica-subtexto">2 vCPU dedicados en contenedor</div>
             </div>
 
-            <div class="tarjeta-metrica">
-              <div class="metrica-cabecera">
-                <span class="metrica-etiqueta">Memoria RAM Dedicada</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><rect width="20" height="12" x="2" y="4" rx="2"/></svg>
+            <!-- Tira de 4 Métricas Integradas -->
+            <div class="metricas-tira-integrada">
+              <div class="metrica-columna-item">
+                <div class="metrica-columna-cabecera">
+                  <span class="metrica-etiqueta-simple">Carga del Servidor</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+                </div>
+                <div class="metrica-valor-grande" id="metrica-cpu-valor">0.0%</div>
+                <div class="barra-progreso-fondo">
+                  <div id="barra-progreso-cpu" class="barra-progreso-relleno"></div>
+                </div>
+                <span class="metrica-nota-simple">Potencia en uso</span>
               </div>
-              <div class="metrica-valor" id="metrica-ram-valor">0 MB / 4096 MB</div>
-              <div class="barra-progreso-fondo">
-                <div id="barra-progreso-ram" class="barra-progreso-relleno"></div>
+
+              <div class="metrica-columna-item">
+                <div class="metrica-columna-cabecera">
+                  <span class="metrica-etiqueta-simple">Memoria en Uso</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M6 19v-3"/><path d="M10 19v-3"/><path d="M14 19v-3"/><path d="M18 19v-3"/><rect width="20" height="12" x="2" y="4" rx="2"/></svg>
+                </div>
+                <div class="metrica-valor-grande" id="metrica-ram-valor">0 MB / 4096 MB</div>
+                <div class="barra-progreso-fondo">
+                  <div id="barra-progreso-ram" class="barra-progreso-relleno"></div>
+                </div>
+                <span class="metrica-nota-simple" id="metrica-ram-subtexto">Consumo de tu partida</span>
               </div>
-              <div class="metrica-subtexto" id="metrica-ram-subtexto">Uso en tiempo real</div>
+
+              <div class="metrica-columna-item">
+                <div class="metrica-columna-cabecera">
+                  <span class="metrica-etiqueta-simple">Espacio en Disco</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
+                </div>
+                <div class="metrica-valor-grande" id="metrica-disco-valor">0 MB / 20000 MB</div>
+                <div class="barra-progreso-fondo">
+                  <div id="barra-progreso-disco" class="barra-progreso-relleno"></div>
+                </div>
+                <span class="metrica-nota-simple">Ocupado por tu mundo</span>
+              </div>
+
+              <div class="metrica-columna-item">
+                <div class="metrica-columna-cabecera">
+                  <span class="metrica-etiqueta-simple">Amigos Jugando</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="metrica-valor-grande" id="metrica-jugadores-valor">0 / 20</div>
+                <div class="barra-progreso-fondo">
+                  <div id="barra-progreso-jugadores" class="barra-progreso-relleno"></div>
+                </div>
+                <span class="metrica-nota-simple" id="metrica-jugadores-subtexto">Conectados ahora mismo</span>
+              </div>
             </div>
 
-            <div class="tarjeta-metrica">
-              <div class="metrica-cabecera">
-                <span class="metrica-etiqueta">Almacenamiento NVMe</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>
+            <!-- Gráfica SVG de Histórico Integrada -->
+            <div class="grafica-seccion-integrada">
+              <div class="grafica-cabecera">
+                <div>
+                  <h3 class="grafica-titulo">Evolución del Servidor</h3>
+                  <p class="grafica-subtitulo">Supervisa cómo rinde tu partida a lo largo del tiempo</p>
+                </div>
+                <div class="grafica-leyenda">
+                  <span class="leyenda-item">
+                    <span class="leyenda-muestra leyenda-muestra-jugadores"></span>
+                    <span>Jugadores</span>
+                  </span>
+                  <span class="leyenda-item">
+                    <span class="leyenda-muestra leyenda-muestra-ram"></span>
+                    <span>Memoria (%)</span>
+                  </span>
+                  <span class="leyenda-item">
+                    <span class="leyenda-muestra leyenda-muestra-cpu"></span>
+                    <span>Carga (%)</span>
+                  </span>
+                </div>
               </div>
-              <div class="metrica-valor" id="metrica-disco-valor">0 MB / 20000 MB</div>
-              <div class="barra-progreso-fondo">
-                <div id="barra-progreso-disco" class="barra-progreso-relleno"></div>
+              <div id="contenedor-grafica-svg" class="grafica-envoltorio">
+                <!-- SVG dinámico renderizado por consola.js -->
               </div>
-              <div class="metrica-subtexto">Disco SSD ultrarrápido</div>
-            </div>
-
-            <div class="tarjeta-metrica">
-              <div class="metrica-cabecera">
-                <span class="metrica-etiqueta">Jugadores Online</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="metrica-icono" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <div class="metrica-valor" id="metrica-jugadores-valor">0 / 20</div>
-              <div class="barra-progreso-fondo">
-                <div id="barra-progreso-jugadores" class="barra-progreso-relleno"></div>
-              </div>
-              <div class="metrica-subtexto" id="metrica-jugadores-subtexto">Capacidad del servidor</div>
             </div>
           </div>
 
-          <!-- Gráfica SVG de Histórico Real -->
-          <div class="grafica-bloque">
-            <div class="grafica-cabecera">
-              <div>
-                <h3 class="grafica-titulo">Métricas Históricas de Concurrencia y Recursos</h3>
-                <p class="grafica-subtitulo">Telemetría registrada en tiempo real desde el contenedor Docker</p>
-              </div>
-              <div class="grafica-leyenda">
-                <span class="leyenda-item">
-                  <span class="leyenda-muestra leyenda-muestra-jugadores"></span>
-                  <span>Jugadores</span>
-                </span>
-                <span class="leyenda-item">
-                  <span class="leyenda-muestra leyenda-muestra-ram"></span>
-                  <span>Memoria RAM (%)</span>
-                </span>
-                <span class="leyenda-item">
-                  <span class="leyenda-muestra leyenda-muestra-cpu"></span>
-                  <span>CPU (%)</span>
-                </span>
-              </div>
-            </div>
-            <div id="contenedor-grafica-svg" class="grafica-envoltorio">
-              <!-- SVG dinámico renderizado por consola.js -->
-            </div>
-          </div>
-
-          <!-- Dos Columnas: Jugadores Activos Reales + Registro de Conexiones Real -->
+          <!-- Dos Columnas Integradas: Jugadores Activos + Conexiones -->
           <div class="rendimiento-dos-columnas">
             <!-- Tabla de Jugadores Conectados Reales -->
             <div class="rendimiento-columna-panel">
@@ -602,7 +631,7 @@
             <div class="rendimiento-columna-panel">
               <div class="rendimiento-panel-cabecera">
                 <h3 class="rendimiento-panel-titulo">Registro de Conexiones</h3>
-                <span class="metrica-subtexto">Eventos registrados del log</span>
+                <span class="metrica-subtexto">Entradas y salidas recientes</span>
               </div>
               <ul id="lista-eventos-conexiones" class="eventos-lista">
                 <!-- Dinámico -->
@@ -611,31 +640,66 @@
           </div>
         </div>
 
-        <!-- Pestaña 5: Información General -->
+        <!-- Pestaña 5: Información General (Diseño Integrado Sin Bloques Aislados) -->
         <div id="pestana-detalles" class="contenido-pestana">
-          <div class="detalles-rejilla">
-            <div class="tarjeta-detalle-recurso">
-              <div class="detalle-recurso-titulo">Memoria RAM Asignada</div>
-              <div class="detalle-recurso-valor" id="detalle-ram-valor">4 GB RAM</div>
-              <div class="detalle-recurso-subtexto">Memoria dedicada exclusiva para tu servidor</div>
+          <div class="detalles-panel-integrado">
+            <div class="detalles-cabecera-integrada">
+              <div>
+                <h2 class="detalles-titulo-seccion">Información de tu Servidor</h2>
+                <p class="detalles-subtitulo-seccion">Los datos clave de tu partida organizados para que cualquier persona los entienda.</p>
+              </div>
             </div>
 
-            <div class="tarjeta-detalle-recurso">
-              <div class="detalle-recurso-titulo">Software y Versión</div>
-              <div class="detalle-recurso-valor" id="detalle-software-valor">PaperMC 1.20.4</div>
-              <div class="detalle-recurso-subtexto">Modificable desde la pestaña de Ajustes</div>
-            </div>
+            <div class="detalles-lista-filas">
+              <!-- Fila 1: Dirección IP principal destacada -->
+              <div class="detalles-fila-item detalles-fila-direccion">
+                <div class="detalles-item-meta">
+                  <span class="detalles-item-titulo">Dirección para entrar al juego</span>
+                  <span class="detalles-item-desc">Comparte esta dirección con tus amigos para que puedan unirse en Minecraft.</span>
+                </div>
+                <div class="detalles-item-contenido">
+                  <div class="detalle-recurso-ip-fila">
+                    <span class="detalle-ip-texto" id="detalle-puerto-valor">...</span>
+                    <button type="button" id="btn-copiar-ip-detalles" class="boton-fantasma boton-copiar-chip" title="Copiar dirección para jugar">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                      <span>Copiar</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-            <div class="tarjeta-detalle-recurso">
-              <div class="detalle-recurso-titulo">Dirección de Conexión Dedicada</div>
-              <div class="detalle-recurso-valor" id="detalle-puerto-valor">Puerto Asignado</div>
-              <div class="detalle-recurso-subtexto">Subdominio aislado con enrutamiento seguro</div>
-            </div>
+              <!-- Fila 2: Versión instalada -->
+              <div class="detalles-fila-item">
+                <div class="detalles-item-meta">
+                  <span class="detalles-item-titulo">Versión instalada</span>
+                  <span class="detalles-item-desc">El tipo y la versión de Minecraft con la que está funcionando tu mundo.</span>
+                </div>
+                <div class="detalles-item-contenido">
+                  <span class="detalles-valor-destacado" id="detalle-software-valor">PaperMC 1.20.4</span>
+                </div>
+              </div>
 
-            <div class="tarjeta-detalle-recurso">
-              <div class="detalle-recurso-titulo">Tarifa Mensual</div>
-              <div class="detalle-recurso-valor" id="detalle-tarifa-valor">7,00 € / mes</div>
-              <div class="detalle-recurso-subtexto">Soporte total de mods y copias de seguridad</div>
+              <!-- Fila 3: Memoria RAM -->
+              <div class="detalles-fila-item">
+                <div class="detalles-item-meta">
+                  <span class="detalles-item-titulo">Memoria RAM</span>
+                  <span class="detalles-item-desc">Memoria reservada exclusivamente para que juegues sin cortes ni caídas.</span>
+                </div>
+                <div class="detalles-item-contenido">
+                  <span class="detalles-valor-destacado" id="detalle-ram-valor">4 GB RAM</span>
+                </div>
+              </div>
+
+              <!-- Fila 4: Tarifa -->
+              <div class="detalles-fila-item">
+                <div class="detalles-item-meta">
+                  <span class="detalles-item-titulo">Tu Cuota Mensual</span>
+                  <span class="detalles-item-desc">Servidor activo y listo para jugar las 24 horas del día.</span>
+                </div>
+                <div class="detalles-item-contenido">
+                  <span class="detalles-valor-destacado" id="detalle-tarifa-valor">7,00 € / mes</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
